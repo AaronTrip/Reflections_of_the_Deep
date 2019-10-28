@@ -17,7 +17,7 @@
        let inconsolata;
        var printString = "";
        var stringPointer = 0;
-       var paragraph1 = '“Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply:';
+       var paragraph1 = '“Would you like another #glass# of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply:';
        var drawCounter = 0;
        function preload() {
            inconsolata = loadFont('./PatrickHand-Regular.ttf');
@@ -27,17 +27,20 @@
            createCanvas(1000, 600, WEBGL);
            textFont(inconsolata);
            textSize(width / 40);
-           textAlign(CENTER, CENTER);
+           textAlign(LEFT, CENTER);
+           test1 = new printClass(paragraph1)
        }
        function draw() {
            background(0);
            let time = Math.floor(millis());
-           text(printString, -400, -250, 800);
-           if(stringPointer < paragraph1.length && drawCounter++ > 2)
-           {
-               drawCounter = 0;
-               printString += paragraph1[stringPointer++];
-           }
+           test1.oprint();
+
+           //text(printString, -400, -250, 800);
+           //if(stringPointer < paragraph1.length && drawCounter++ > 2)
+           //{
+                //drawCounter = 0;
+               //printString += paragraph1[stringPointer++];
+           //}
        }
 
        function keyTyped() {
