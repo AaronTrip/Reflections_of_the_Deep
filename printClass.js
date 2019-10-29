@@ -76,10 +76,10 @@ class printClass{
         */
 
         
-        var j;
+        var j, k;
         for(j = 0; j < this.length; j++){
             if(this.currentX + (this.size) > 400){
-                if(j+1 < this.length && this.letters[j+1].equals(' ') == false){
+                if(j+1 < this.length && this.letters[j+1].getLetter() !== " "){
                     text('-',this.currentX, this.currentY,800);
                 }
                 this.currentX = -400;
@@ -127,6 +127,10 @@ class letter{
         this.letter = string;
         this.color = color;
         this.typing = typing;
+    }
+
+    getLetter(){
+        return this.letter;
     }
 
     lprint(x,y){
