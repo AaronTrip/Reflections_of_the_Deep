@@ -10,10 +10,14 @@
     <script src="p5.sound.js"></script>
     <script src="sketch.js"></script>
     <script src="printClass.js"></script>
+    <script src="shell.js"></script>
   </head>
   <body>
       <div id="p5_loading" class="loadingclass">this could be some sweet graphics loading lots of bits.</div>
       <script>
+       var visible_inventory = new Set();
+       var invisible_inventory = new Set();
+       var shell  // Handles user input
        let inconsolata;
        var printString = "";
        var stringPointer = 0;
@@ -24,26 +28,35 @@
            //inconsolata = loadFont('./LemonMilk.otf');
        }
        function setup() {
-           createCanvas(1000, 600, WEBGL);
+           let width = 1000;
+           let height = 600;
+           let text_size = width / 40;
+           let text_font = inconsolata;
+
+           createCanvas(width, height, WEBGL);
            textFont(inconsolata);
-           textSize(width / 40);
+           textSize(text_size);
            textAlign(LEFT, CENTER);
-           test1 = new printClass(paragraph1)
+           //test1 = new printClass(paragraph1);
+           shell = new Shell(width, height, text_font, text_size);
        }
        function draw() {
+           // Main game loop
            background(0);
            let time = Math.floor(millis());
-           test1.oprint();
+           //test1.oprint();
+           shell.draw();
 
-           //text(printString, -400, -250, 800);
-           //if(stringPointer < paragraph1.length && drawCounter++ > 2)
-           //{
-                //drawCounter = 0;
-               //printString += paragraph1[stringPointer++];
-           //}
+           text(printString, -400, -250, 800);
+           if(stringPointer < paragraph1.length && drawCounter++ > 2)
+           {
+                drawCounter = 0;
+               printString += paragraph1[stringPointer++];
+           }
        }
 
        function keyTyped() {
+           shell.keyTyped();
            printString = paragraph1;
            stringPointer = paragraph1.length;
        }
