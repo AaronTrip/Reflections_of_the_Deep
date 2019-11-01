@@ -23,6 +23,8 @@
        var stringPointer = 0;
        var paragraph1 = '“Would you like another #glass# of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply:';
        var drawCounter = 0;
+       var paragraph;
+       
        function preload() {
            inconsolata = loadFont('./PatrickHand-Regular.ttf');
            //inconsolata = loadFont('./LemonMilk.otf');
@@ -59,9 +61,63 @@
 
        function keyTyped() {
            shell.keyTyped();
+           if(shell.commandReady())
+               executeCommand();
            printString = paragraph1;
            stringPointer = paragraph1.length;
        }
+
+       function executeCommand()
+       {
+           var command = shell.getCommand();
+           var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory"];
+           var short_command_list = ["e", "u", "l", "g", "t", "h"];
+           
+           var index = command_list.find(command[0]);
+           if(index === undefined)
+               index = short_command_list.find(commandi[0]);
+           if(index === undefined)
+           {
+               // TODO: error
+           }
+
+           switch(index)
+           {
+               case 0:  // Examine
+               
+               break;
+
+               case 1:  // Use
+               
+               break;
+
+               case 2:  // Talk
+               
+               break;
+
+               case 3:  // Go
+               
+               break;
+
+               case 4:  // Take
+               
+               break;
+
+               case 5:  // Help
+
+               break;
+
+               case 6:  // Inventory
+               
+               break;
+
+               default:
+               // TODO
+           }
+
+
+       }
+
       </script>
   </body>
 </html>

@@ -8,10 +8,6 @@ class Shell
         this.font = font;
         this.text_size = text_size;
         this.command_ready = false;
-
-        //textFont(this.font);
-        //textSize(this.text_size);
-        //textAlign(LEFT, CENTER);
     }
 
     // Grabs character when a key is pressed
@@ -26,7 +22,6 @@ class Shell
             switch(keyCode)
             {
                 case BACKSPACE: case DELETE:  // Backspace
-                console.log("Backspace pressed");
                 if(this.shell_line.length > 2)
                     this.shell_line = this.shell_line.slice(0, this.shell_line.length - 1);
                 break;
@@ -46,6 +41,11 @@ class Shell
     commandReady()
     {
         return this.command_ready;
+    }
+
+    getCommand()
+    {
+        return this.shell_line.slice(2, this.shell_line.length - 1).toLowerCase().split(' ');
     }
 
     // Draws the line
