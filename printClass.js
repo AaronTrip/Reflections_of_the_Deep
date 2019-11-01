@@ -17,13 +17,18 @@ class printClass{
        this.colorTest = false;
 
        //Output area
-       //currentX and currentY are where the string starts printing
+       //startX and Y are where the stirng should start printing
+       //currentX and currentY are where the string currently is printing
        //boxWidth is how far accross they can print
        //size is text size
+       //slack is how much over the width chars are allowed to print for printing strings
        this.size = width/70;
+       this.startX = x;
+       this.startY = y;
        this.currentX = x;
        this.currentY = y;
        this.boxWidth = bwidth;
+       this.slack = 0;
 
        //lettes is an array of letter objects to be printed
        this.letters = [];
@@ -70,8 +75,8 @@ class printClass{
     //Currently considers each functions bold and italics case
    oprint(){
        //Resets print location for call so we consistently print in the right place
-       this.currentX = x;
-       this.currentY = y;
+       this.currentX = this.startX;
+       this.currentY = this.startY;
 
        //Old code, used for printing chars one at a time on screen
        //May work?, not well if it does
@@ -105,18 +110,23 @@ class printClass{
         }
         */
 
-        var j, k;
-        for(j = 0; j < this.length; j++){
-            
-            if(this.currentX + (this.size) > this.boxWidth){
-                if(j+1 < this.length && this.letters[j+1].getLetter() !== " "){
-                    text('-',this.currentX, this.currentY,800);
-                }
-                this.currentX = x;
-                this.currentY += 25;
+        var j;
+        var check = false;
+        for(j = 0; j < this.length; j++)
+        {
+
+            if(this.letters[j].getLetter() === " " && this.currentX >= this.startX + this.boxWidth + this.slack)
+            {
+                this.letters[j].lprint(this.currentX,this.currentY);
+                this.currentX = this.startX;
+                this.currentY += 20;
             }
-            this.letters[j].lprint(this.currentX,this.currentY);
-            this.currentX += this.size;
+            else if(j < this.length)
+            {
+                this.letters[j].lprint(this.currentX,this.currentY);
+                this.currentX += this.size;
+            }
+
         }
         
     }
@@ -165,10 +175,10 @@ class letter{
 
     lprint(x,y){
         if(this.typing == 0){
-            textStyle(NORMAL);
+            textFont(inconsolata);
         }
         else if(this.typing == 1){
-            textStyle(BOLD);
+            textFont(fontBold);
         }
         else{
             textStyle(ITALIC);
