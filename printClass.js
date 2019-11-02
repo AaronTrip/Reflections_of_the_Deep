@@ -110,17 +110,21 @@ class printClass{
         }
         */
 
+        //Loops through all objects in letters and calls its print function
         var j;
-        var check = false;
         for(j = 0; j < this.length; j++)
         {
 
+            //If letters[j] is a space object and past the margin print space and jump to next line
             if(this.letters[j].getLetter() === " " && this.currentX >= this.startX + this.boxWidth + this.slack)
             {
                 this.letters[j].lprint(this.currentX,this.currentY);
                 this.currentX = this.startX;
                 this.currentY += 20;
             }
+
+            //Else just print character as is at current location
+            //Add size of a char to currentX
             else if(j < this.length)
             {
                 this.letters[j].lprint(this.currentX,this.currentY);
