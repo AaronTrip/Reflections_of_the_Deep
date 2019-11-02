@@ -223,6 +223,7 @@ The key is a simple brass key labelled as a key to the cars of the upper class p
 
 ROOM [old_man_reg] {
 Opening the door, you step into the room. Although it is twice the size of yours, it is much more cramped. Boxes large and small cover the floor, and there is no sign of the room's occupant. Papers yellowed with age and wires long bent out of shape peek out from under their lids. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality.
+^++old_man_reg^
 }
 ROOM [old_man_reg] &old_man_reg& {
 The large room is cramped with boxes. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality. The door to the hallway sits closed, #north# of you. 
@@ -298,6 +299,7 @@ It feels like an eternity, you stand there not even daring to breathe. But soon 
 |DELAY 2000|
 <sounds/BGM/mirrorAmb.mp3>
 Taking a deep breath, you examine your surroundings. The room is a mirror image of the other, but what catches your attention is the light emanating from the #desk#. It's the #lantern#, it's glowing...
+^++old_man_mirror^
 }
 ROOM [old_man_mirror] &old_man_mirror& {
 The room is a mirror image of the other. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Behind you stands the #mirror# you passed through.
@@ -356,12 +358,13 @@ The strange lantern is currently turned OFF.
 
 ROOM [sleeper_car_east] {
 Moving down the car, the rest of the doors you try are locked. At the end of the hallway, the door to the storage car lies #east# of you.
+^++sleeper_car_east^
 }
 
 ROOM [sleeper_car_east] &sleeper_car_east& {
 At the end of the hallway, the door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 }
-ROOM [sleeper_car_east] %nogo_east% {
+ROOM [sleeper_car_east] &sleeper_car_east& %nogo_east% {
 Stepping into the hallway of the sleeper car, you can see that all the power has turned on here as well. The door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 ^---nogo_east^
 }
@@ -382,6 +385,7 @@ GO [east] &sleeper_car_east& %good% {
 
 ROOM [storage_car] %bad% {
 Taking a deep breath, you gather your courage and step through the doorway. Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
+^++storage_car^
 }
 ROOM [storage_car] &storage_car& %bad% {
 Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
@@ -407,6 +411,7 @@ ROOM [storage_car] %good% {
 The electricity flickers on and overhead lights bathe the world around you in a comforting glow. As the darkness retreats you feel the lantern in your hand getting lighter and, looking down at it, you watch it disappear like a distant memory. 
 
 When the power came on, you could hear the clunk of the dining car door unsealing. Looking around, you can now clearly see the various boxes and trunks in the storage car, and to the #west# lies the door to the sleeper car. 
+^++storage_car^
 ^-lantern_on^
 }
 ROOM [storage_car] %good% &storage_car& {
