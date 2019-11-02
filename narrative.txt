@@ -187,7 +187,7 @@ GO [west] &sleeper_car_middle& {
 
 ROOM [lover_boi] {
 You enter a room almost identical to your own and the bed looks as though someone had just been sleeping in it. You wonder where they are at this hour, perhaps gone to the dining car. The only other evidence of the room's occupant is a #book# lying on the desk and a pair of #shoes# beside the bed.
-^++lover_boi^^
+^++lover_boi^
 }
 ROOM [lover_boi] &lover_boi& {
 You enter a room almost identical to yours and void of any possessions except a #book# on the desk and a pair of #shoes# discarded beside the bed. 
@@ -310,7 +310,7 @@ The article attached to the paper reads, "Train Companies Deny any Wrongdoing". 
 EXAMINE [lantern] &old_man_mirror& {
 The strange lantern looks as it did before, except now it casts a warm glow across the room. Picking it up you look at the wires coming out of it, none of them are attached and you can't figure out how it is being powered.
 } 
-TAKE [paper] &old_man_mirror {
+TAKE [paper] &old_man_mirror& {
 The paper is clearly part of a larger project and, being unable to read much of it, you decide to leave it where it is. 
 }
 TAKE [lantern] &old_man_mirror& {
