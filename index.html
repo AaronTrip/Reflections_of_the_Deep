@@ -26,7 +26,8 @@
        var paragraph;
        
        function preload() {
-           inconsolata = loadFont('./PatrickHand-Regular.ttf');
+           inconsolata = loadFont('./Courier_Prime/Courier-Prime.ttf');
+           fontBold = loadFont('./Courier_Prime/Courier-Prime-Bold.ttf')
            //inconsolata = loadFont('./LemonMilk.otf');
        }
        function setup() {
@@ -39,24 +40,15 @@
            textFont(inconsolata);
            textSize(text_size);
            textAlign(LEFT, CENTER);
-           test1 = new printClass(paragraph1);
+           test1 = new printClass(paragraph1,-400,-250,800);
            shell = new Shell(width, height, text_font, text_size);
        }
        function draw() {
            // Main game loop
            background(0);
            let time = Math.floor(millis());
-           //test1.oprint();
+           test1.oprint();
            shell.draw();
-
-           
-           text(printString, -400, -250, 800);
-           if(stringPointer < paragraph1.length && drawCounter++ > 2)
-           {
-                drawCounter = 0;
-               printString += paragraph1[stringPointer++];
-           }
-           
        }
 
        function keyTyped() {
