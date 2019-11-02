@@ -8,6 +8,7 @@ class Shell
         this.font = font;
         this.text_size = text_size;
         this.command_ready = false;
+        this.continue = false;
     }
 
     // Grabs character when a key is pressed
@@ -21,7 +22,7 @@ class Shell
         {
             switch(keyCode)
             {
-                case BACKSPACE: case DELETE:  // Backspace
+                case BACKSPACE:  // Backspace
                 if(this.shell_line.length > 2)
                     this.shell_line = this.shell_line.slice(0, this.shell_line.length - 1);
                 break;
@@ -29,6 +30,11 @@ class Shell
                 case RETURN: // Newline
                 console.log("Enter pressed");
                 this.command_ready = true;
+                break;
+
+                case DELETE:
+                this.continue = true; 
+                console.log("RIGHT");
                 break;
 
                 default:
@@ -45,7 +51,7 @@ class Shell
 
     getCommand()
     {
-        return this.shell_line.slice(2, this.shell_line.length - 1).toLowerCase().split(' ');
+        return this.shell_line.slice(2, this.shell_line.length).toLowerCase().split(' ');
     }
 
     // Draws the line

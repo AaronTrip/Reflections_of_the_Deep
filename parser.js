@@ -60,10 +60,14 @@ class Segments
         {
             console.log(segments[i]);
             console.log(player_inventory);
+            console.log(local_inventory);
             if((segments[i].conditions[0] === [] || player_inventory.has(segments[i].conditions[0])) &&
                (segments[i].conditions[1] === [] || local_inventory.has(segments[i].conditions[1])) &&
                (segments[i].conditions[2] === [] || global_inventory.has(segments[i].conditions[2])))
+            {
+                console.log(segments[i]);
                 return segments[i];
+            }
         }
 
         console.warn("Could not find the segment " + type + " [" + name + "]");
@@ -131,6 +135,8 @@ class Room
 
                     case "++":
                     this.inventory.add(this.run_dialogue[this.run_index][2]);
+                    console.log("GOOD");
+                    console.log(this.inventory);
                     break;
 
                     case "+++":
@@ -171,12 +177,21 @@ class Room
                 // Skipping
                 ++this.run_index;
                 console.log("Need to add bg music");
-
+            } else if (this.run_dialogue[this.run_index][0].string == "[[")
+            {
+                var tmp = this.run_dialogue[this.run_index][1].string;
+                console.log("Moving to new state");
+                ++this.run_index;
+                return tmp;
             } else
             {
                 console.log("Damnit");
                 console.log(this.run_dialogue[this.run_index]);
             }
+        } else
+        {
+            console.log("Too Long");
+            
         }
     }
 
@@ -678,6 +693,48 @@ class Parser
             }
             console.log(out);
             break;
+
+            case "USE":
+            var out = this.rooms.current_room.getSegment("USE", name, this.player_inventory, this.global_inventory);
+            break;
+
+            case "TALK":
+            var out = this.rooms.current_room.getSegment("TALK", name, this.player_inventory, this.global_inventory);
+            break;
+
+            case "GO":
+            var out = this.rooms.current_room.getSegment("GO", name, this.player_inventory, this.global_inventory);
+            console.log(out);
+            if(out)
+                this.rooms.current_room = this.rooms.getRoom(out, this.player_inventory, this.global_inventory);
+            break;
+
+            case "TAKE":
+            var out = this.rooms.current_room.getSegment("TAKE", name, this.player_inventory, this.global_inventory);
+            break;
+
+            case "HELP":
+            var out = this.rooms.current_room.getSegment("HELP", name, this.player_inventory, this.global_inventorye);
+            break;
+
+            case "INVENTORY":
+            var out = this.rooms.current_room.getSegment("INVENTORY", name, this.player_inventory, this.global_inventorye);
+            break;
+
+            case "YES":
+            var out = this.rooms.current_room.getSegment("YES", name, this.player_inventory, this.global_inventory);
+            if(out)
+                this.rooms.current_room = this.rooms.getRoom(out, this.player_inventory, this.global_inventory);
+            break;
+
+            case "NO":
+            var out = this.rooms.current_room.getSegment("NO", name, this.player_inventory, this.global_inventory);
+            if(out)
+                this.rooms.current_room = this.rooms.getRoom(out, this.player_inventory, this.global_inventory);
+            break;
+
+            default:
+
         }
     }
 }

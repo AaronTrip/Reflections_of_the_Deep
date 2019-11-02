@@ -63,8 +63,8 @@
            console.log("Running Room");
            parser.rooms.current_room.run(player_inventory, global_inventory);
            console.log("Done running room");
-           parser.rooms.current_room.next(player_inventory, global_inventory);
-           parser.rooms.current_room.next(player_inventory, global_inventory);
+           //parser.rooms.current_room.next(player_inventory, global_inventory);
+           //parser.rooms.current_room.next(player_inventory, global_inventory);
            //loadSound("sounds/SFX/lanternUse.mp3", audioCallback);
            shell = new Shell(width, height, text_font, text_size);
        }
@@ -82,6 +82,11 @@
              console.log("GOODBYE");
            }
            shell.draw();
+           if(shell.continue)
+           {
+              parser.rooms.current_room.next();
+               shell.continue = false;
+           }
        }
 
        function keyTyped() {
@@ -98,12 +103,13 @@
        function executeCommand()
        {
            var command = shell.getCommand();
-           var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory"];
-           var short_command_list = ["e", "u", "l", "g", "t", "h"];
+           shell.shell_line = "> ";
+           var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory", "yes", "no"];
+           var short_command_list = ["e", "u", "l", "g", "t", "h", "y", "n"];
            
-           var index = command_list.find(command[0]);
+           var index = command_list.indexOf(command[0]);
            if(index === undefined)
-               index = short_command_list.find(commandi[0]);
+               index = short_command_list.indexOf(commandi[0]);
            if(index === undefined)
            {
                // TODO: error
@@ -112,31 +118,39 @@
            switch(index)
            {
                case 0:  // Examine
-               parser.query("EXAMINE", "woman");
+               parser.query("EXAMINE", command[1]);
                break;
 
                case 1:  // Use
-               
+               parser.query("USE", command[1]);
                break;
 
                case 2:  // Talk
-               
+               parser.query("TALK", command[2]);
                break;
 
                case 3:  // Go
-               
+               parser.query("GO", command[1]);
                break;
 
                case 4:  // Take
-               
+               parser.query("TAKE", command[1]);
                break;
 
                case 5:  // Help
-
+               parser.query("HELP", "help");
                break;
 
                case 6:  // Inventory
-               
+               parser.query("INVENTORY", "inventory");
+               break;
+
+               case 7:  // Yes
+               parser.query("YES", "yes");
+               break;
+
+               case 8:  // No
+               parser.query("NO", "no");
                break;
 
                default:

@@ -7,26 +7,30 @@ class Inventory
 
     add(item)
     {
-        this.items.add(item);
+        this.items.add(item.string);
     }
 
     remove(item)
     {
-        this.items.delete(item);
+        this.items.delete(item.string);
     }
 
     has(item)
     {
-        if(item === [])
+        console.log("Inventory:has");
+        console.log(item);
+        console.log(this.items);
+        if(!item)
             return true;
         if(Array.isArray(item))
         {
             for(var i = 0; i < item.length; ++i)
-                if(!this.items.has(item[i]))
+                if(!(this.items.has(item[i])))
                     return false;
             return true;
         } else
         {
+            console.log(item);
             return this.items.has(item);
         }
     }
