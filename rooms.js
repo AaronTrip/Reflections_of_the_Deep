@@ -30,7 +30,6 @@ class Rooms
         var checker = 0;
         for(lower_bound = 0; lower_bound <= this.txt.length; ++lower_bound)
         {
-
             // Check for EOF
             if(!this.txt[lower_bound])
                 continue;

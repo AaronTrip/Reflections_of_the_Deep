@@ -34,9 +34,11 @@
        var txt_brk = false;
        var paragraph1 = '“Would you like another #glass# of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply:';
        var drawCounter = 0;
+       var paragraph;
+       
        function preload() {
-           inconsolata = loadFont('./PatrickHand-Regular.ttf');
-           txt = loadStrings("narrative.txt");
+           inconsolata = loadFont('./Courier_Prime/Courier-Prime.ttf');
+           fontBold = loadFont('./Courier_Prime/Courier-Prime-Bold.ttf')
            //inconsolata = loadFont('./LemonMilk.otf');
        }
        function setup() {
@@ -123,7 +125,7 @@
            textFont(inconsolata);
            textSize(text_size);
            textAlign(LEFT, CENTER);
-           test1 = new printClass(paragraph1);
+           test1 = new printClass(paragraph1,-400,-250,800);
            shell = new Shell(width, height, text_font, text_size);
        }
 
@@ -131,22 +133,69 @@
            // Main game loop
            background(0);
            let time = Math.floor(millis());
-           //test1.oprint();
+           test1.oprint();
            shell.draw();
-           text(printString, -400, -250, 800);
-           if(stringPointer < paragraph1.length && drawCounter++ > 2)
-           {
-                drawCounter = 0;
-                printString += paragraph1[stringPointer++];
-           }
-           
        }
 
        function keyTyped() {
            shell.keyTyped();
+           if(shell.commandReady())
+               executeCommand();
            printString = paragraph1;
            stringPointer = paragraph1.length;
        }
+
+       function executeCommand()
+       {
+           var command = shell.getCommand();
+           var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory"];
+           var short_command_list = ["e", "u", "l", "g", "t", "h"];
+           
+           var index = command_list.find(command[0]);
+           if(index === undefined)
+               index = short_command_list.find(commandi[0]);
+           if(index === undefined)
+           {
+               // TODO: error
+           }
+
+           switch(index)
+           {
+               case 0:  // Examine
+               
+               break;
+
+               case 1:  // Use
+               
+               break;
+
+               case 2:  // Talk
+               
+               break;
+
+               case 3:  // Go
+               
+               break;
+
+               case 4:  // Take
+               
+               break;
+
+               case 5:  // Help
+
+               break;
+
+               case 6:  // Inventory
+               
+               break;
+
+               default:
+               // TODO
+           }
+
+
+       }
+
       </script>
   </body>
 </html>

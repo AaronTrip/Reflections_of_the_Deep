@@ -1,50 +1,85 @@
 class printClass{
-    //Output is string being updated and printed
-    //fullString is end string to be printed
-    //stringPointer is used to update how much string to be printed
-    //counter affects string print speed
-   constructor(string){
+   constructor(string,x,y,bwidth){
+       //String input related
+       //stringPointer and length are used to create array of letter objects and run through them
+       //Counter is currently unused
+       //Colour stores a color string to be used for a letter
        this.fullString = string;
        this.stringPointer = 0;
        this.counter = 0;
        this.color = '';
+       this.length = 0;
+
+       //Cases for deciding if a letter is regular, bold, italics or coloured
        this.case = 0;
        this.bold = false;
        this.italics = false;
        this.colorTest = false;
-       this.size = width/70;
-       this.length = 0;
-       this.currentX = -400;
-       this.currentY = -250;
 
+       //Output area
+       //startX and Y are where the stirng should start printing
+       //currentX and currentY are where the string currently is printing
+       //boxWidth is how far accross they can print
+       //size is text size
+       //slack is how much over the width chars are allowed to print for printing strings
+       this.size = width/70;
+       this.startX = x;
+       this.startY = y;
+       this.currentX = x;
+       this.currentY = y;
+       this.boxWidth = bwidth;
+       this.slack = 0;
+
+       //lettes is an array of letter objects to be printed
        this.letters = [];
+
+       //Run through the entire length of the recieved string
+       //Add each string character to its own letter object and append to letters
        for(var i = 0;i < this.fullString.length; i++){
+
+            //Bold case check
+            //call boldSet to check case
+            //Increase charcter we are pointing to avoid adding # to printing list
             if(this.fullString[this.stringPointer] === '#'){
                 this.boldSet();
                 this.stringPointer++;
             }
+            
+            //Same as above except for italics case
             else if(this.fullString[this.stringPointer] === '~'){
                 this.italSet();
                 this.stringPointer++;
             }
+
+            //Colour case goes here but not needed yet
             
+            //Append letter to letters array
+            //Increase stringPointer
+            //Increase length
+            //Length is used so that we know the actual array length since we dont add some characters ie #, ~
             this.letters[i] = new letter(this.fullString[this.stringPointer],'#ffffff',this.case);
             this.stringPointer++;
             this.length++;
 
+            //
             if(this.stringPointer == this.fullString.length){
                 break;
             }
        }
+       //Reset string pointer to use again later if necessary
        this.stringPointer = 0;
     }
 
     //class print function loops, loops once it hits edges
-    //For test cases can read and implement breaks
-    //Will update with reading of color, bold and italics soon
+    //goes through letters array and calls each objects print
+    //Currently considers each functions bold and italics case
    oprint(){
-       this.currentX = -400;
-       this.currentY = -250;
+       //Resets print location for call so we consistently print in the right place
+       this.currentX = this.startX;
+       this.currentY = this.startY;
+
+       //Old code, used for printing chars one at a time on screen
+       //May work?, not well if it does
        /*
         if(this.stringPointer < this.fullString.length && this.counter++ > 2){
             this.counter = 0;
@@ -75,18 +110,27 @@ class printClass{
         }
         */
 
-        
-        var j, k;
-        for(j = 0; j < this.length; j++){
-            if(this.currentX + (this.size) > 400){
-                if(j+1 < this.length && this.letters[j+1].getLetter() !== " "){
-                    text('-',this.currentX, this.currentY,800);
-                }
-                this.currentX = -400;
-                this.currentY += 25;
+        //Loops through all objects in letters and calls its print function
+        var j;
+        for(j = 0; j < this.length; j++)
+        {
+
+            //If letters[j] is a space object and past the margin print space and jump to next line
+            if(this.letters[j].getLetter() === " " && this.currentX >= this.startX + this.boxWidth + this.slack)
+            {
+                this.letters[j].lprint(this.currentX,this.currentY);
+                this.currentX = this.startX;
+                this.currentY += 20;
             }
-            this.letters[j].lprint(this.currentX,this.currentY);
-            this.currentX += this.size;
+
+            //Else just print character as is at current location
+            //Add size of a char to currentX
+            else if(j < this.length)
+            {
+                this.letters[j].lprint(this.currentX,this.currentY);
+                this.currentX += this.size;
+            }
+
         }
         
     }
@@ -135,10 +179,10 @@ class letter{
 
     lprint(x,y){
         if(this.typing == 0){
-            textStyle(NORMAL);
+            textFont(inconsolata);
         }
         else if(this.typing == 1){
-            textStyle(BOLD);
+            textFont(fontBold);
         }
         else{
             textStyle(ITALIC);
