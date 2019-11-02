@@ -10,112 +10,37 @@
     <script src="p5.sound.js"></script>
     <script src="sketch.js"></script>
     <script src="printClass.js"></script>
+    <script src="inventory.js"></script>
     <script src="shell.js"></script>
+    <script src="parser.js"></script>
   </head>
   <body>
-      <div id="p5_loading" class="loadingclass">this could be some sweet graphics loading lots of bits.</div>
+      
       <script>
-      //DELAY left to implement
-       var visible_inventory = new Set();
-       var invisible_inventory = new Set();
-       var shell  // Handles user input
-       let inconsolata;
+      var narrative;
+       var player_inventory;
+       var global_inventory;
+       var inconsolata;
+       var fontBold;
        var printString = "";
        var stringPointer = 0;
-       var x = 0;
-       var x1 = 1;
-       var ROOM = ''
-       var SOUND = ''
-       var SFX = ''
-       var check_inventory = '';
-       var check_state = '';
-       var check_inventory_add = '';
-       var check_state2 = '';
        var txt_brk = false;
-       var paragraph1 = '“Would you like another #glass# of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply:';
-       var drawCounter = 0;
-       var paragraph;
-       
-       function preload() {
+       var parser;
+       var shell;
+       //var sound;
+       function preload()
+       {
            inconsolata = loadFont('./Courier_Prime/Courier-Prime.ttf');
            fontBold = loadFont('./Courier_Prime/Courier-Prime-Bold.ttf')
-           //inconsolata = loadFont('./LemonMilk.otf');
+
+           console.log("Loading narrative file");
+           narrative = loadStrings("./narrative.txt");
+           console.log("Narrative file loaded");
+           //sound = loadSound("sounds/SFX/lanternUse.mp3");
        }
-       function setup() {
-          console.log(txt);
-           // for(x = 0; x <= txt.length; x ++){
-           //  SOUND = '' 
-           //  ROOM = ''
-           //  SFX = ''
-           //  check_inventory = '';
-           //  check_state = '';
-           //  check_inventory_add = '';
-           //  check_state2 = '';
-           //  txt_brk = false;
 
-           //  var new_str = txt[x].split(' ');
-           //  if(new_str[0] == 'ROOM'){
-           //    ROOM = new_str[1];
-           //  }
-           //  if (new_str[0][0] == '<'){
-           //    for(x1 = 1; x1 < new_str[0].length; x1 ++ ){
-           //      SOUND += new_str[x][x1];
-           //    }
-           //  }
-           //  if (new_str[0][0] == '*'){
-           //    var x2 = 1;
-           //    for(x2 = 1; x2 < new_str[0].length; x2 ++){
-           //      SFX += new_str[x][x2];
-           //    }}
-           //  if(new_str[0][0] == '^' && (new_str[0][1] == '+' || new_str[0][1] == '-') && (new_str[0][2] == '+' || new_str[0][2] == '-')){
-           //        var x3 = 3;
-           //        for(x3 = 3;x3 < new_str[0].length - 1; x3 ++){
-           //          check_inventory += new_str[0][x3];
-           //        }
-           //        check_state += new_str[0][1];
-           //        check_state += new_str[0][2];
-           //  } 
-           //  else if (new_str[0][0] == '^' && (new_str[0][1] == '+' || new_str[0][1] == '-')){
-           //    var x4 = 2;
-           //    for( x4 = 2; x4 < new_str[0].length - 1; x4 ++){
-           //       check_inventory_add += new_str[0][x4] ;
-           //    }
-           //    check_state2 += new_str[0][1];
-           //  }
-           //  if (new_str[0] == '|BREAK|'){
-           //    txt_brk = true;
-           //  }
-          //   // FOR INPUT
-          //   if (input == 'YES'){
-          //     var new_str1 = '';
-          //     var new_str2 = '';
-          //     new_str1 = txt[x + 1].split(' ');
-          //     new_str2 = txt[x + 2].split(' ');
-          //     print(new_str2)
-          //   }
-          //   else if input == 'NO'{
-          //     var new_str1 = '';
-          //     var new_str2 = '';
-          //     new_str1 = txt[x + 3].split(' ');
-          //     new_str2 = txt[x + 4].split(' ');
-          //     print(new_str2)
-          //   }
-          // }
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
+       function setup()
+       {
            let width = 1000;
            let height = 600;
            let text_size = width / 40;
@@ -125,7 +50,22 @@
            textFont(inconsolata);
            textSize(text_size);
            textAlign(LEFT, CENTER);
-           test1 = new printClass(paragraph1,-400,-250,800);
+
+           narrative = narrative.join(" ");
+           player_inventory = new Inventory();
+           global_inventory = new Inventory();
+           parser = new Parser(narrative, player_inventory, global_inventory);
+           parser.tokenize();
+           parser.printTokens();
+
+           // Set the starting room
+           parser.rooms.current_room = parser.rooms.getRoom("init", player_inventory, global_inventory);
+           console.log("Running Room");
+           parser.rooms.current_room.run(player_inventory, global_inventory);
+           console.log("Done running room");
+           parser.rooms.current_room.next(player_inventory, global_inventory);
+           parser.rooms.current_room.next(player_inventory, global_inventory);
+           //loadSound("sounds/SFX/lanternUse.mp3", audioCallback);
            shell = new Shell(width, height, text_font, text_size);
        }
 
@@ -133,7 +73,14 @@
            // Main game loop
            background(0);
            let time = Math.floor(millis());
-           test1.oprint();
+           if(parser !== undefined)
+               {
+           parser.rooms.current_room.draw();
+               }
+           else
+           {
+             console.log("GOODBYE");
+           }
            shell.draw();
        }
 
@@ -141,8 +88,11 @@
            shell.keyTyped();
            if(shell.commandReady())
                executeCommand();
-           printString = paragraph1;
-           stringPointer = paragraph1.length;
+       }
+
+       function audioCallback(sound)
+       {
+            sound.play()
        }
 
        function executeCommand()
@@ -162,7 +112,7 @@
            switch(index)
            {
                case 0:  // Examine
-               
+               parser.query("EXAMINE", "woman");
                break;
 
                case 1:  // Use
@@ -195,6 +145,8 @@
 
 
        }
+
+
 
       </script>
   </body>
