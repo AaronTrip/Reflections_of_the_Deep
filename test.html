@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5.js example</title>
+    <style> body {padding: 0; margin: 0;} </style>
+    <script src="p5.js"></script>
+    <script src="p5.dom.js"></script>
+    <script src="p5.sound.js"></script>
+    <script src="sketch.js"></script>
+    <script src="printClass.js"></script>
+    <script src="shell.js"></script>
+    <script src="inventory.js"></script>
+    <script src="rooms.js"></script>
+    <script src="mainparser.js"></script>
+  </head>
+  <body>
+      
+      <script>
+      var narrative;
+      function preload() {
+        console.log("Loading narrative file");
+        narrative = loadStrings("./narrative.txt");
+        console.log("Narrative file loaded");
+      }
+
+      function setup() {
+        //loadStrings("narrative.txt", narrative);
+        console.log("Executing main parser 0");
+        var new_inv = new Inventory();
+        var rooms = new Rooms(narrative);
+        console.log("Executing main parser 1");
+        var data = rooms.parse();
+        var mainparser = new MainParser(rooms.getRoom("init"), rooms.getInventory("init"));
+        console.log("Executing main parser 2");
+        var next = mainparser.EXAMINE("room");
+        console.log(data);
+      }
+      </script>
+  </body>
+</html>
