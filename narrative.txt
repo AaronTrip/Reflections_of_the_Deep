@@ -1,393 +1,418 @@
-ROOM [init]: {
+ROOM [init] {
 ^+++good^
 <introAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
 } 
 
-YES &init&: {
+YES &init& {
 You nod your head and give him a weak smile. He reaches over and, plucking your glass from the table, says “You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” He sets down your now full glass in front of you and with a smile departs, exiting through the West door labeled "Staff Only".
-*glassFilled.wav*
+*glassFilled.mp3*
+^++full_glass^
 |BREAK|
-Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your glass, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman# whose only companion is an untouched cup of tea. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
+Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
 } 
-NO &init&: {
+NO &init& {
 You shake your head and he smiles politely at you saying, “Let me know if you change your mind. You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” With a smile he departs, exiting through the West door labeled "Staff Only".
 |BREAK|
-Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your glass, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman# whose only companion is an untouched cup of tea. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
+Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
 }
 
-EXAMINE [room] &init&: {
+EXAMINE [glass] {
+Looking at the glass, your nausea takes over again. You wish it was full.
+	}
+EXAMINE [glass] &full_glass& {
+In the glass before you, the water's surface ripples with the movement of the train. The slow and steady swaying reminding you of how far you are from home.
+}
+USE [glass] {
+You twirl the empty glass on the table.
+}
+USE [glass] &full_glass& {
+You pick up the glass and drink the water, the coolness of it diminishing your nausea. 
+^--full_glass^
+}
+Take [glass] {
+Although the glass is nice, you don't see a reason you need to take it with you. 
+}
+
+EXAMINE [room] &init& {
 The dining car is well lit with warm electric lighting that reflects off the polished wood tables and chairs. To one side is a couple of armchairs and a settee with a low table where one might chat or play a hand of cards. Further down lies the bar; closed at this late hour. The rest of the room is filled with dining tables, only two of which are occupied; one by an older #man# and another by a young #woman#. To the #East# is a door leading to the passenger sleeping quarters.
 }
-EXAMINE [poster] &init&: {
-The poster announces in large black letters, “Welcome Aboard the Transatlantic Subwater Rail! The safest way to cross the depths of the ocean!”
+EXAMINE [poster] &init& {
+The poster announces in large black letters, “Welcome Aboard the Transatlantic Suboceanic Rail! The safest way to cross the depths of the ocean.”
 }
-EXAMINE [man] &init&: {
+EXAMINE [man] &init& {
 The older man sits hunched over his table, engrossed in his writing. Looking closer, you can see that his once respectable suit now shows signs of considerable wear with patches haphazardly sewn on and stains decorating the surface. As he writes, he mutters under his breath and, although he pauses to drink his coffee, his eyes never stray from the pages in front of him.
 }
-TALK [man] &init&: {
+TALK [man] &init& {
 Approaching the man, you begin to speak but he stops you waving his hands and saying, “No, no, no, I can’t be bothered right now, I’ve almost solved it.”
 }
-EXAMINE [woman] &init&: {
+EXAMINE [woman] &init& {
 The young woman sits alone at a table, an untouched cup of tea next to her. She’s wearing a pale blue dress of fine quality and you can see that she has soft hands, the kind that have never seen a hard day of labour. She stares vacantly at the room, her mind seemingly far away.
 }
-TALK [woman] &init&: {
+TALK [woman] &init& {
 You approach the young woman and greet her. She turns to you but her expression remains distant. 
 
 “Can you feel it? Something is coming, something...dark.”
 
 Shifting her gaze back to the room, she goes silent once more, lost in her own thoughts. 
 }
-GO [east] &init&: {
+GO [east] &init& {
 You leave the dining room heading East into the hallway of the sleeper car and then into your own room. 
 [[ROOM(your_room)]] 
 }
-GO [west] &init&: {
+GO [west] &init& {
 You cannot go into the kitchen, only the staff are permitted there. 
 }
 
-ROOM [your_room] %good%: {
-<audio.wav>
-Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk upon which sits your journal, and on the wall hangs a tall #mirror#.
+ROOM [your_room] %good% {
+<basicAmb.mp3>
+Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 ^++your_room^
 }
-ROOM [your_room] &your_room& %good% %nogo_your_room%: {
+ROOM [your_room] &your_room& %good% %nogo_your_room% {
 Your room looks as it did before this whole nightmare began. Pushed against the wall is your #bed#, across from it is a small desk, and on the wall hangs a tall #mirror#.
 ^---nogo_your_room^
 }
-ROOM [your_room] &your_room& %good%: {
-Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk upon which sits your journal, and on the wall hangs a tall #mirror#.
+ROOM [your_room] &your_room& %good% {
+Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 }
-EXAMINE [room] &your_room& %good%: {
-Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk upon which sits your journal, and on the wall hangs a tall #mirror#.
+EXAMINE [room] &your_room& %good% {
+Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 }
-EXAMINE [bed] &your_room& %good%: {
+EXAMINE [bed] &your_room& %good% {
 The bed is neatly made with the sheets and blanket tucked in at each corner. Although simple, it has a comfortable quality that can’t be found in a new bed.  
 }
-USE [bed] &your_room& %good%: {
+USE [bed] &your_room& %good% {
 You take the waiter’s advice and decide to lay down for a bit now that your stomach is feeling more settled. Taking your shoes off, you lay down on your bed, planning to only close your eyes for a minute. Soon though, you feel the pull of sleep and drift off.
 |BREAK|
-<audio.wav>
+<basicAmb.mp3>
 ^---good^
 ^+++bad^
 ^--your_room^
 [[ROOM(your_room)]
 }
-EXAMINE [mirror] &your_room& %good%: {
+EXAMINE [mirror] &your_room& %good% {
 The mirror is simply adorned, but it’s height and level surface allow you to examine your outfit from head to toe when you desire. 
 }
-USE [mirror] &your_room& %good%: {
+USE [mirror] &your_room& %good% {
 Looking in the mirror, your reflection stares back at you with tired eyes.
 }
 
-ROOM [your_room] %bad%: {
+ROOM [your_room] %bad% {
 You're drifting in the darkness. Fragments of your thoughts gently swirl around you, mixing and separating with no rhyme or reason. You feel a weight on your chest beginning to pull you down. Everything begins to swirl faster and faster until it is an indistinguishable blur. You are falling...
 |BREAK|
-*nightmare.wav*
+*nightmare.mp3*
 |DELAY 24000|
 With a start, you wake. You open your bleary eyes and blink up at the ceiling, your mind still groggy. As the fogginess of sleep fades, you notice the room is darker than it should be. The emergency lighting is on. 
 
-Unease knots your stomach and getting up quickly, you put on your shoes and slip your journal into your pocket. Standing there you look around trying to figure out what it was that awoke you, and then it hits you. It's silent, the train is not moving.  
+Unease knots your stomach and getting up quickly, you slip on your shoes. Standing there you look around trying to figure out what it was that awoke you, and then it hits you. It's silent, the train is not moving.  
 |BREAK|
 Something else seems out of place and you trust your instincts when they tell you that there is more going on here than just a mechanical failure.
 ^++your_room^
 }
-EXAMINE [room] &your_room& %bad%: {
+EXAMINE [room] &your_room& %bad% {
 In the dim lighting you can see your desk to one side and your #bed# across from it. Hanging on the wall is your full length #mirror#.  
 }
-EXAMINE [mirror] &your_room& %bad% : {
+EXAMINE [mirror] &your_room& %bad% {
 You walk to the mirror and as you near it, you notice something wrong. Initially, you disregarded the darkness of it's reflection because of the dim lighting but as you stare at it you can barely make out anything. It takes a moment but then you realize the mirror shows everything but your own reflection. 
 |BREAK|
 Without thinking, you reach out your hand to touch its surface. Your hand doesn't rest on the surface like you expected, rather it begins to pass through it. Shock and wonder fill your mind until something grabs you and pulls you through.
 |BREAK| 
-*mirrorEnter.wav*
+*mirrorEnter.mp3*
 |DELAY 7000|
 <mirrorAmb1.mp3>
 You've fallen to your knees and as the darkness recedes from your vision and you can see that you are in your room...and yet you are not. The desk and bed are on opposite sides, and what looks like tar covers the ceiling and bleeds down the walls. Behind you is the mirror and through it you see your real room, it's dim emergency lighting just barely illuminating your surroundings. Returning your attention to the inky black liquid, you see that it has now reached the floor and is oozing towards you. 
 |BREAK|
 As it gets closer, you back away step by step not taking your eyes off it. The light begins to fade and, glancing behind, you see that the liquid has begun to cover the mirror. In a split second, you make your decision and lunge through mirror, barely avoiding the reaching tendrils of darkness. 
 |BREAK| 
-*mirrorExit.wav*
-*hallwayChase.wav*
+*mirrorExit.mp3*
+*hallwayChase.mp3*
 |DELAY 20000|
 [[ROOM(sleeper_car_west)]]
 }
-EXAMINE [bed] &your_room& %bad%: {
+EXAMINE [bed] &your_room& %bad% {
 The bed is rumpled from your sleep. The blanket bunched and twisted from your movements and the pillow indented from where your head rested. 
 }
-USE [bed] &your_room& %bad%: {
+USE [bed] &your_room& %bad% {
 The unease you feel makes the prospect of sleep impossible. 
 }
 
-ROOM [sleeper_car_west] %bad%: {
-As you catch your breath, you look around. You're in the hallway of the sleeper car and, like your room, it is bathed in emergency lighting. To the #west# is the door leading to the dining room. #North#, across the hall from your room, is the sleeping quarters of a young man you've seen in passing. And to the #east# stretches the rest of the sleeper car. 
+ROOM [sleeper_car_west] %bad% {
+As you catch your breath, you look around. You're in the hallway of the sleeper car and, like your room, it is bathed in emergency lighting. Maybe one of the staff or another passenger knows what is going on, but there is no sign of anyone else. To the #west# is the door leading to the dining room. #North#, across the hall from your room, is the sleeping quarters of a young man you've seen in passing. And to the #east# stretches the rest of the sleeper car. 
 ^++sleeper_car_west^
 }
-ROOM [sleeper_car_west] &sleeper_car_west& %bad%: {
+ROOM [sleeper_car_west] &sleeper_car_west& %bad% {
 You are on the far west end of the sleeper car. To the #west# is the door to the dining room, and to the #north# are the sleeping quarters of another passenger, a young man. To the #east# stretches the rest of the sleeper car. 
 }
-ROOM [sleeper_car_west] &sleeper_car_west& %good%: {
+ROOM [sleeper_car_west] &sleeper_car_west& %good% {
 You are on the far west end of the sleeper car. To the #west# is the door to the dining room, and to the #north# are the sleeping quarters of another passenger, a young man. Your own room is through the door to your south, and to the #east# stretches the rest of the sleeper car.
 }
-GO [north] &sleeper_car_west&: {
+GO [north] &sleeper_car_west& {
 [[ROOM(lover_boi)]]
 }
-GO [south] &sleeper_car_west& %bad%: {
+GO [south] &sleeper_car_west& %bad% {
 Staring at the door to your room you can't bring yourself to enter it, the fear of what could be waiting on the other side stops you. 
 }
-Go [south] &sleeper_car_west& %good%: {
+Go [south] &sleeper_car_west& %good% {
 	[[ROOM(your_room)]]
 }
-GO [east] &sleeper_car_west&: {
+GO [east] &sleeper_car_west& {
 [[ROOM(sleeper_car_middle)]]
 }
-GO [west] &sleeper_car_west& %bad%: {
-The door doesn't budge when you tug on it. A sign on it reads, "In case of emergency this door will seal until power is restored."
+GO [west] &sleeper_car_west& %bad% {
+The door doesn't budge when you tug on it. A sign on it reads, "In case of emergency this door will seal until power is restored." You bang on the door hoping someone on the other side will hear you, but there is no response. 
 }
-GO [west] &sleeper_car_west& %good%: {
+GO [west] &sleeper_car_west& %good% {
 [[ROOM(dining_car)]]
 }
 
-ROOM [sleeper_car_middle]: {
+ROOM [sleeper_car_middle] {
 You are midway down the car. There is only one door #south# of you leading to another passenger's quarters.
 ^++sleeper_car_middle^
 }
-ROOM [sleeper_car_middle] &sleeper_car_middle&: {
+ROOM [sleeper_car_middle] &sleeper_car_middle& {
 You are midway down the car. There is only one door #south# of you leading to another passenger's quarters.
 }
-GO [south] &sleeper_car_middle&: {
+GO [south] &sleeper_car_middle& {
 [[ROOM(old_man_reg)]]
 }
-GO [east] &sleeper_car_middle&: {
+GO [east] &sleeper_car_middle& {
 [[ROOM(sleeper_car_east)]]
 }
-GO [west] &sleeper_car_middle&: {
+GO [west] &sleeper_car_middle& {
 [[ROOM(sleeper_car_west)]]
 }
 
-ROOM [lover_boi]: {
-You enter a room almost identical to your own and the bed looks as though someone had just been sleeping in it. The only other evidence of the room's occupant is a #book# lying on the desk and a pair of #shoes# beside the bed.
+ROOM [lover_boi] {
+You enter a room almost identical to your own and the bed looks as though someone had just been sleeping in it. You wonder where they are at this hour, perhaps gone to the dining car. The only other evidence of the room's occupant is a #book# lying on the desk and a pair of #shoes# beside the bed.
 ^++lover_boi^^
 }
-ROOM [lover_boi] &lover_boi&: {
-You enter a room almost identical to yours and barren of any possessions except a #book# on the desk and a pair of #shoes# discarded beside the bed. 
+ROOM [lover_boi] &lover_boi& {
+You enter a room almost identical to yours and void of any possessions except a #book# on the desk and a pair of #shoes# discarded beside the bed. 
 }
-GO [south] &lover_boi&: {
+GO [south] &lover_boi& {
 [[ROOM(sleeper_car_west)]]
 }
-EXAMINE [book] &lover_boi&: {
-You open the book and discover it is the young man's diary. The most recent entry reads, "Diane and I managed to sneak away from her overbearing mother for a few minutes before we boarded the train. There is nowhere else I would rather be than with her. She gave me a key to the kitchens and tomorrow night I'll finally have a chance to slip through them to get to her quarters. Until then I will keep it safe within my sole, my soul that belongs to her."
+EXAMINE [book] &lover_boi& {
+You open the book and discover it is the young man's diary. The most recent entry reads, "Diane and I managed to sneak away from her overbearing mother for a few minutes before we boarded the train. There is nowhere else I would rather be than with her. She gave me a key to the kitchens and tomorrow night I'll finally have a chance to sneak through them to get to her quarters. Until then I will keep it safe within my sole, my soul that belongs to her."
 ^++book^
 }
-TAKE [book] &lover_boi&: {
+TAKE [book] &lover_boi& {
 Although your curiosity demands you take the book with you, your conscience can't justify taking something so personal. 
 }
-EXAMINE [shoes] &lover_boi&: {
+EXAMINE [shoes] &lover_boi& {
 From a distance, the shoes look almost worn through to the bottom and their grimy appearance dissuades you from taking a closer look. 
 }
-EXAMINE [shoes] &lover_boi& &book&: {
+EXAMINE [shoes] &lover_boi& &book& {
 You gather your courage and approach the shoes. Lifting them up by the toes, you give them a firm shake and a key comes tumbling out. 
 |BREAK|
-*keyShoeRattle.wav*
-*keyDrop.wav*
+*keyShoeRattle.mp3*
+*keyDrop.mp3*
 |DELAY 4000|
-You set down the shoes and pick up the key. It is labelled as a key to the kitchen. Figuring it will be useful later, and considering it is stolen anyways, you slip it into your pocket. ^+key^
+You set down the shoes and pick up the key. It is labelled as a key to the cars of the upper class passengers. Figuring it will be useful later, and considering it is stolen anyways, you slip it into your pocket. ^+key^
 }
-TAKE [shoes] &lover_boi&: {
+TAKE [shoes] &lover_boi& {
 The shoes aren't your style or size. You decide against taking them with you. 
 }
-
-ROOM [old_man_reg]: {
-Opening the door, you step into the room. Although it is twice the size of yours, it is much more cramped. Boxes large and small cover the floor. Papers yellowed with age and wires long bent out of shape peek out from under their lids. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality.
+EXAMINE [key] $key$ {
+The key is a simple brass key labelled as a key to the cars of the upper class passengers.
 }
-ROOM [old_man_reg] &old_man_reg& : {
+
+ROOM [old_man_reg] {
+Opening the door, you step into the room. Although it is twice the size of yours, it is much more cramped. Boxes large and small cover the floor, and there is no sign of the room's occupant. Papers yellowed with age and wires long bent out of shape peek out from under their lids. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality.
+}
+ROOM [old_man_reg] &old_man_reg& {
 The large room is cramped with boxes. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality. The door to the hallway sits closed, #north# of you. 
 }
-EXAMINE [room] &old_man_reg&: {
+EXAMINE [room] &old_man_reg& {
 Although the room is twice the size of yours, it is much more cramped. Boxes large and small cover the floor. Papers yellowed with age and wires long bent out of shape peek out from under their lids. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality, and to your north sits the door to the hallway.
 }
-EXAMINE [desk] &old_man_reg&: {
+EXAMINE [desk] &old_man_reg& {
 On the desk sits a number of piles of #paper#, almost all of which is written in poor handwriting. Among the papers sits a device that resembles a strangely designed #lantern#.
 }
-EXAMINE [table] &old_man_reg&: {
-On the side table sits the picture of a young woman smiling at the camera. Frame is worn around the edges as though it has been held frequently, and engraved below the image is the name, "Francine".
+EXAMINE [table] &old_man_reg& {
+On the side table sits the picture of a young woman smiling at the camera. The frame is worn around the edges as though it has been held frequently, and engraved below the image is the name, "Francine".
 }
-GO [north] &old_man_reg&: {
+GO [north] &old_man_reg& {
 [[ROOM(sleeper_car_middle)]]
 }
-GO [north] &old_man_reg& %bad% &lantern&: {
+GO [north] &old_man_reg& %bad% &lantern& {
 Deciding to risk the hallway, you open the door. Staring back at you is the darkness you fear and when it lunges at you, you are helpless to avoid it.
-*death.wav*
-[[gameover()]]
+*death.mp3*
+[[ROOM(gameover)]]
 }
-EXAMINE [mirror] &old_man_reg& %bad%: {
+EXAMINE [mirror] &old_man_reg& %bad% {
 The mirror seems normal but, like your own, you can't see your reflection in it. Although this one doesn't seem as menacing, you are wary to approach it. 
 }
-EXAMINE [mirror] &old_man_reg& %good%: {
+EXAMINE [mirror] &old_man_reg& %good% {
 The mirror sits in the corner looking like any other, and in it you can see your own reflection and that of the room.
 }
-USE [mirror] &old_man_reg& %good%: {
+USE [mirror] &old_man_reg& %good% {
 Standing in front, you place your hand on its surface assuring yourself it has returned to normal. Your reflection stares back at you and you wonder whether this nightmare will soon be over. 
 }
-USE [mirror] &old_man_reg& %bad%: {
+USE [mirror] &old_man_reg& %bad% {
 The memory of what happened last time you got too close to a mirror flashes through your mind, stopping you from walking closer. 
 }
 USE [mirror] &old_man_reg& %bad% &lantern& {
 Your desire to live outweighs your fear of the mirror and you quickly walk toward it, only hesitating for a moment before plunging through. 
 |BREAK|
-*mirrorEnter.wav*
+*mirrorEnter.mp3*
 |DELAY 7000|
 [[ROOM(old_man_mirror)]]
 }
-EXAMINE [mirror] &old_man_reg& %bad% &lantern&: {
+EXAMINE [mirror] &old_man_reg& %bad% &lantern& {
 The thought of going near another of the strange mirrors is one you don't like, but you are out of time. The #mirror# sits there, an open door waiting... 
 }
 
-EXAMINE [paper] &old_man_reg&: {
-*paper.wav*
+EXAMINE [paper] &old_man_reg& {
+*paper.mp3*
 The topmost paper has a news article attached to it whose headline reads, "Mysterious Disappearances Blamed on Errors in Passenger Manifests". The writing on the paper that you can make out reads, "...have stopped investigating as the costs were ruled excessive when no definitive evidence could be produced proving the disappearances occurred while the journey was underway. My own independent inquiries have unearthed that this is indeed not the case. They simply choose to ignore the evidence before them, dismissing it as supernatural nonsense..."
 }
-TAKE [paper] &old_man_reg&: {
+TAKE [paper] &old_man_reg& {
 The paper is clearly part of a larger project and, being unable to read much of it, you decide to leave it where it is. 
 }
-EXAMINE [lantern] &old_man_reg&: {
+EXAMINE [lantern] &old_man_reg& {
 What looks to be lantern sits on the desk among the papers. It has a tag on it that reads, "Paranormal Illumination Torch". On the back is scrawled, "Idea was sound, but testing has indicated it is unlikely to work."
 }
-TAKE [lantern] &old_man_reg& %bad%: {
+TAKE [lantern] &old_man_reg& %bad% {
 You flick the power switch to ON, but nothing happens. Deciding there is no reason to carry around a broken lantern, you leave it where it is. 
 |BREAK|
-*audio.wav*
-<audio.wav>
+<tensionAmb.mp3>
 As you turn away from the lantern, a sudden chill runs down your back and dread curls in your stomach. You can feel the dark presence from your mirror, it has returned and is getting closer. The feeling of unease is coming from the direction of the hallway. With no other doors to escape through, you need to find somewhere to hide…
 ^++lantern^
 }
-TAKE [lantern] &old_man_reg& %good%: {
+TAKE [lantern] &old_man_reg& %good% {
 You flick the power switch back and forth, but nothing happens. Deciding there is no reason to carry around a broken lantern, you leave it where it is. 
 }
-ROOM [old_man_mirror]: {
+ROOM [old_man_mirror] {
 Emerging on the other side, you quickly press yourself flat against the wall beside the mirror, out of view from the other side. All is silent as you feel the ominous presence get closer and closer, until you hear the whisper of a door sliding open.
 |BREAK|
-*doorLight.wav*
+*doorLight.mp3*
 |DELAY 2000|
-It feels like an eternity you stand there not even daring to breathe. But soon you hear the door slid shut with a click and the oppressive feeling begins to fade until it is completely gone. 
+It feels like an eternity, you stand there not even daring to breathe. But soon you hear the door slide shut with a click and the oppressive feeling begins to fade until it is completely gone. 
 |BREAK|
-*doorLight.wav*
+*doorLight.mp3*
 |DELAY 2000|
-<mirrorAmb.wav>
+<mirrorAmb.mp3>
 Taking a deep breath, you examine your surroundings. The room is a mirror image of the other, but what catches your attention is the light emanating from the #desk#. It's the #lantern#, it's glowing...
 }
-ROOM [old_man_mirror] &old_man_mirror&: {
+ROOM [old_man_mirror] &old_man_mirror& {
 The room is a mirror image of the other. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Behind you stands the #mirror# you passed through.
 }
-EXAMINE [paper] &old_man_mirror&: {
-*paper.wav*
+EXAMINE [paper] &old_man_mirror& {
+*paper.mp3*
 The article attached to the paper reads, "Train Companies Deny any Wrongdoing". The writing on the paper that you can make out reads, "...are fools to stop investigating. Their unwillingness to see the evidence before them and intervene led has led to more and more disappearances. I know Francine would not have left me as everyone says, we loved each other. Something took her away and when I find out who or what it was there will be hell to pay..."
 }
 
-EXAMINE [lantern] &old_man_mirror&: {
+EXAMINE [lantern] &old_man_mirror& {
 The strange lantern looks as it did before, except now it casts a warm glow across the room. Picking it up you look at the wires coming out of it, none of them are attached and you can't figure out how it is being powered.
 } 
-TAKE [paper] &old_man_mirror: {
+TAKE [paper] &old_man_mirror {
 The paper is clearly part of a larger project and, being unable to read much of it, you decide to leave it where it is. 
 }
-TAKE [lantern] &old_man_mirror&: {
+TAKE [lantern] &old_man_mirror& {
 Flicking the power switch to OFF, you pick up the lantern.
-*lanternUse.wav*
-*lanternPickup.wav*
+*lanternUse.mp3*
+*lanternPickup.mp3*
 ^+lantern_off^
 ^++lantern_taken^
 }
-EXAMINE [desk] &old_man_mirror&: {
+EXAMINE [desk] &old_man_mirror& {
 On the desk sits a number of piles of #paper#, almost all of which is written in poor handwriting. Among the papers sits a glowing device that resembles a strangely designed #lantern#.
 }
-EXAMINE [desk] &old_man_mirror& &lantern_taken&: {
+EXAMINE [desk] &old_man_mirror& &lantern_taken& {
 On the desk sits a number of piles of #paper#, almost all of which is written in poor handwriting.
 }
-EXAMINE [table] &old_man_mirror&: {
+EXAMINE [table] &old_man_mirror& {
 On the side table sits a picture in which an old married couple smile at the camera holding hands. The engraving in the frame reads, "Francine & Elijah". 
 }
-USE [lantern] $lantern_off$: {
+USE [lantern] $lantern_off$ {
 ^-lantern_off^
-You turn the lantern ON with a click and a steady warm glow illuminates the world around you. 
-*lanternUse.wav*
+You turn the lantern ON with a click and a steady warm glow illuminates the space around you. 
+*lanternUse.mp3*
 ^+lantern_on^
 }
-USE [lantern] $lantern_on$: {
+USE [lantern] $lantern_on$ {
 ^-lantern_on^ 
-With a flick of your wrist you turn the lantern OFF. *lanternUse.wav*
+With a flick of your wrist you turn the lantern OFF. *lanternUse.mp3*
 ^+lantern_off^
 }
-USE [lantern] $lantern_on$ &storage_car& %bad%: {
+USE [lantern] $lantern_on$ &storage_car& %bad% {
 ^-lantern_on^
 With a flick of your wrist you turn off the lantern, plunging yourself into darkness. The unforgiving blackness consumes you. 
-*lanternUse.wav*
-*death.wav*
-[[gameover()]]
+*lanternUse.mp3*
+*death.mp3*
+[[ROOM(gameover)]]
+}
+EXAMINE [lantern] $lantern_on$ {
+The strange lantern is currently turned ON and casts a warm glow over your surroundings.
+}
+EXAMINE [lantern] $lantern_off$ {
+The strange lantern is currently turned OFF.
 }
 
-ROOM [sleeper_car_east]: {
+ROOM [sleeper_car_east] {
 Moving down the car, the rest of the doors you try are locked. At the end of the hallway, the door to the storage car lies #east# of you.
 }
 
-ROOM [sleeper_car_east] &sleeper_car_east&: {
+ROOM [sleeper_car_east] &sleeper_car_east& {
 At the end of the hallway, the door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 }
-ROOM [sleeper_car_east] %nogo_east%: {
+ROOM [sleeper_car_east] %nogo_east% {
 Stepping into the hallway of the sleeper car, you can see that all the power has turned on here as well. The door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 ^---nogo_east^
 }
 
-GO [west] &sleeper_car_east&: {
+GO [west] &sleeper_car_east& {
 [[ROOM(sleeper_car_middle)]]
 }
 
-GO [east] &sleeper_car_east& %bad%: {
-The door to the storage car has a sign that reads, "Staff Only" and below it, "Note: Do not block door, breaker box must be accessible in case of emergency." You open the door and pear into the storage room. Darkness stares back at you. With no light to see by, you decide against wandering around in the dark. 
+GO [east] &sleeper_car_east& %bad% {
+The door to the storage car has a sign that reads, "Staff Only" and below it, "Note: Do not block door, breaker box must be accessible in case of emergency." You open the door and gaze into the storage room. Darkness stares back at you. With no light to see by, you decide against wandering around in the dark. 
 }
-GO [east] &sleeper_car_east& %bad% $lantern_on$: {
+GO [east] &sleeper_car_east& %bad% $lantern_on$ {
 [[ROOM(storgae_car)]]
 }
-GO [east] &sleeper_car_east& %good%: {
+GO [east] &sleeper_car_east& %good% {
 [[ROOM(storage_car)]]
 }
 
-ROOM [storage_car] %bad%: {
+ROOM [storage_car] %bad% {
 Taking a deep breath, you gather your courage and step through the doorway. Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
 }
-ROOM [storage_car] &storage_car& %bad%: {
+ROOM [storage_car] &storage_car& %bad% {
 Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
 }
-GO [west] &storage_car&: {
+GO [west] &storage_car& {
 [[ROOM(sleeper_car_east)]]
 }
 
-EXAMINE [breaker] &storage_car& %bad%: {
+EXAMINE [breaker] &storage_car& %bad% {
 The outside of the breaker box reads "DANGER: ELECTRICAL HAZARD. Authorized Personnel Only." Inside the box sits the breaker. It's a large switch and is currently set to OFF.
 }
-USE [breaker] &storage_car& %bad%: {
+USE [breaker] &storage_car& %bad% {
 You grab the breaker by the handle and switch it to ON.
 |BREAK|
-*breaker.wav*
-*doorUnlock.wav*
-*audio.wav*
-<audio.wav>
+*breaker_and_light_ON.mp3*
 ^---bad^ ^+++good^
 ^--storage_car^
 ^+++nogo_east^
 ^+++nogo_your_room^
 [[ROOM(storage_car)]]
 }
-ROOM [storage_car] %good%: {
+ROOM [storage_car] %good% {
 The electricity flickers on and overhead lights bathe the world around you in a comforting glow. As the darkness retreats you feel the lantern in your hand getting lighter and, looking down at it, you watch it disappear like a distant memory. 
 
 When the power came on, you could hear the clunk of the dining car door unsealing. Looking around, you can now clearly see the various boxes and trunks in the storage car, and to the #west# lies the door to the sleeper car. 
 ^-lantern_on^
 }
-ROOM [storage_car] %good% &storage_car&: {
+ROOM [storage_car] %good% &storage_car& {
 Around you sit various trunks and boxes, to the #west# lies the door to the sleeper car.
 }
-GAMEOVER: { You have died. }
-ROOM [dining_car]: {
+ROOM [dining_car] {
 To be continued…
+}
+ROOM [gameover] { 
+You have died.
 }
