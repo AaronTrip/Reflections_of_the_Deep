@@ -10,33 +10,144 @@
     <script src="p5.sound.js"></script>
     <script src="sketch.js"></script>
     <script src="printClass.js"></script>
-    <script src="shell.js"></script>
     <script src="inventory.js"></script>
-    <script src="rooms.js"></script>
-    <script src="mainparser.js"></script>
+    <script src="shell.js"></script>
+    <script src="parser.js"></script>
   </head>
   <body>
       
       <script>
       var narrative;
-      function preload() {
-        console.log("Loading narrative file");
-        narrative = loadStrings("./narrative.txt");
-        console.log("Narrative file loaded");
-      }
+       var player_inventory;
+       var global_inventory;
+       var inconsolata;
+       var fontBold;
+       var printString = "";
+       var stringPointer = 0;
+       var txt_brk = false;
+       var parser;
+       var shell;
+       //var sound;
+       function preload()
+       {
+           inconsolata = loadFont('./Courier_Prime/Courier-Prime.ttf');
+           fontBold = loadFont('./Courier_Prime/Courier-Prime-Bold.ttf')
 
-      function setup() {
-        //loadStrings("narrative.txt", narrative);
-        console.log("Executing main parser 0");
-        var new_inv = new Inventory();
-        var rooms = new Rooms(narrative);
-        console.log("Executing main parser 1");
-        var data = rooms.parse();
-        var mainparser = new MainParser(rooms.getRoom("init"), rooms.getInventory("init"));
-        console.log("Executing main parser 2");
-        var next = mainparser.EXAMINE("room");
-        console.log(data);
-      }
+           console.log("Loading narrative file");
+           narrative = loadStrings("./narrative.txt");
+           console.log("Narrative file loaded");
+           //sound = loadSound("sounds/SFX/lanternUse.mp3");
+       }
+
+       function setup()
+       {
+           let width = 1000;
+           let height = 600;
+           let text_size = width / 40;
+           let text_font = inconsolata;
+
+           createCanvas(width, height, WEBGL);
+           textFont(inconsolata);
+           textSize(text_size);
+           textAlign(LEFT, CENTER);
+
+           narrative = narrative.join(" ");
+           player_inventory = new Inventory();
+           global_inventory = new Inventory();
+           parser = new Parser(narrative, player_inventory, global_inventory);
+           parser.tokenize();
+           parser.printTokens();
+
+           // Set the starting room
+           parser.rooms.current_room = parser.rooms.getRoom("init", player_inventory, global_inventory);
+           console.log("Running Room");
+           parser.rooms.current_room.run(player_inventory, global_inventory);
+           console.log("Done running room");
+           parser.rooms.current_room.next(player_inventory, global_inventory);
+           parser.rooms.current_room.next(player_inventory, global_inventory);
+           //loadSound("sounds/SFX/lanternUse.mp3", audioCallback);
+           shell = new Shell(width, height, text_font, text_size);
+       }
+
+       function draw() {
+           // Main game loop
+           background(0);
+           let time = Math.floor(millis());
+           if(parser !== undefined)
+               {
+           parser.rooms.current_room.draw();
+               }
+           else
+           {
+             console.log("GOODBYE");
+           }
+           shell.draw();
+       }
+
+       function keyTyped() {
+           shell.keyTyped();
+           if(shell.commandReady())
+               executeCommand();
+       }
+
+       function audioCallback(sound)
+       {
+            sound.play()
+       }
+
+       function executeCommand()
+       {
+           var command = shell.getCommand();
+           var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory"];
+           var short_command_list = ["e", "u", "l", "g", "t", "h"];
+           
+           var index = command_list.find(command[0]);
+           if(index === undefined)
+               index = short_command_list.find(commandi[0]);
+           if(index === undefined)
+           {
+               // TODO: error
+           }
+
+           switch(index)
+           {
+               case 0:  // Examine
+               parser.query("EXAMINE", "woman");
+               break;
+
+               case 1:  // Use
+               
+               break;
+
+               case 2:  // Talk
+               
+               break;
+
+               case 3:  // Go
+               
+               break;
+
+               case 4:  // Take
+               
+               break;
+
+               case 5:  // Help
+
+               break;
+
+               case 6:  // Inventory
+               
+               break;
+
+               default:
+               // TODO
+           }
+
+
+       }
+
+
+
       </script>
   </body>
 </html>

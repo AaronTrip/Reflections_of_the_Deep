@@ -2,37 +2,32 @@ class Inventory
 {
     constructor()
     {
-        this.hidden = new Set();
-        this.visible = new Set();
+        this.items = new Set();
     }
 
-    has(item)
+    add(item)
     {
-        return (this.hidden.has(item) || this.visible.has(item));
-    }
-
-    addHidden(item)
-    {
-        this.hidden.add(item);
-    }
-
-    addVisible(item)
-    {
-        this.visible.add(item);
+        this.items.add(item);
     }
 
     remove(item)
     {
-        this.hidden.delete(item);
-        this.visible.delete(item);
+        this.items.delete(item);
     }
 
-    draw(x, y)
+    has(item)
     {
-        let inventory_print_string = "";
-        this.visible.forEach(function(item) { inventory_print_string += item + ' '; });
-        push();
-        text(inventory_print_string, x, y);
-        pop();
+        if(item === [])
+            return true;
+        if(Array.isArray(item))
+        {
+            for(var i = 0; i < item.length; ++i)
+                if(!this.items.has(item[i]))
+                    return false;
+            return true;
+        } else
+        {
+            return this.items.has(item);
+        }
     }
 }
