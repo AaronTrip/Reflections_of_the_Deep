@@ -1,13 +1,13 @@
 ROOM [init] {
 ^+++good^
-<introAmb.mp3>
+<sounds/BGM/introAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
 } 
 
 YES &init& {
 You nod your head and give him a weak smile. He reaches over and, plucking your glass from the table, says “You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” He sets down your now full glass in front of you and with a smile departs, exiting through the West door labeled "Staff Only".
-*glassFilled.mp3*
+*sounds/SFX/glassFilled.mp3*
 ^++full_glass^
 |BREAK|
 Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
@@ -66,7 +66,7 @@ You cannot go into the kitchen, only the staff are permitted there.
 }
 
 ROOM [your_room] %good% {
-<basicAmb.mp3>
+<sounds/BGM/basicAmb.mp3>
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 ^++your_room^
 }
@@ -86,7 +86,7 @@ The bed is neatly made with the sheets and blanket tucked in at each corner. Alt
 USE [bed] &your_room& %good% {
 You take the waiter’s advice and decide to lay down for a bit now that your stomach is feeling more settled. Taking your shoes off, you lay down on your bed, planning to only close your eyes for a minute. Soon though, you feel the pull of sleep and drift off.
 |BREAK|
-<basicAmb.mp3>
+<sounds/BGM/basicAmb.mp3>
 ^---good^
 ^+++bad^
 ^--your_room^
@@ -102,7 +102,7 @@ Looking in the mirror, your reflection stares back at you with tired eyes.
 ROOM [your_room] %bad% {
 You're drifting in the darkness. Fragments of your thoughts gently swirl around you, mixing and separating with no rhyme or reason. You feel a weight on your chest beginning to pull you down. Everything begins to swirl faster and faster until it is an indistinguishable blur. You are falling...
 |BREAK|
-*nightmare.mp3*
+*sounds/cinematic/nightmare.mp3*
 |DELAY 24000|
 With a start, you wake. You open your bleary eyes and blink up at the ceiling, your mind still groggy. As the fogginess of sleep fades, you notice the room is darker than it should be. The emergency lighting is on. 
 
@@ -119,16 +119,17 @@ You walk to the mirror and as you near it, you notice something wrong. Initially
 |BREAK|
 Without thinking, you reach out your hand to touch its surface. Your hand doesn't rest on the surface like you expected, rather it begins to pass through it. Shock and wonder fill your mind until something grabs you and pulls you through.
 |BREAK| 
-*mirrorEnter.mp3*
+*sounds/cinematic/mirrorEnter.mp3*
 |DELAY 7000|
-<mirrorAmb1.mp3>
+<sounds/BGM/mirrorAmb1.mp3>
 You've fallen to your knees and as the darkness recedes from your vision and you can see that you are in your room...and yet you are not. The desk and bed are on opposite sides, and what looks like tar covers the ceiling and bleeds down the walls. Behind you is the mirror and through it you see your real room, it's dim emergency lighting just barely illuminating your surroundings. Returning your attention to the inky black liquid, you see that it has now reached the floor and is oozing towards you. 
 |BREAK|
 As it gets closer, you back away step by step not taking your eyes off it. The light begins to fade and, glancing behind, you see that the liquid has begun to cover the mirror. In a split second, you make your decision and lunge through mirror, barely avoiding the reaching tendrils of darkness. 
 |BREAK| 
-*mirrorExit.mp3*
-*hallwayChase.mp3*
-|DELAY 20000|
+*sounds/cinematic/mirrorExit.mp3*
+|DELAY 6000|
+*sounds/cinematic/hallwayChase.mp3*
+|DELAY 14000|
 [[ROOM(sleeper_car_west)]]
 }
 EXAMINE [bed] &your_room& %bad% {
@@ -207,9 +208,10 @@ From a distance, the shoes look almost worn through to the bottom and their grim
 EXAMINE [shoes] &lover_boi& &book& {
 You gather your courage and approach the shoes. Lifting them up by the toes, you give them a firm shake and a key comes tumbling out. 
 |BREAK|
-*keyShoeRattle.mp3*
-*keyDrop.mp3*
-|DELAY 4000|
+*sounds/SFX/keyShoeRattle.mp3*
+|DELAY 3000|
+*sounds/SFX/keyDrop.mp3*
+|DELAY 1000|
 You set down the shoes and pick up the key. It is labelled as a key to the cars of the upper class passengers. Figuring it will be useful later, and considering it is stolen anyways, you slip it into your pocket. ^+key^
 }
 TAKE [shoes] &lover_boi& {
@@ -239,7 +241,7 @@ GO [north] &old_man_reg& {
 }
 GO [north] &old_man_reg& %bad% &lantern& {
 Deciding to risk the hallway, you open the door. Staring back at you is the darkness you fear and when it lunges at you, you are helpless to avoid it.
-*death.mp3*
+*sounds/cinematic/death.mp3*
 [[ROOM(gameover)]]
 }
 EXAMINE [mirror] &old_man_reg& %bad% {
@@ -257,7 +259,7 @@ The memory of what happened last time you got too close to a mirror flashes thro
 USE [mirror] &old_man_reg& %bad% &lantern& {
 Your desire to live outweighs your fear of the mirror and you quickly walk toward it, only hesitating for a moment before plunging through. 
 |BREAK|
-*mirrorEnter.mp3*
+*sounds/cinematic/mirrorEnter.mp3*
 |DELAY 7000|
 [[ROOM(old_man_mirror)]]
 }
@@ -266,7 +268,7 @@ The thought of going near another of the strange mirrors is one you don't like, 
 }
 
 EXAMINE [paper] &old_man_reg& {
-*paper.mp3*
+*sounds/SFX/paper.mp3*
 The topmost paper has a news article attached to it whose headline reads, "Mysterious Disappearances Blamed on Errors in Passenger Manifests". The writing on the paper that you can make out reads, "...have stopped investigating as the costs were ruled excessive when no definitive evidence could be produced proving the disappearances occurred while the journey was underway. My own independent inquiries have unearthed that this is indeed not the case. They simply choose to ignore the evidence before them, dismissing it as supernatural nonsense..."
 }
 TAKE [paper] &old_man_reg& {
@@ -278,7 +280,7 @@ What looks to be lantern sits on the desk among the papers. It has a tag on it t
 TAKE [lantern] &old_man_reg& %bad% {
 You flick the power switch to ON, but nothing happens. Deciding there is no reason to carry around a broken lantern, you leave it where it is. 
 |BREAK|
-<tensionAmb.mp3>
+<sounds/BGM/tensionAmb.mp3>
 As you turn away from the lantern, a sudden chill runs down your back and dread curls in your stomach. You can feel the dark presence from your mirror, it has returned and is getting closer. The feeling of unease is coming from the direction of the hallway. With no other doors to escape through, you need to find somewhere to hide…
 ^++lantern^
 }
@@ -288,20 +290,20 @@ You flick the power switch back and forth, but nothing happens. Deciding there i
 ROOM [old_man_mirror] {
 Emerging on the other side, you quickly press yourself flat against the wall beside the mirror, out of view from the other side. All is silent as you feel the ominous presence get closer and closer, until you hear the whisper of a door sliding open.
 |BREAK|
-*doorLight.mp3*
+*sounds/SFX/doorLight.mp3*
 |DELAY 2000|
 It feels like an eternity, you stand there not even daring to breathe. But soon you hear the door slide shut with a click and the oppressive feeling begins to fade until it is completely gone. 
 |BREAK|
-*doorLight.mp3*
+*sounds/SFX/doorLight.mp3*
 |DELAY 2000|
-<mirrorAmb.mp3>
+<sounds/BGM/mirrorAmb.mp3>
 Taking a deep breath, you examine your surroundings. The room is a mirror image of the other, but what catches your attention is the light emanating from the #desk#. It's the #lantern#, it's glowing...
 }
 ROOM [old_man_mirror] &old_man_mirror& {
 The room is a mirror image of the other. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Behind you stands the #mirror# you passed through.
 }
 EXAMINE [paper] &old_man_mirror& {
-*paper.mp3*
+*sounds/SFX/paper.mp3*
 The article attached to the paper reads, "Train Companies Deny any Wrongdoing". The writing on the paper that you can make out reads, "...are fools to stop investigating. Their unwillingness to see the evidence before them and intervene led has led to more and more disappearances. I know Francine would not have left me as everyone says, we loved each other. Something took her away and when I find out who or what it was there will be hell to pay..."
 }
 
@@ -313,8 +315,8 @@ The paper is clearly part of a larger project and, being unable to read much of 
 }
 TAKE [lantern] &old_man_mirror& {
 Flicking the power switch to OFF, you pick up the lantern.
-*lanternUse.mp3*
-*lanternPickup.mp3*
+*sounds/SFX/lanternUse.mp3*
+*sounds/SFX/lanternPickup.mp3*
 ^+lantern_off^
 ^++lantern_taken^
 }
@@ -330,19 +332,19 @@ On the side table sits a picture in which an old married couple smile at the cam
 USE [lantern] $lantern_off$ {
 ^-lantern_off^
 You turn the lantern ON with a click and a steady warm glow illuminates the space around you. 
-*lanternUse.mp3*
+*sounds/SFX/lanternUse.mp3*
 ^+lantern_on^
 }
 USE [lantern] $lantern_on$ {
 ^-lantern_on^ 
-With a flick of your wrist you turn the lantern OFF. *lanternUse.mp3*
+With a flick of your wrist you turn the lantern OFF. *sounds/SFX/lanternUse.mp3*
 ^+lantern_off^
 }
 USE [lantern] $lantern_on$ &storage_car& %bad% {
 ^-lantern_on^
 With a flick of your wrist you turn off the lantern, plunging yourself into darkness. The unforgiving blackness consumes you. 
-*lanternUse.mp3*
-*death.mp3*
+*sounds/SFX/lanternUse.mp3*
+*sounds/cinematic/death.mp3*
 [[ROOM(gameover)]]
 }
 EXAMINE [lantern] $lantern_on$ {
@@ -394,7 +396,7 @@ The outside of the breaker box reads "DANGER: ELECTRICAL HAZARD. Authorized Pers
 USE [breaker] &storage_car& %bad% {
 You grab the breaker by the handle and switch it to ON.
 |BREAK|
-*breaker_and_light_ON.mp3*
+*sounds/SFX/breaker_and_light_ON.mp3*
 ^---bad^ ^+++good^
 ^--storage_car^
 ^+++nogo_east^
