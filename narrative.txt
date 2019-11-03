@@ -298,6 +298,7 @@ It feels like an eternity, you stand there not even daring to breathe. But soon 
 |DELAY 2000|
 <sounds/BGM/mirrorAmb.mp3>
 Taking a deep breath, you examine your surroundings. The room is a mirror image of the other, but what catches your attention is the light emanating from the #desk#. It's the #lantern#, it's glowing...
+^++old_man_mirror^
 }
 ROOM [old_man_mirror] &old_man_mirror& {
 The room is a mirror image of the other. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Behind you stands the #mirror# you passed through.
