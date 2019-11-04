@@ -29,9 +29,10 @@ class Tag {
         this.name = name;
         this.conditionals = conditionals;
         this.conditional_count = conditionals.length;
-        this.content_sequence = createContentSequence(content); //array of tokenized content (stuff between {})
+        this.content_sequence = this.createContentSequence(content); //array of tokenized content (stuff between {})
         this.inventory_index = inventory_index;
     }
+
     isValid(playerInv, roomInv, globalInv) {
         //check inventories
         var i=0;
@@ -39,22 +40,23 @@ class Tag {
             var inv;
             switch(i) {
                 case 1:
-                    var inv = playerInv;
+                    inv = playerInv;
                 case 2:
-                    var inv = roomInv;
+                    inv = roomInv;
                 case 3:
-                    var inv = globalInv;
+                    inv = globalInv;
                 default:
                     break;
             }
             for (cond in this.conditionals[i]) {
-                if (cond not in inv) {
+                if (!(cond in inv)) {
                     return false;
                 }
             }
         }
         return true;
     }
+
     createContentSequence(content) {
         //chop content (everything inside the {}) into a series of tokens
         tokens = [];
@@ -117,13 +119,225 @@ class Tag {
     }
 }
 
+// Janky ass software crossbar thing mashed together with an on the fly state machine
+// to handle the interconnect between the clock tick and what actions need to be made.
+// This allows somewhat smooth handling of actions when using a somewhat regular clock
+// tick as well handling the linking of actions with their definitions
+class ActionQueue
+{
+    constructor()
+    {
+        this.queue = [];
+        this.display_string = undefined;
+        this.timer = undefined;
+    }
+
+    push(content)
+    {
+        this.queue.push(content);
+    }
+
+    next()
+    {
+        if(this.queue.length > 0)
+            this.queue = this.queue.slice(1, this.queue.length);
+
+        // Stop if empty
+        if(this.queue.length == 0)
+            return;
+
+        switch(this.queue[0].type)
+        {
+            case tok_type.STRING:
+            console.log("Found a print string");
+            //call print function on token.string
+            this.display_string = new StringClass(token.string, 200, 0, 800);
+            break;
+
+            case tok_type.BREAK:
+            console.log("Found a call break");
+            // We don't need to do anything here
+            break;
+
+            case tok_type.DELAY:
+            console.log("Found a call delay");
+
+            //execute delay (make sure this doesn't interfere with sound)
+            // TODO Lookup how much time to really wait instead of just using regex
+            this.timer = Math.floor(millis()) + parseInt(this.queue[0].string.match("[0-9]+"));  // ms
+            break;
+
+            case tok_type.SFX:
+            console.log("Found a call SFX");
+
+            //play SFX (file path given by token.string)
+            // TODO setup the sound loading/callback
+            break;
+
+            case tok_type.BGM:
+            console.log("Found a call BGM");
+
+            //play BGM (file path given by token.string)
+            // TODO setup the callback function to handle this
+            break;
+
+            case tok_type.INV_MOD:
+            console.log("Found a edit inventory");
+
+            //check which type of inventory mod it is by counting the +/-
+            //modify inventory accordingly
+            //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
+            // TODO
+            break;
+
+            case tok_type.LINK:
+            console.log("Found a link to room");
+
+            //changed current room
+            // TODO the current room needs to be changed
+            // Abort everything that we are currently planning on doing
+            this.queue = [];
+            break;
+
+            default:
+            console.warn("Found a Invalid token in ActionQueue");
+            break;
+        }
+
+    }
+
+    run()
+    {
+        // Do nothing if queue is empty
+        if(this.queue[0].length == 0)
+            return;
+
+        switch(this.queue.type)
+        {
+            case tok_type.STRING:
+            console.log("Running print string");
+            this.display_string.oprint();
+
+            // Check if the printing is over, move to the next item if it is
+            if(true)
+                this.next();
+            break;
+
+            case tok_type.BREAK:
+            console.log("Running call break");
+
+            // Stall and wait for an interrupt (do nothing)
+            break;
+
+            case tok_type.DELAY:
+            console.log("Running call delay");
+
+            // Check to see if the appropriot amount of time has passed
+            if(Math.floor.millis() >= this.timer)
+                this.next();
+            break;
+
+            case tok_type.SFX:
+            console.log("Running call SFX");
+
+            // The callback has already been initated so we can continue
+            this.next();
+            break;
+
+            case tok_type.BGM:
+            console.log("Running call BGM");
+
+            // The callback has already been initated so we can continue
+            this.next();
+            break;
+
+            case tok_type.INV_MOD:
+            console.log("Running edit inventory");
+
+            // Only takes one tick to complete, so continue
+            this.next();
+            break;
+
+            case tok_type.LINK:
+            // We should never reach this point
+            console.warn("linking to a new room, that is bad");
+            break;
+
+            default:
+            console.warn("Running invalid token in ActionQueue");
+            break;
+        }
+    }
+
+    interupt()
+    {
+        switch(this.queue.type)
+        {
+            case tok_type.STRING:
+            console.log("Interrupting print string");
+
+            // TODO shortcut the typing text to immediately show everything
+            this.display_string.oprint();
+            this.next();
+            break;
+
+            case tok_type.BREAK:
+            console.log("Interrupting call break");
+
+            // We are now done waiting
+            this.next()
+            break;
+
+            case tok_type.DELAY:
+            console.log("Interrupting call delay");
+
+            // Skip the delay
+            this.next();
+            break;
+
+            case tok_type.SFX:
+            console.log("Interrupting call SFX");
+
+            // We cannot really interrupt the sound effects, they just kinda run
+            // on there own, so if we hit this just go to the next thing
+            this.next();
+            break;
+
+            case tok_type.BGM:
+            //play BGM (file path given by token.string)
+            console.log("Interrupting call BGM");
+
+            // We cannot really interrupt the background audio, it just kinda runs
+            // on its own, so if we hit this just go to the next thing
+            this.next();
+            break;
+
+            case tok_type.INV_MOD:
+            console.log("Interrupting edit inventory");
+
+            // This only takes one tick to complete, so just continue anyways
+            this.next();
+            break;
+
+            case tok_type.LINK:
+            // We should never reach this point
+            console.warn("Interrupting the linking to a new room, that is bad");
+            break;
+
+            default:
+            console.warn("Interrupting invalid token in ActionQueue");
+            break;
+        }
+    }
+}
+
 class Parser {
     constructor(corpus, player_inventory, global_inventory) { //add queue of tokens to run
         console.log(corpus);
         this.corpus = corpus;
         this.player_inventory = player_inventory;
         this.global_inventory = global_inventory;
-        this.rooms = new Set(); //store room tags here as a set of names 
+        this.rooms = new Set(); //store room tags here as a set of names
         this.current_room = null;
         this.room_inventories = []; //array of room inventories
         this.tags = []; //[EXAMINE[], USE[], TALK[], ...]
@@ -151,39 +365,39 @@ class Parser {
             for (index in tag_indexes[i]) {
                 var type = TAGS[i];
                 var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{"));
-                var name = tag_info_string.match(\[.*?\])[0]; //check this regular expression!
+                var name = tag_info_string.match("\[.*?\]")[0]; //check this regular expression!
                 var conditionals = findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
+                var tag;
                 if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
                     this.rooms.add(name);
-                    var tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
-                    tag_objects.push(tag);
+                    tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
                 } else {
-                    var tag = new Tag(type,name,conditionals,content);
-                    tag_objects.push(tag);
+                    tag = new Tag(type,name,conditionals,content);
                 }
+                tag_objects.push(tag);
             }
             this.tags.push(tag_objects);
         }
     }
-    findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy 
+    findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy
         var conditionals = [];
-        if (string.match(\$.*\$) != null) {
-            conditionals.push(string.match(\$.*\$));
+        if (string.match("\$.*?\$") != null) {
+            conditionals.push(string.match("\$.*?\$"));
         } else {
             conditionals.push([]);
         }
-        if (string.match(\&.*\&) != null) {
-            conditionals.push(string.match(\&.*\&));
+        if (string.match("\&.*?\&") != null) {
+            conditionals.push(string.match("\&.*?\&"));
         } else {
             conditionals.push([]);
         }
-        if (string.match(\%.*\%) != null) {
-            conditionals.push(string.match(\%.*\%))
+        if (string.match("\%.*?\%") != null) {
+            conditionals.push(string.match("\%.*?\%"));
         } else {
             conditionals.push([]);
         }
-        return conditionals;                  
+        return conditionals;
     }
     contentSequenceHandler(token_list) {//not used
         for (token in token_list) {
@@ -212,8 +426,8 @@ class Parser {
                     console.log("call BGM");
                     break;
                 case tok_type.INV_MOD:
-                    //check which type of inventory mod it is by counting the +/- 
-                    //modify inventory accordingly 
+                    //check which type of inventory mod it is by counting the +/-
+                    //modify inventory accordingly
                     //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
                     console.log("edit inventory");
                     break;
@@ -228,6 +442,6 @@ class Parser {
         }
     }
     query(action,name) {
-        
+
     }
 }
