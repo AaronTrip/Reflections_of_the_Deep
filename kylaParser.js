@@ -31,6 +31,8 @@ class Token
 
 class Tag {
     constructor(type, name, conditionals, content,inventory_index=null) {
+        console.log("NEW_TAG="+name);
+        console.log(conditionals);
         this.type = type;
         this.name = name;
         this.conditionals = conditionals;
@@ -40,34 +42,38 @@ class Tag {
     }
 
     isValid(playerInv, roomInv, globalInv) {
-        //check inventories
-        console.log("player:");
+        console.log("playerInv:");
         console.log(playerInv);
-        console.log("room:");
+        console.log("roomInv:");
         console.log(roomInv);
-        console.log("global:")
+        console.log("globalInv:");
         console.log(globalInv);
+        console.log("tag_conditionals:");
+        console.log(this.conditionals);
+        
         var i=0;
         while (i < 3) {
             var inv;
             switch(i) {
-                case 1:
+                case 0:
                     inv = playerInv;
-                case 2:
+                    console.log("set PlaYEr InVEntOrY");
+                    break;
+                case 1:
                     inv = roomInv;
-                case 3:
+                    console.log("sEt rOoM iNVenToRy");
+                    break;
+                case 2:
                     inv = globalInv;
+                    console.log("SeT GLobAl inVEnToRY");
+                    break;
                 default:
                     break;
             }
-            console.log("Cond");
-                for(var k = 0; k < this.conditionals.length; ++k) {
-                    //check if this.conditionals[i][k] in inv;
-                    console.log(this.conditionals[k]);
-                    if(this.conditionals[k] === [])
-                        if (!(this.conditionals[k] in inv)) {
-                            return false;
-                        
+            for(var k = 0; k < this.conditionals[i].length; ++k) {
+                console.log("checked="+i);
+                if (!(inv.has(this.conditionals[i][k]))) {
+                    return false;
                 }
             }
             ++i;
@@ -91,6 +97,7 @@ class Tag {
                     var token_str = content.slice(i+1,content.indexOf("*",i+1));
                     tokens.push(new Token(token_str,tok_type.SFX));
                     i = content.indexOf("*",i+1);
+                    console.log("NEW_CONTENT_TOKEN(*)="+token_str);
                     break;
                 case "<": //is a BGM
                     if (current_string && /\S/.test(current_string)) {
@@ -99,7 +106,8 @@ class Tag {
                     }
                     var token_str = content.slice(i+1,content.indexOf(">",i+1));
                     tokens.push(new Token(token_str,tok_type.BGM));
-                    i = content.indexOf(">",i+1)
+                    i = content.indexOf(">",i+1);
+                    console.log("NEW_CONTENT_TOKEN(<)="+token_str);
                     break;
                 case "[": //is a link
                     if (current_string && /\S/.test(current_string)) {
@@ -108,7 +116,8 @@ class Tag {
                     }
                     var token_str = content.slice(i+2,content.indexOf("]",i+1));
                     tokens.push(new Token(token_str,tok_type.LINK));
-                    i = content.indexOf("]",i+1)
+                    i = content.indexOf("]",i+1);
+                    console.log("NEW_CONTENT_TOKEN([)="+token_str);
                     break;
                 case "^": //is an inventory mod
                     if (current_string && /\S/.test(current_string)) {
@@ -118,7 +127,8 @@ class Tag {
                     var token_str = content.slice(i+1,content.indexOf("^",i+1));
                     tokens.push(new Token(token_str,tok_type.INV_MOD));
                     console.log("HAT BOI="+token_str);
-                    i = content.indexOf("^",i+1)
+                    i = content.indexOf("^",i+1);
+                    console.log("NEW_CONTENT_TOKEN(^)="+token_str);
                     break;
                 case "|": //is a BREAK or DELAY (bad hardcoding alert!)
                     if (current_string && /\S/.test(current_string)) {
@@ -132,6 +142,7 @@ class Tag {
                         tokens.push(new Token(token_str,tok_type.DELAY));
                     }
                     i = content.indexOf("|",i+1);
+                    console.log("NEW_CONTENT_TOKEN(|)="+token_str);
                     break;
                 default: //is a string
                     current_string += current_char;
@@ -140,7 +151,7 @@ class Tag {
             ++i;
         }
         tokens.push(new Token(current_string,tok_type.STRING));
-        console.log("CURRENT_STRING="+current_string);
+        console.log("NEW_CONTENT_TOKEN(str)="+current_string);
         return tokens;
     }
 }
@@ -301,6 +312,7 @@ class ActionQueue
             //changed current room
             // TODO the current room needs to be changed
             // Abort everything that we are currently planning on doing
+                //this isn't working i think
                 var new_room = this.queue[0].string;
                 this.queue = [];
                 this.parser.query("ROOM", new_room);
@@ -465,7 +477,7 @@ class ActionQueue
 
 class Parser {
     constructor(corpus, player_inventory, global_inventory, sfxFunc, bgFunc) { //add queue of tokens to run
-        console.log(corpus);
+        //console.log(corpus);
         this.corpus = corpus;
         this.player_inventory = player_inventory;
         this.global_inventory = global_inventory;
@@ -478,7 +490,7 @@ class Parser {
     chopIntoTags() {
         var tag_indexes = []; //array of array of indexes of each TAGS type
         //find the indexes of every tag
-        console.log("beginning the indexing");
+        //console.log("beginning the indexing");
         for (i in TAGS) {
             var tag = TAGS[i];
             var tag_list = [];
@@ -495,10 +507,10 @@ class Parser {
             }
             tag_indexes.push(tag_list);
         }
-        console.log("successfully made the indexes");
+        //console.log("successfully made the indexes");
         //iterate though all the tag indexes, turning them into Tag objects
         var i = 0;
-        console.log("beginning the tags");
+        //console.log("beginning the tags");
         while (i < tag_indexes.length) {
             var tag_objects = [];
             var j = 0;
@@ -526,7 +538,7 @@ class Parser {
                     tag = new Tag(type,name,conditionals,content);
                 }
                 tag_objects.push(tag);
-                console.log("NAME="+tag.name+"  CONTENT="+ content + "\n\n");
+                //console.log("NAME="+tag.name+"  CONTENT="+ content + "\n\n");
                 ++j;
             }
             this.tags.push(tag_objects);
@@ -535,23 +547,24 @@ class Parser {
     }
     findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy
         var conditionals = [];
-        console.log("STRINGGGGGGGG="+string);
+        //three inventories
+        var player_cond = [];
+        var room_cond = [];
+        var global_cond = []
+        //console.log("STRINGGGGGGGG="+string);
         if (string.match("/\$(.*?)\$/g") != null) {
-            console.log("player conditionals!!!!!!!!!");
-            conditionals.push(string.match("/\$(.*?)\$/g")[0]);
-        } else {
-            conditionals.push([]);
+            //console.log("player conditionals!!!!!!!!!");
+            player_cond.push(string.match("/\$(.*?)\$/g")[0]);
         }
         if (string.match("&(.*?)&") != null) {
-            conditionals.push(string.match("&(.*?)&")[1]);
-        } else {
-            conditionals.push([]);
+            room_cond.push(string.match("&(.*?)&")[1]);
         }
         if (string.match("\%.*?\%") != null) {
-            conditionals.push(string.match("\%(.*?)\%")[1]);
-        } else {
-            conditionals.push([]);
+            global_cond.push(string.match("\%(.*?)\%")[1]);
         }
+        conditionals.push(player_cond);
+        conditionals.push(room_cond);
+        conditionals.push(global_cond);
         return conditionals;
     }
     query(action, name) {
@@ -559,15 +572,15 @@ class Parser {
         //get goal tag
         var tag_type = action.toUpperCase();
         var tag_type_index = TAGS.indexOf(tag_type);
-        console.log("TAG_TYPE="+tag_type+" TAG_TYPE_INDEX="+tag_type_index);
+        //console.log("TAG_TYPE="+tag_type+" TAG_TYPE_INDEX="+tag_type_index);
         var i = 0;
         var goal_tag = null;
         while (i < this.tags[tag_type_index].length) {
-            console.log("BEGIN FIRST WHILE="+i);
+            //console.log("BEGIN FIRST WHILE="+i);
             var current_tag = this.tags[tag_type_index][i];
-            console.log(current_tag.content_sequence);
+            //console.log(current_tag.content_sequence);
             console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
-            console.log("CURRENT_ROOM="+this.current_room.inventory_index);
+            //console.log("CURRENT_ROOM="+this.current_room.inventory_index);
             if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null) {
                 goal_tag = current_tag;
             } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count) {
@@ -577,6 +590,11 @@ class Parser {
         }
         //add content tokens of goal_tag to action_queue
         i = 0;
+        //console.log("ACTION="+action);
+        if (action == "ROOM") {
+            this.current_room = goal_tag;
+            console.log("CHANGED ROOM TO="+goal_tag.name);
+        }
         while (i < goal_tag.content_sequence.length) {
             console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
             this.action_queue.push(goal_tag.content_sequence[i]);
