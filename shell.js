@@ -22,7 +22,7 @@ class Shell
         {
             switch(keyCode)
             {
-                case BACKSPACE:  // Backspace
+                case BACKSPACE: case DELETE:  // Backspace
                 if(this.shell_line.length > 2)
                     this.shell_line = this.shell_line.slice(0, this.shell_line.length - 1);
                 console.log("BACK");
@@ -33,10 +33,10 @@ class Shell
                 this.command_ready = true;
                 break;
 
-                case DELETE:
-                this.continue = true; 
-                console.log("DELETE");
-                break;
+//                case DELETE:
+//                this.continue = true; 
+//                console.log("DELETE");
+//                break;
 
                 default:
                 // Pass
