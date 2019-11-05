@@ -7,7 +7,7 @@ const tok_type = {
     STRING:   5
 };
 
-const TAGS = ["EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "BG", "YES", "NO"];
+const TAGS = ["ROOM", "EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "BG", "YES", "NO"];
 const TEXT_MODIFIERS = ["BREAK", "WAIT"];
 
 // Defines a segment from of each of the major tags
@@ -191,7 +191,7 @@ class Room
         } else
         {
             console.log("Too Long");
-            
+
         }
     }
 
@@ -281,6 +281,7 @@ class Parser
         this.token = new Token("", tok_type.NULL);
         this.tokens = [];
         this.rooms = new Rooms();
+        this.segments = new Segments();
     }
 
     // Seperate corpus into atomic chunks
@@ -360,9 +361,9 @@ class Parser
         // Next steps
         this.findTags();
         this.coaleaseStrings();
-        this.splitRooms();
+        //this.splitRooms();
         this.splitSegments();
-        this.printRooms();
+        //this.printRooms();
     }
 
     printTokens()
@@ -585,94 +586,163 @@ class Parser
         this.index = 0;
     }
 
+    // Old splitSegments
+    // splitSegments()
+    // {
+    //     console.log("Spliting segments");
+    //     for(var key in this.rooms.room)
+    //     {
+    //         for(var i = 0; i < this.rooms.room[key].length; ++i)
+    //         {
+    //             var index = 0;
+    //             var room = this.rooms.room[key][i];
+    //                             // Find the head
+    //             while(index < room.tokens.length)
+    //             {
+    //                 var start = 0;
+    //                 var type;
+    //                 var name;
+    //                 var conditions = [];
+    //                 var body = [];
 
-    splitSegments()
+    //                 if(room.tokens[index].type != tok_type.TAG)
+    //                 {
+    //                     console.warn("Token " + room.tokens[index].type + " before tag: " + room.tokens[index].string);
+    //                     ++index;
+    //                     continue;
+    //                 }
+
+    //                 // Fill out most of the data
+    //                 type = room.tokens[index];
+    //                 start = index;
+    //                 name = this.findNearestName(room.tokens, index);
+    //                 start = index;
+    //                 conditions = this.findNearestConditionals(room.tokens, index);
+
+    //                 console.log("Found a " + type + " segment");
+
+    //                 // Find the body
+    //                 while(index < room.tokens.length)
+    //                 {
+    //                     if(room.tokens[index].string != "{")
+    //                     {
+    //                         ++index;
+    //                         continue;
+    //                     }
+
+    //                     // Go past '{'
+    //                     ++index;
+    //                     while(index < room.tokens.length)
+    //                     {
+    //                         var tok = room.tokens[index];
+    //                         var tok_str = tok.string;
+    //                         if(tok.string == "}")
+    //                         {
+    //                             break;
+    //                         }
+
+    //                         switch(tok.type)
+    //                         {
+    //                             case tok_type.STRING:
+    //                             body.push(tok);
+    //                             break;
+
+    //                             case tok_type.PARENS:
+    //                             var complex_tok = [tok];
+    //                             while(++index < room.tokens.length)
+    //                             {
+    //                                 complex_tok.push(room.tokens[index]);
+    //                                 if(room.tokens[index].type == tok_type.PARENS)
+    //                                 {
+    //                                     break;
+    //                                 }
+    //                             }
+    //                             body.push(complex_tok);
+    //                             break;
+
+    //                             defualt:
+    //                             console.warn("You should not be here (Parser:splitSegments:switch)");
+    //                         }
+    //                         ++index;
+    //                     }
+
+    //                     // Move past '}'
+    //                     ++index;
+    //                     room.segments.addSegment(type, name, conditions, body);
+    //                     console.log(room);
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+ splitSegments()
     {
         console.log("Spliting segments");
-        for(var key in this.rooms.room)
+        var start = this.index;
+        var end = this.index;
+        while(this.index < this.tokens.length)
         {
-            for(var i = 0; i < this.rooms.room[key].length; ++i)
+            console.log("While");
+            if(this.tokens[this.index].type == tok_type.TAG)
             {
-                var index = 0;
-                var room = this.rooms.room[key][i];
-                                // Find the head
-                while(index < room.tokens.length)
+                console.log("if");
+                start = this.index;
+                var tag_tokens = [];
+                var tag_type = this.tokens[this.index].string;
+                var tag_name = this.findNearestName(this.tokens, start);
+                var tag_conditionals = this.findNearestConditionals(this.tokens, start);
+
+                // Jump to '{'
+                while(this.index < this.tokens.length)
+                    while(this.tokens[this.index].string != "{")
+                        ++this.index;
+
+                ++this.index;
+                // Search until we find the next a '}'
+                while(this.index < this.tokens.length)
                 {
-                    var start = 0;
-                    var type;
-                    var name;
-                    var conditions = [];
-                    var body = [];
-
-                    if(room.tokens[index].type != tok_type.TAG)
+                    if(this.tokens[this.index].string == '}')
                     {
-                        console.warn("Token " + room.tokens[index].type + " before tag: " + room.tokens[index].string);
-                        ++index;
-                        continue;
-                    }
-
-                    // Fill out most of the data
-                    type = room.tokens[index];
-                    start = index;
-                    name = this.findNearestName(room.tokens, index);
-                    start = index;
-                    conditions = this.findNearestConditionals(room.tokens, index);
-
-                    console.log("Found a " + type + " segment");
-
-                    // Find the body
-                    while(index < room.tokens.length)
-                    {
-                        if(room.tokens[index].string != "{")
-                        {
-                            ++index;
-                            continue;
-                        }
-
-                        // Go past '{'
-                        ++index;
-                        while(index < room.tokens.length)
-                        {
-                            var tok = room.tokens[index];
-                            var tok_str = tok.string;
-                            if(tok.string == "}")
-                            {
-                                break;
-                            }
-
-                            switch(tok.type)
-                            {
-                                case tok_type.STRING:
-                                body.push(tok);
-                                break;
-
-                                case tok_type.PARENS:
-                                var complex_tok = [tok];
-                                while(++index < room.tokens.length)
-                                {
-                                    complex_tok.push(room.tokens[index]);
-                                    if(room.tokens[index].type == tok_type.PARENS)
-                                    {
-                                        break;
-                                    }
-                                }
-                                body.push(complex_tok);
-                                break;
-
-                                defualt:
-                                console.warn("You should not be here (Parser:splitSegments:switch)");
-                            }
-                            ++index;
-                        }
-
-                        // Move past '}'
-                        ++index;
-                        room.segments.addSegment(type, name, conditions, body);
-                        console.log(room);
+                        end = this.index;
                         break;
                     }
+
+                    var tok = this.tokens[this.index];
+                    switch(tok.type)
+                    {
+                        case tok_type.STRING:
+                        tag_tokens.push(tok);
+                        break;
+
+                        case tok_type.PARENS:
+                        var complex_tok = [tok];
+                        while(++this.index < this.tokens.length)
+                        {
+                            complex_tok.push(this.tokens[this.index]);
+                            // TODO change to check for appropriot end parens
+                            if(room.tokens[index].type == toke_type.PARENS)
+                                break;
+                        }
+                        tag_tokens.push(complex_tok);
+                        break;
+
+                        default:
+                        console.warn("You should not be here (Parser:splitSegments:switch)");
+                    }
+
+                    ++this.index;
                 }
+
+                // Move Past '}'
+                //++this.index;
+
+                // Add a new segment to the list
+                this.segments.addSegment(tag_type, tag_name, tag_conditionals, tag_tokens);
+                console.log(new Segment(tag_type, tag_name, tag_conditionals, tag_tokens));
             }
+            ++this.index;
         }
     }
 
