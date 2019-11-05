@@ -213,7 +213,7 @@ class ActionQueue
             inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
             var inventory_num = (this.qeueu[0].string.match(/+/g) || []).length;
             var offset = 0;
-            if(this.queu.string.match(\+))
+            if(this.queue[0].string.match("\+"))
                 offset = 3;
 
             switch(inventory_num + offset)
