@@ -13,16 +13,7 @@ const tok_type = {
 };
 
 
-function soundEffect(sound)
-{
-    play(sound);
-}
 
-function backgroundMusic(sound)
-{
-    setLoop(true);
-    play(sound);
-}
 
 
 
@@ -50,6 +41,12 @@ class Tag {
 
     isValid(playerInv, roomInv, globalInv) {
         //check inventories
+        console.log("player:");
+        console.log(playerInv);
+        console.log("room:");
+        console.log(roomInv);
+        console.log("global:")
+        console.log(globalInv);
         var i=0;
         while (i < 3) {
             var inv;
@@ -63,11 +60,17 @@ class Tag {
                 default:
                     break;
             }
-            for (cond in this.conditionals[i]) {
-                if (!(cond in inv)) {
-                    return false;
+            console.log("Cond");
+                for(var k = 0; k < this.conditionals.length; ++k) {
+                    //check if this.conditionals[i][k] in inv;
+                    console.log(this.conditionals[k]);
+                    if(this.conditionals[k] === [])
+                        if (!(this.conditionals[k] in inv)) {
+                            return false;
+                        
                 }
             }
+            ++i;
         }
         return true;
     }
@@ -76,44 +79,49 @@ class Tag {
         //chop content (everything inside the {}) into a series of tokens
         var tokens = [];
         var i = 0;
+        var current_string = "";
         while (i < content.length) {
             var current_char = content[i];
-            var current_string = "";
             switch(current_char) {
                 case "*": //is a SFX
-                    if (current_string) {
+                    if (current_string && /\S/.test(current_string)) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
                     var token_str = content.slice(i+1,content.indexOf("*",i+1));
                     tokens.push(new Token(token_str,tok_type.SFX));
+                    i = content.indexOf("*",i+1);
                     break;
                 case "<": //is a BGM
-                    if (current_string) {
+                    if (current_string && /\S/.test(current_string)) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
                     var token_str = content.slice(i+1,content.indexOf(">",i+1));
                     tokens.push(new Token(token_str,tok_type.BGM));
+                    i = content.indexOf(">",i+1)
                     break;
                 case "[": //is a link
-                    if (current_string) {
+                    if (current_string && /\S/.test(current_string)) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
                     var token_str = content.slice(i+2,content.indexOf("]",i+1));
                     tokens.push(new Token(token_str,tok_type.LINK));
+                    i = content.indexOf("]",i+1)
                     break;
                 case "^": //is an inventory mod
-                    if (current_string) {
+                    if (current_string && /\S/.test(current_string)) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
                     var token_str = content.slice(i+1,content.indexOf("^",i+1));
                     tokens.push(new Token(token_str,tok_type.INV_MOD));
+                    console.log("HAT BOI="+token_str);
+                    i = content.indexOf("^",i+1)
                     break;
                 case "|": //is a BREAK or DELAY (bad hardcoding alert!)
-                    if (current_string) {
+                    if (current_string && /\S/.test(current_string)) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
@@ -123,6 +131,7 @@ class Tag {
                         var token_str = content.slice(content.indexOf(" ",i+1),content.indexOf("|",i+1)); //get ms of delay
                         tokens.push(new Token(token_str,tok_type.DELAY));
                     }
+                    i = content.indexOf("|",i+1);
                     break;
                 default: //is a string
                     current_string += current_char;
@@ -130,6 +139,8 @@ class Tag {
             }
             ++i;
         }
+        tokens.push(new Token(current_string,tok_type.STRING));
+        console.log("CURRENT_STRING="+current_string);
         return tokens;
     }
 }
@@ -140,10 +151,17 @@ class Tag {
 // tick as well handling the linking of actions with their definitions
 class ActionQueue
 {
-    constructor()
+    constructor(parser, sfxFunc, bgFunc)
     {
+        this.parser = parser;
+        this.sfxFunc = sfxFunc;
+        this.bgFunc = bgFunc;
         this.queue = [];
+        this.stale = true;
         this.display_string = undefined;
+        this.full_string = undefined;
+        this.string_pointer = 0;
+        this.print_wait = 0;
         this.timer = undefined;
     }
 
@@ -151,29 +169,36 @@ class ActionQueue
     {
         if(this.queue.length == 0)
         {
+            this.stale = true;
             this.queue.push(content);
             this.next();
         } else
         {
             this.queue.push(content);
         }
+        console.log("Queue was pushed :(");
+        console.log(this.queue);
     }
 
     next()
     {
-        if(this.queue.length > 0)
+        console.log("Queue was nexted :)");
+        if(this.queue.length > 0 && !this.stale)
             this.queue = this.queue.slice(1, this.queue.length);
-
+        this.stale = false;
         // Stop if empty
         if(this.queue.length == 0)
             return;
 
+        console.log("Queue next type: " + this.queue[0].type);
         switch(this.queue[0].type)
         {
             case tok_type.STRING:
             console.log("Found a print string");
             //call print function on token.string
-            this.display_string = new StringClass(token.string, 200, 0, 800);
+            this.full_string = this.queue[0].string;
+            this.string_pointer = 0;
+            this.display_string = new printClass(this.queue[0].string.slice(0, Math.min(this.string_pointer++, this.full_string.length)), -400,-250,800);
             break;
 
             case tok_type.BREAK:
@@ -192,14 +217,14 @@ class ActionQueue
             console.log("Found a call SFX");
 
             //play SFX (file path given by token.string)
-            loadSound(this.queue[0].string, soundEffect);
+            loadSound(this.queue[0].string, this.sfxFunc);
             break;
 
             case tok_type.BGM:
             console.log("Found a call BGM");
 
             //play BGM (file path given by token.string)
-            loadSound(this.queue[0].string, backgroundMusic);
+            loadSound(this.queue[0].string, this.bgFunc);
             break;
 
             case tok_type.INV_MOD:
@@ -209,30 +234,60 @@ class ActionQueue
             //modify inventory accordingly
             //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
             // TODO need access to the parser
-            inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
-            var inventory_num = (this.queue[0].string.match("/+/g") || []).length;
-            var offset = 0;
-            if(this.queue[0].string.match("\+"))
-                offset = 3;
-
-            switch(inventory_num + offset)
+            var inventory_num;
+            if(this.queue[0].string[2] == "-")
+                inventory_num = 3;
+            else if(this.queue[0].string[1] == "-")
+                inventory_num = 2;
+            else if(this.queue[0].string[0] == "-")
+                inventory_num = 1;
+            else if(this.queue[0].string[2] == "+")
+                inventory_num = 6;
+            else if(this.queue[0].string[1] == "+")
+                inventory_num = 5;
+            else if(this.queue[0].string[0] == "+")
+                inventory_num = 4;
+            else
+                console.warn("Error in indexing");
+                console.log(this.queue[0]);
+                
+                
+            switch(inventory_num)
             {
                 case 1:  // -
+                    var inventory = this.parser.player_inventory;
+                    var item = this.queue[0].string.slice(1,this.queue[0].string.length);
+                    inventory.remove(item);
                 break;
 
                 case 2:  // --
+                    var inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
+                    var item = this.queue[0].string.slice(2,this.queue[0].string.length);
+                    inventory.remove(item);
                 break;
 
                 case 3:  // ---
+                    var inventory = this.parser.global_inventory;
+                    var item = this.queue[0].string.slice(3,this.queue[0].string.length);
+                    inventory.remove(item);
                 break;
 
                 case 4:  // +
+                    var inventory = this.parser.player_inventory;
+                    var item = this.queue[0].string.slice(1,this.queue[0].string.length);
+                    inventory.add(item);
                 break;
 
                 case 5:  // ++
+                    var inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
+                    var item = this.queue[0].string.slice(2,this.queue[0].string.length);
+                    inventory.add(item);
                 break;
 
                 case 6:  // +++
+                    var inventory = this.parser.global_inventory;
+                    var item = this.queue[0].string.slice(3,this.queue[0].string.length);
+                    inventory.add(item);
                 break;
 
                 default:
@@ -246,7 +301,9 @@ class ActionQueue
             //changed current room
             // TODO the current room needs to be changed
             // Abort everything that we are currently planning on doing
-            this.queue = [];
+                var new_room = this.queue[0].string;
+                this.queue = [];
+                this.parser.query("ROOM", new_room);
             break;
 
             default:
@@ -258,19 +315,37 @@ class ActionQueue
 
     run()
     {
+        //console.log("Queue was runed >:)");
         // Do nothing if queue is empty
-        if(this.queue[0].length == 0)
+        if(this.display_string)
+            {
+                console.log("YES STINRG");
+            this.display_string.oprint();
+            }
+        else
+            console.log("NO STRING");
+        
+        if(this.queue == [] || this.queue.length == 0)
             return;
 
-        switch(this.queue.type)
+        //console.log("Queue type: " + this.queue[0].type);
+        switch(this.queue[0].type)
         {
             case tok_type.STRING:
-            console.log("Running print string");
-            this.display_string.oprint();
-
+            //console.log("Running print string");
+            if(Math.floor(millis()) >= this.print_wait)
+            {
+                //console.log("Running print string");
+                this.display_string = new printClass(this.full_string.slice(0, Math.min(this.string_pointer++, this.full_string.length)), -400,-250,800);
+                this.print_wait = Math.floor(millis()) + 5;
+            }
+                this.display_string.oprint();
             // Check if the printing is over, move to the next item if it is
-            if(true)
-                this.next();
+            if(this.string_pointer-1 >= this.full_string.length)
+                {
+                    //this.display_string = undefined;
+                //this.next();
+                }
             break;
 
             case tok_type.BREAK:
@@ -314,20 +389,27 @@ class ActionQueue
             break;
 
             default:
-            console.warn("Running invalid token in ActionQueue");
+            console.warn("Running invalid token in ActionQueue: " + this.queue[0].type);
             break;
         }
+
     }
 
     interupt()
     {
-        switch(this.queue.type)
+        //console.log("Queue was runed >:)");
+        // Do nothing if queue is empty
+        if(this.queue == [] || this.queue.length == 0)
+            return;
+        
+        switch(this.queue[0].type)
         {
             case tok_type.STRING:
             console.log("Interrupting print string");
 
             // TODO shortcut the typing text to immediately show everything
-            this.display_string.oprint();
+            this.display_string = new printClass(this.full_string, -400,-250,800);
+            this.display_string.oprint();   
             this.next();
             break;
 
@@ -375,14 +457,14 @@ class ActionQueue
             break;
 
             default:
-            console.warn("Interrupting invalid token in ActionQueue");
+            console.warn("Interrupting invalid token in ActionQueue: " + this.queue[0].type + " " + tok_type.STRING);
             break;
         }
     }
 }
 
 class Parser {
-    constructor(corpus, player_inventory, global_inventory) { //add queue of tokens to run
+    constructor(corpus, player_inventory, global_inventory, sfxFunc, bgFunc) { //add queue of tokens to run
         console.log(corpus);
         this.corpus = corpus;
         this.player_inventory = player_inventory;
@@ -391,7 +473,7 @@ class Parser {
         this.current_room = null;
         this.room_inventories = []; //array of room inventories
         this.tags = []; //[EXAMINE[], USE[], TALK[], ...]
-        this.action_queue = new ActionQueue();
+        this.action_queue = new ActionQueue(this, sfxFunc, bgFunc);
     }
     chopIntoTags() {
         var tag_indexes = []; //array of array of indexes of each TAGS type
@@ -429,11 +511,17 @@ class Parser {
                 var conditionals = this.findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
                 var tag;
+                if (TAGS[i] == "ROOM" && name == "init" && this.current_room == null) {
+                    this.rooms.add(name);
+                    this.room_inventories.push(new Inventory());
+                    this.current_room = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
+                }
                 if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
                     this.rooms.add(name);
+                    this.room_inventories.push(new Inventory());
                     tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
                 } else if (TAGS[i] == "ROOM") {
-                    tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
+                    tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1); //little bit dicey if room tags aren't grouped
                 } else {
                     tag = new Tag(type,name,conditionals,content);
                 }
@@ -447,32 +535,40 @@ class Parser {
     }
     findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy
         var conditionals = [];
-        if (string.match("\$.*?\$") != null) {
-            conditionals.push(string.match("\$.*?\$"));
+        console.log("STRINGGGGGGGG="+string);
+        if (string.match("/\$(.*?)\$/g") != null) {
+            console.log("player conditionals!!!!!!!!!");
+            conditionals.push(string.match("/\$(.*?)\$/g")[0]);
         } else {
             conditionals.push([]);
         }
-        if (string.match("\&.*?\&") != null) {
-            conditionals.push(string.match("\&.*?\&"));
+        if (string.match("&(.*?)&") != null) {
+            conditionals.push(string.match("&(.*?)&")[1]);
         } else {
             conditionals.push([]);
         }
         if (string.match("\%.*?\%") != null) {
-            conditionals.push(string.match("\%.*?\%"));
+            conditionals.push(string.match("\%(.*?)\%")[1]);
         } else {
             conditionals.push([]);
         }
         return conditionals;
     }
     query(action, name) {
+        console.log("running queury");
         //get goal tag
         var tag_type = action.toUpperCase();
         var tag_type_index = TAGS.indexOf(tag_type);
+        console.log("TAG_TYPE="+tag_type+" TAG_TYPE_INDEX="+tag_type_index);
         var i = 0;
         var goal_tag = null;
         while (i < this.tags[tag_type_index].length) {
+            console.log("BEGIN FIRST WHILE="+i);
             var current_tag = this.tags[tag_type_index][i];
-            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null;) {
+            console.log(current_tag.content_sequence);
+            console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
+            console.log("CURRENT_ROOM="+this.current_room.inventory_index);
+            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null) {
                 goal_tag = current_tag;
             } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count) {
                 goal_tag = current_tag;
@@ -482,9 +578,19 @@ class Parser {
         //add content tokens of goal_tag to action_queue
         i = 0;
         while (i < goal_tag.content_sequence.length) {
+            console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
             this.action_queue.push(goal_tag.content_sequence[i]);
             ++i;
         }
+    }
+    run() {
+        this.action_queue.run();
+    }
+    
+    interupt()
+    {
+        
+        this.action_queue.interupt();
     }
 }
 

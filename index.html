@@ -8,7 +8,6 @@
     <script src="p5.js"></script>
     <script src="p5.dom.js"></script>
     <script src="p5.sound.js"></script>
-    <script src="sketch.js"></script>
     <script src="printClass.js"></script>
     <script src="inventory.js"></script>
     <script src="shell.js"></script>
@@ -17,6 +16,8 @@
   <body>
       
       <script>
+
+          
       var narrative;
        var player_inventory;
        var global_inventory;
@@ -26,7 +27,7 @@
        var stringPointer = 0;
        var txt_brk = false;
        var parser;
-       var shell;
+       var shell = undefined;
        //var sound;
        function preload()
        {
@@ -56,10 +57,15 @@
            global_inventory = new Inventory();
 
            console.log("attempt parser");
-           parser = new Parser(narrative, player_inventory, global_inventory);
+           parser = new Parser(narrative, player_inventory, global_inventory, soundEffect, backgroundMusic);
            console.log("made parser, attempt chopping");
            parser.chopIntoTags();
            console.log("successfully chopped");
+           console.log("hello?");
+           console.log(parser.query);
+           parser.query("ROOM", "init");
+           console.log("successfully queueried");
+           shell = new Shell(width, height, text_font, text_size);
            /*
            parser.tokenize();
            parser.printTokens();
@@ -72,17 +78,17 @@
            //parser.rooms.current_room.next(player_inventory, global_inventory);
            //parser.rooms.current_room.next(player_inventory, global_inventory);
            //loadSound("sounds/SFX/lanternUse.mp3", audioCallback);
-           shell = new Shell(width, height, text_font, text_size);
+           
            */
        }
-/*
+
        function draw() {
            // Main game loop
            background(0);
            let time = Math.floor(millis());
            if(parser !== undefined)
                {
-           parser.rooms.current_room.draw();
+           parser.run();
                }
            else
            {
@@ -97,6 +103,7 @@
        }
 
        function keyTyped() {
+           parser.interupt();
            shell.keyTyped();
            if(shell.commandReady())
                executeCommand();
@@ -110,7 +117,7 @@
        function executeCommand()
        {
            var command = shell.getCommand();
-           shell.shell_line = "> ";
+           //shell.shell_line = "> ";
            var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory", "yes", "no"];
            var short_command_list = ["e", "u", "l", "g", "t", "h", "y", "n"];
            
@@ -167,7 +174,17 @@
 
        }
 
-*/
+          function soundEffect(sound)
+            {
+                sound.play();
+            }
+
+          function backgroundMusic(sound)
+          {
+                sound.setLoop(true);
+                sound.play();
+          }
+          
 
       </script>
   </body>

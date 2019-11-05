@@ -7,19 +7,19 @@ class Inventory
 
     add(item)
     {
-        this.items.add(item.string);
+        this.items.add(item);
     }
 
     remove(item)
     {
-        this.items.delete(item.string);
+        this.items.delete(item);
     }
 
     has(item)
     {
         console.log("Inventory:has");
         console.log(item);
-        console.log(this.items);
+        console.log(this);
         if(!item)
             return true;
         if(Array.isArray(item))

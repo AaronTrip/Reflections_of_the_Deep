@@ -25,6 +25,7 @@ class Shell
                 case BACKSPACE:  // Backspace
                 if(this.shell_line.length > 2)
                     this.shell_line = this.shell_line.slice(0, this.shell_line.length - 1);
+                console.log("BACK");
                 break;
 
                 case RETURN: // Newline
@@ -34,7 +35,7 @@ class Shell
 
                 case DELETE:
                 this.continue = true; 
-                console.log("RIGHT");
+                console.log("DELETE");
                 break;
 
                 default:
@@ -51,7 +52,10 @@ class Shell
 
     getCommand()
     {
-        return this.shell_line.slice(2, this.shell_line.length).toLowerCase().split(' ');
+        this.command_ready = false;
+        var ret_val = this.shell_line.slice(2, this.shell_line.length).toLowerCase().split(' ');
+        this.shell_line = "> ";
+        return ret_val;
     }
 
     // Draws the line
