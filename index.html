@@ -12,7 +12,7 @@
     <script src="printClass.js"></script>
     <script src="inventory.js"></script>
     <script src="shell.js"></script>
-    <script src="parser.js"></script>
+    <script src="kylaParser.js"></script>
   </head>
   <body>
       
@@ -55,6 +55,8 @@
            player_inventory = new Inventory();
            global_inventory = new Inventory();
            parser = new Parser(narrative, player_inventory, global_inventory);
+           parser.chopIntoTags();
+           /*
            parser.tokenize();
            parser.printTokens();
 
@@ -67,8 +69,9 @@
            //parser.rooms.current_room.next(player_inventory, global_inventory);
            //loadSound("sounds/SFX/lanternUse.mp3", audioCallback);
            shell = new Shell(width, height, text_font, text_size);
+           */
        }
-
+/*
        function draw() {
            // Main game loop
            background(0);
@@ -160,7 +163,7 @@
 
        }
 
-
+*/
 
       </script>
   </body>

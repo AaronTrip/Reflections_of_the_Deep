@@ -342,13 +342,13 @@ class Parser {
         this.tags = []; //[EXAMINE[], USE[], TALK[], ...]
     }
     chopIntoTags() {
-        tag_indexes = []; //array of array of indexes of each TAGS type
+        var tag_indexes = []; //array of array of indexes of each TAGS type
         //find the indexes of every tag
         for (tag in TAGS) {
             var tag_list = [];
             var index = 0;
             while (index < this.corpus.length) {
-                found_index = this.corpus.indexOf(tag,index);
+                var found_index = this.corpus.indexOf(tag,index);
                 if (found_index < -1) {
                     break;
                 }
@@ -371,10 +371,13 @@ class Parser {
                 if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
                     this.rooms.add(name);
                     tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
+                } else if (TAGS[i] == "ROOM") {
+                    tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
                 } else {
                     tag = new Tag(type,name,conditionals,content);
                 }
                 tag_objects.push(tag);
+                console.log("NAME="+tag.name+"CONTENT="+ content + "\n\n");
             }
             this.tags.push(tag_objects);
         }
