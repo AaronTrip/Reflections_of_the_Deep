@@ -464,46 +464,37 @@ class Parser {
         }
         return conditionals;
     }
-    contentSequenceHandler(token_list) {//not used
-        for (token in token_list) {
-            console.log("TOKEN.STRING="+token.string);
-            switch(token.type) {
-                case tok_type.STRING:
-                    //call print function on token.string
-                    display_string = new StringClass(token.string, 200, 0, 800);
-                    display_string.oprint();
-                    console.log("print string");
-                    break;
-                case tok_type.BREAK:
-                    //call break function
-                    console.log("call break");
-                    break;
-                case tok_type.DELAY:
-                    //execute delay (make sure this doesn't interfere with sound)
-                    console.log("call delay");
-                    break;
-                case tok_type.SFX:
-                    //play SFX (file path given by token.string)
-                    console.log("call SFX");
-                    break;
-                case tok_type.BGM:
-                    //play BGM (file path given by token.string)
-                    console.log("call BGM");
-                    break;
-                case tok_type.INV_MOD:
-                    //check which type of inventory mod it is by counting the +/-
-                    //modify inventory accordingly
-                    //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
-                    console.log("edit inventory");
-                    break;
-                case tok_type.LINK:
-                    //changed current room
-                    console.log("link to room");
-                    break;
-                default:
-                    console.warn("Invalid token in contentSequenceHandler");
-                    break;
+    query(action, name) {
+        //get goal tag
+        var tag_type = action.toUpperCase();
+        var tag_type_index = TAGS.indexOf(tag_type);
+        var i = 0;
+        var goal_tag = null;
+        while (i < this.tags[tag_type_index].length) {
+            var current_tag = this.tags[tag_type_index][i];
+            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null;) {
+                goal_tag = current_tag;
+            } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count) {
+                goal_tag = current_tag;
             }
+            ++i;
+        }
+        //add content tokens of goal_tag to action_queue
+        i = 0;
+        while (i < goal_tag.content_sequence.length) {
+            this.action_queue.push(goal_tag.content_sequence[i]);
+            ++i;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
