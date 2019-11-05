@@ -432,6 +432,7 @@ class Parser {
                 console.log("NAME="+tag.name+"CONTENT="+ content + "\n\n");
             }
             this.tags.push(tag_objects);
+            ++i;
         }
     }
     findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy
