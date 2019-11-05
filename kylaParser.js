@@ -118,16 +118,15 @@ class Tag {
 }
 
 class Parser {
-    constructor(corpus, player_inventory, global_inventory) {
+    constructor(corpus, player_inventory, global_inventory) { //add queue of tokens to run
         console.log(corpus);
         this.corpus = corpus;
         this.player_inventory = player_inventory;
         this.global_inventory = global_inventory;
-        this.rooms = []; //store room tags here
+        this.rooms = new Set(); //store room tags here as a set of names 
         this.current_room = null;
         this.room_inventories = []; //array of room inventories
         this.tags = []; //[EXAMINE[], USE[], TALK[], ...]
-        chopIntoTags();
     }
     chopIntoTags() {
         tag_indexes = []; //array of array of indexes of each TAGS type
@@ -152,43 +151,48 @@ class Parser {
             for (index in tag_indexes[i]) {
                 var type = TAGS[i];
                 var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{"));
-                var name = tag_info_string.match(\[.*?\])[0];
+                var name = tag_info_string.match(\[.*?\])[0]; //check this regular expression!
                 var conditionals = findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
-                if (TAGS[i] == "ROOM") {
+                if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
+                    this.rooms.add(name);
                     var tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
+                    tag_objects.push(tag);
                 } else {
                     var tag = new Tag(type,name,conditionals,content);
+                    tag_objects.push(tag);
                 }
             }
             this.tags.push(tag_objects);
         }
     }
-    findConditionals(string) {
+    findConditionals(string) { //use grouping to get rid of brackets in conditionals -- make sure is greedy 
         var conditionals = [];
-        if (string.match(\$.*?\$) != null) {
-            conditionals.push(string.match(\$.*?\$));
+        if (string.match(\$.*\$) != null) {
+            conditionals.push(string.match(\$.*\$));
         } else {
             conditionals.push([]);
         }
-        if (string.match(\&.*?\&) != null) {
-            conditionals.push(string.match(\&.*?\&));
+        if (string.match(\&.*\&) != null) {
+            conditionals.push(string.match(\&.*\&));
         } else {
             conditionals.push([]);
         }
-        if (string.match(\%.*?\%) != null) {
-            conditionals.push(string.match(\%.*?\%))
+        if (string.match(\%.*\%) != null) {
+            conditionals.push(string.match(\%.*\%))
         } else {
             conditionals.push([]);
         }
         return conditionals;                  
     }
-    contentSequenceHandler(token_list) {
+    contentSequenceHandler(token_list) {//not used
         for (token in token_list) {
             console.log("TOKEN.STRING="+token.string);
             switch(token.type) {
                 case tok_type.STRING:
                     //call print function on token.string
+                    display_string = new StringClass(token.string, 200, 0, 800);
+                    display_string.oprint();
                     console.log("print string");
                     break;
                 case tok_type.BREAK:
