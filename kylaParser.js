@@ -163,8 +163,7 @@ class ActionQueue
             console.log("Found a call delay");
 
             //execute delay (make sure this doesn't interfere with sound)
-            // TODO Lookup how much time to really wait instead of just using regex
-            this.timer = Math.floor(millis()) + parseInt(this.queue[0].string.match("[0-9]+"));  // ms
+            this.timer = Math.floor(millis()) + parseInt(this.queue[0].string);  // ms
             break;
 
             case tok_type.SFX:
