@@ -74,18 +74,18 @@ class Tag {
 
     createContentSequence(content) {
         //chop content (everything inside the {}) into a series of tokens
-        tokens = [];
+        var tokens = [];
         var i = 0;
         while (i < content.length) {
-            current_char = content[i];
-            current_string = "";
+            var current_char = content[i];
+            var current_string = "";
             switch(current_char) {
                 case "*": //is a SFX
                     if (current_string) {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
-                    var token_str = content.slice(i+1,indexOf("*",i+1));
+                    var token_str = content.slice(i+1,content.indexOf("*",i+1));
                     tokens.push(new Token(token_str,tok_type.SFX));
                     break;
                 case "<": //is a BGM
@@ -93,7 +93,7 @@ class Tag {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
-                    var token_str = content.slice(i+1,indexOf(">",i+1));
+                    var token_str = content.slice(i+1,content.indexOf(">",i+1));
                     tokens.push(new Token(token_str,tok_type.BGM));
                     break;
                 case "[": //is a link
@@ -101,7 +101,7 @@ class Tag {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
-                    var token_str = content.slice(i+2,indexOf("]",i+1));
+                    var token_str = content.slice(i+2,content.indexOf("]",i+1));
                     tokens.push(new Token(token_str,tok_type.LINK));
                     break;
                 case "^": //is an inventory mod
@@ -109,7 +109,7 @@ class Tag {
                         tokens.push(new Token(current_string,tok_type.STRING));
                         current_string = "";
                     }
-                    var token_str = content.slice(i+1,indexOf("^",i+1));
+                    var token_str = content.slice(i+1,content.indexOf("^",i+1));
                     tokens.push(new Token(token_str,tok_type.INV_MOD));
                     break;
                 case "|": //is a BREAK or DELAY (bad hardcoding alert!)
@@ -140,9 +140,8 @@ class Tag {
 // tick as well handling the linking of actions with their definitions
 class ActionQueue
 {
-    constructor(parser)
+    constructor()
     {
-        this.parser = parser;
         this.queue = [];
         this.display_string = undefined;
         this.timer = undefined;
@@ -211,7 +210,7 @@ class ActionQueue
             //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
             // TODO need access to the parser
             inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
-            var inventory_num = (this.qeueu[0].string.match(/+/g) || []).length;
+            var inventory_num = (this.queue[0].string.match("/+/g") || []).length;
             var offset = 0;
             if(this.queue[0].string.match("\+"))
                 offset = 3;
@@ -392,32 +391,42 @@ class Parser {
         this.current_room = null;
         this.room_inventories = []; //array of room inventories
         this.tags = []; //[EXAMINE[], USE[], TALK[], ...]
+        this.action_queue = new ActionQueue();
     }
     chopIntoTags() {
         var tag_indexes = []; //array of array of indexes of each TAGS type
         //find the indexes of every tag
-        for (tag in TAGS) {
+        console.log("beginning the indexing");
+        for (i in TAGS) {
+            var tag = TAGS[i];
             var tag_list = [];
             var index = 0;
             while (index < this.corpus.length) {
+                console.log(tag);
                 var found_index = this.corpus.indexOf(tag,index);
-                if (found_index < -1) {
+                if (found_index == -1) {
                     break;
                 }
                 tag_list.push(found_index);
-                index = found_index;
+                index = found_index+1; //maybe error
+                
             }
             tag_indexes.push(tag_list);
         }
+        console.log("successfully made the indexes");
         //iterate though all the tag indexes, turning them into Tag objects
         var i = 0;
+        console.log("beginning the tags");
         while (i < tag_indexes.length) {
             var tag_objects = [];
-            for (index in tag_indexes[i]) {
+            var j = 0;
+            var index = tag_indexes[i][j];
+            while (j < tag_indexes[i].length) {
+                var index = tag_indexes[i][j];
                 var type = TAGS[i];
-                var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{"));
-                var name = tag_info_string.match("\[.*?\]")[0]; //check this regular expression!
-                var conditionals = findConditionals(tag_info_string);
+                var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{",index));
+                var name = tag_info_string.match(/\[(.*?)\]/)[1]; //check this regular expression!
+                var conditionals = this.findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
                 var tag;
                 if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
@@ -429,7 +438,8 @@ class Parser {
                     tag = new Tag(type,name,conditionals,content);
                 }
                 tag_objects.push(tag);
-                console.log("NAME="+tag.name+"CONTENT="+ content + "\n\n");
+                console.log("NAME="+tag.name+"  CONTENT="+ content + "\n\n");
+                ++j;
             }
             this.tags.push(tag_objects);
             ++i;
@@ -495,8 +505,5 @@ class Parser {
                     break;
             }
         }
-    }
-    query(action,name) {
-
     }
 }
