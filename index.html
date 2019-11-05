@@ -54,11 +54,12 @@
            narrative = narrative.join(" ");
            player_inventory = new Inventory();
            global_inventory = new Inventory();
-           console.log("Making a new parser");
+
+           console.log("attempt parser");
            parser = new Parser(narrative, player_inventory, global_inventory);
-           console.log("Coppin");
+           console.log("made parser, attempt chopping");
            parser.chopIntoTags();
-           console.log("Done choppin");
+           console.log("successfully chopped");
            /*
            parser.tokenize();
            parser.printTokens();
