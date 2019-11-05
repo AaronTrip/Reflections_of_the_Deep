@@ -12,6 +12,21 @@ const tok_type = {
     LINK:       7
 };
 
+
+function soundEffect(sound)
+{
+    play(sound);
+}
+
+function backgroundMusic(sound)
+{
+    setLoop(true);
+    play(sound);
+}
+
+
+
+
 //where to set initial room?
 
 class Token
@@ -125,8 +140,9 @@ class Tag {
 // tick as well handling the linking of actions with their definitions
 class ActionQueue
 {
-    constructor()
+    constructor(parser)
     {
+        this.parser = parser;
         this.queue = [];
         this.display_string = undefined;
         this.timer = undefined;
@@ -134,7 +150,14 @@ class ActionQueue
 
     push(content)
     {
-        this.queue.push(content);
+        if(this.queue.length == 0)
+        {
+            this.queue.push(content);
+            this.next();
+        } else
+        {
+            this.queue.push(content);
+        }
     }
 
     next()
@@ -170,14 +193,14 @@ class ActionQueue
             console.log("Found a call SFX");
 
             //play SFX (file path given by token.string)
-            // TODO setup the sound loading/callback
+            loadSound(this.queue[0].string, soundEffect);
             break;
 
             case tok_type.BGM:
             console.log("Found a call BGM");
 
             //play BGM (file path given by token.string)
-            // TODO setup the callback function to handle this
+            loadSound(this.queue[0].string, backgroundMusic);
             break;
 
             case tok_type.INV_MOD:
@@ -186,7 +209,36 @@ class ActionQueue
             //check which type of inventory mod it is by counting the +/-
             //modify inventory accordingly
             //use this.room_inventories[this.current_room.inventory_index] to access current room inventory
-            // TODO
+            // TODO need access to the parser
+            inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
+            var inventory_num = (this.qeueu[0].string.match(/+/g) || []).length;
+            var offset = 0;
+            if(this.queu.string.match(\+))
+                offset = 3;
+
+            switch(inventory_num + offset)
+            {
+                case 1:  // -
+                break;
+
+                case 2:  // --
+                break;
+
+                case 3:  // ---
+                break;
+
+                case 4:  // +
+                break;
+
+                case 5:  // ++
+                break;
+
+                case 6:  // +++
+                break;
+
+                default:
+                console.warn("Uh oh spagatio");
+            }
             break;
 
             case tok_type.LINK:
