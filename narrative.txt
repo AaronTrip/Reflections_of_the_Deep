@@ -3,19 +3,22 @@ ROOM [init] {
 <sounds/BGM/introAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
+^++can_respond^
 } 
 
-YES [yes] &init& {
+YES [yes] &init& &can_respond& {
 You nod your head and give him a weak smile. He reaches over and, plucking your glass from the table, says “You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” He sets down your now full glass in front of you and with a smile departs, exiting through the West door labeled "Staff Only".
 *sounds/SFX/glassFilled.mp3*
 ^++full_glass^
 |BREAK|
 Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
+^--can_respond^
 } 
-NO [no] &init& {
+NO [no] &init& &can_respond& {
 You shake your head and he smiles politely at you saying, “Let me know if you change your mind. You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” With a smile he departs, exiting through the West door labeled "Staff Only".
 |BREAK|
 Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
+^--can_respond^
 }
 
 EXAMINE [glass] {
