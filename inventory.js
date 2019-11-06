@@ -17,9 +17,10 @@ class Inventory
 
     has(item)
     {
+        /*
         console.log("Inventory:has");
         console.log(item);
-        console.log(this);
+        console.log(this);*/
         if(!item)
             return true;
         if(Array.isArray(item))
@@ -30,7 +31,7 @@ class Inventory
             return true;
         } else
         {
-            console.log(item);
+            //console.log(item);
             return this.items.has(item);
         }
     }

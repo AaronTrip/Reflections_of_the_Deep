@@ -42,6 +42,7 @@ class Tag {
     }
 
     isValid(playerInv, roomInv, globalInv) {
+        /*
         console.log("playerInv:");
         console.log(playerInv);
         console.log("roomInv:");
@@ -50,28 +51,28 @@ class Tag {
         console.log(globalInv);
         console.log("tag_conditionals:");
         console.log(this.conditionals);
-        
+        */
         var i=0;
         while (i < 3) {
             var inv;
             switch(i) {
                 case 0:
                     inv = playerInv;
-                    console.log("set PlaYEr InVEntOrY");
+                    //console.log("set PlaYEr InVEntOrY");
                     break;
                 case 1:
                     inv = roomInv;
-                    console.log("sEt rOoM iNVenToRy");
+                    //console.log("sEt rOoM iNVenToRy");
                     break;
                 case 2:
                     inv = globalInv;
-                    console.log("SeT GLobAl inVEnToRY");
+                    //console.log("SeT GLobAl inVEnToRY");
                     break;
                 default:
                     break;
             }
             for(var k = 0; k < this.conditionals[i].length; ++k) {
-                console.log("checked="+i);
+                //console.log("checked="+i);
                 if (!(inv.has(this.conditionals[i][k]))) {
                     return false;
                 }
@@ -97,7 +98,7 @@ class Tag {
                     var token_str = content.slice(i+1,content.indexOf("*",i+1));
                     tokens.push(new Token(token_str,tok_type.SFX));
                     i = content.indexOf("*",i+1);
-                    console.log("NEW_CONTENT_TOKEN(*)="+token_str);
+                    //console.log("NEW_CONTENT_TOKEN(*)="+token_str);
                     break;
                 case "<": //is a BGM
                     if (current_string && /\S/.test(current_string)) {
@@ -107,7 +108,7 @@ class Tag {
                     var token_str = content.slice(i+1,content.indexOf(">",i+1));
                     tokens.push(new Token(token_str,tok_type.BGM));
                     i = content.indexOf(">",i+1);
-                    console.log("NEW_CONTENT_TOKEN(<)="+token_str);
+                    //console.log("NEW_CONTENT_TOKEN(<)="+token_str);
                     break;
                 case "[": //is a link
                     if (current_string && /\S/.test(current_string)) {
@@ -117,7 +118,7 @@ class Tag {
                     var token_str = content.slice(i+2,content.indexOf("]",i+1));
                     tokens.push(new Token(token_str,tok_type.LINK));
                     i = content.indexOf("]",i+1);
-                    console.log("NEW_CONTENT_TOKEN([)="+token_str);
+                    //console.log("NEW_CONTENT_TOKEN([)="+token_str);
                     break;
                 case "^": //is an inventory mod
                     if (current_string && /\S/.test(current_string)) {
@@ -126,9 +127,9 @@ class Tag {
                     }
                     var token_str = content.slice(i+1,content.indexOf("^",i+1));
                     tokens.push(new Token(token_str,tok_type.INV_MOD));
-                    console.log("HAT BOI="+token_str);
+                    //console.log("HAT BOI="+token_str);
                     i = content.indexOf("^",i+1);
-                    console.log("NEW_CONTENT_TOKEN(^)="+token_str);
+                    //console.log("NEW_CONTENT_TOKEN(^)="+token_str);
                     break;
                 case "|": //is a BREAK or DELAY (bad hardcoding alert!)
                     if (current_string && /\S/.test(current_string)) {
@@ -142,7 +143,7 @@ class Tag {
                         tokens.push(new Token(token_str,tok_type.DELAY));
                     }
                     i = content.indexOf("|",i+1);
-                    console.log("NEW_CONTENT_TOKEN(|)="+token_str);
+                    //console.log("NEW_CONTENT_TOKEN(|)="+token_str);
                     break;
                 default: //is a string
                     current_string += current_char;
@@ -151,7 +152,7 @@ class Tag {
             ++i;
         }
         tokens.push(new Token(current_string,tok_type.STRING));
-        console.log("NEW_CONTENT_TOKEN(str)="+current_string);
+        //console.log("NEW_CONTENT_TOKEN(str)="+current_string);
         return tokens;
     }
 }
@@ -187,13 +188,13 @@ class ActionQueue
         {
             this.queue.push(content);
         }
-        console.log("Queue was pushed :(");
-        console.log(this.queue);
+        //console.log("Queue was pushed :(");
+        //console.log(this.queue);
     }
 
     next()
     {
-        console.log("Queue was nexted :)");
+        //console.log("Queue was nexted :)");
         if(this.queue.length > 0 && !this.stale)
             this.queue = this.queue.slice(1, this.queue.length);
         this.stale = false;
@@ -201,11 +202,11 @@ class ActionQueue
         if(this.queue.length == 0)
             return;
 
-        console.log("Queue next type: " + this.queue[0].type);
+        //console.log("Queue next type: " + this.queue[0].type);
         switch(this.queue[0].type)
         {
             case tok_type.STRING:
-            console.log("Found a print string");
+            //console.log("Found a print string");
             //call print function on token.string
             this.full_string = this.queue[0].string;
             this.string_pointer = 0;
@@ -213,33 +214,33 @@ class ActionQueue
             break;
 
             case tok_type.BREAK:
-            console.log("Found a call break");
+            //console.log("Found a call break");
             // We don't need to do anything here
             break;
 
             case tok_type.DELAY:
-            console.log("Found a call delay");
+            //console.log("Found a call delay");
 
             //execute delay (make sure this doesn't interfere with sound)
             this.timer = Math.floor(millis()) + parseInt(this.queue[0].string);  // ms
             break;
 
             case tok_type.SFX:
-            console.log("Found a call SFX");
+            //console.log("Found a call SFX");
 
             //play SFX (file path given by token.string)
             loadSound(this.queue[0].string, this.sfxFunc);
             break;
 
             case tok_type.BGM:
-            console.log("Found a call BGM");
+            //console.log("Found a call BGM");
 
             //play BGM (file path given by token.string)
             loadSound(this.queue[0].string, this.bgFunc);
             break;
 
             case tok_type.INV_MOD:
-            console.log("Found a edit inventory");
+            //console.log("Found a edit inventory");
 
             //check which type of inventory mod it is by counting the +/-
             //modify inventory accordingly
@@ -304,10 +305,11 @@ class ActionQueue
                 default:
                 console.warn("Uh oh spagatio");
             }
+                console.log(this.parser.player_inventory,this.parser.room_inventories[this.parser.current_room.inventory_index],this.parser.global_inventory);
             break;
 
             case tok_type.LINK:
-            console.log("Found a link to room");
+            //console.log("Found a link to room");
 
             //changed current room
             // TODO the current room needs to be changed
@@ -331,11 +333,11 @@ class ActionQueue
         // Do nothing if queue is empty
         if(this.display_string)
             {
-                console.log("YES STINRG");
+                //console.log("YES STINRG");
             this.display_string.oprint();
             }
         else
-            console.log("NO STRING");
+            //console.log("NO STRING");
         
         if(this.queue == [] || this.queue.length == 0)
             return;
@@ -417,7 +419,7 @@ class ActionQueue
         switch(this.queue[0].type)
         {
             case tok_type.STRING:
-            console.log("Interrupting print string");
+            //console.log("Interrupting print string");
 
             // TODO shortcut the typing text to immediately show everything
             this.display_string = new printClass(this.full_string, -400,-250,800);
@@ -426,21 +428,21 @@ class ActionQueue
             break;
 
             case tok_type.BREAK:
-            console.log("Interrupting call break");
+            //console.log("Interrupting call break");
 
             // We are now done waiting
             this.next()
             break;
 
             case tok_type.DELAY:
-            console.log("Interrupting call delay");
+            //console.log("Interrupting call delay");
 
             // Skip the delay
             this.next();
             break;
 
             case tok_type.SFX:
-            console.log("Interrupting call SFX");
+            //console.log("Interrupting call SFX");
 
             // We cannot really interrupt the sound effects, they just kinda run
             // on there own, so if we hit this just go to the next thing
@@ -449,7 +451,7 @@ class ActionQueue
 
             case tok_type.BGM:
             //play BGM (file path given by token.string)
-            console.log("Interrupting call BGM");
+            //console.log("Interrupting call BGM");
 
             // We cannot really interrupt the background audio, it just kinda runs
             // on its own, so if we hit this just go to the next thing
@@ -457,7 +459,7 @@ class ActionQueue
             break;
 
             case tok_type.INV_MOD:
-            console.log("Interrupting edit inventory");
+            //console.log("Interrupting edit inventory");
 
             // This only takes one tick to complete, so just continue anyways
             this.next();
@@ -465,7 +467,7 @@ class ActionQueue
 
             case tok_type.LINK:
             // We should never reach this point
-            console.warn("Interrupting the linking to a new room, that is bad");
+            //console.warn("Interrupting the linking to a new room, that is bad");
             break;
 
             default:
@@ -496,7 +498,7 @@ class Parser {
             var tag_list = [];
             var index = 0;
             while (index < this.corpus.length) {
-                console.log(tag);
+                //console.log(tag);
                 var found_index = this.corpus.indexOf(tag,index);
                 if (found_index == -1) {
                     break;
@@ -519,6 +521,7 @@ class Parser {
                 var index = tag_indexes[i][j];
                 var type = TAGS[i];
                 var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{",index));
+                //console.log("TAG_INFO_STRING="+tag_info_string);
                 var name = tag_info_string.match(/\[(.*?)\]/)[1]; //check this regular expression!
                 var conditionals = this.findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
@@ -550,17 +553,26 @@ class Parser {
         //three inventories
         var player_cond = [];
         var room_cond = [];
-        var global_cond = []
-        //console.log("STRINGGGGGGGG="+string);
-        if (string.match("/\$(.*?)\$/g") != null) {
-            //console.log("player conditionals!!!!!!!!!");
-            player_cond.push(string.match("/\$(.*?)\$/g")[0]);
-        }
-        if (string.match("&(.*?)&") != null) {
-            room_cond.push(string.match("&(.*?)&")[1]);
-        }
-        if (string.match("\%.*?\%") != null) {
-            global_cond.push(string.match("\%(.*?)\%")[1]);
+        var global_cond = [];
+        var i = 0;
+        while (i < string.length) {
+            switch(string[i]) {
+                case "$":
+                    player_cond.push(string.slice(i+1,string.indexOf("$",i+1)));
+                    i = string.indexOf("$",i+1);
+                    break;
+                case "&":
+                    room_cond.push(string.slice(i+1,string.indexOf("&",i+1)));
+                    i = string.indexOf("&",i+1);
+                    break;
+                case "%":
+                    global_cond.push(string.slice(i+1,string.indexOf("%",i+1)));
+                    i = string.indexOf("%",i+1);
+                    break;
+                default:
+                    break;
+            }
+            ++i;
         }
         conditionals.push(player_cond);
         conditionals.push(room_cond);
@@ -568,7 +580,7 @@ class Parser {
         return conditionals;
     }
     query(action, name) {
-        console.log("running queury");
+        //console.log("running queury");
         //get goal tag
         var tag_type = action.toUpperCase();
         var tag_type_index = TAGS.indexOf(tag_type);
@@ -579,7 +591,7 @@ class Parser {
             //console.log("BEGIN FIRST WHILE="+i);
             var current_tag = this.tags[tag_type_index][i];
             //console.log(current_tag.content_sequence);
-            console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
+            //console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
             //console.log("CURRENT_ROOM="+this.current_room.inventory_index);
             if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null) {
                 goal_tag = current_tag;
@@ -588,17 +600,21 @@ class Parser {
             }
             ++i;
         }
-        //add content tokens of goal_tag to action_queue
-        i = 0;
-        //console.log("ACTION="+action);
-        if (action == "ROOM") {
-            this.current_room = goal_tag;
-            console.log("CHANGED ROOM TO="+goal_tag.name);
-        }
-        while (i < goal_tag.content_sequence.length) {
-            console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
-            this.action_queue.push(goal_tag.content_sequence[i]);
-            ++i;
+        if (goal_tag == null) {
+            console.warn("No matching tag found for query");
+        } else {
+            //add content tokens of goal_tag to action_queue
+            i = 0;
+            //console.log("ACTION="+action);
+            if (action == "ROOM") {
+                this.current_room = goal_tag;
+                //console.log("CHANGED ROOM TO="+goal_tag.name);
+            }
+            while (i < goal_tag.content_sequence.length) {
+                //console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
+                this.action_queue.push(goal_tag.content_sequence[i]);
+                ++i;
+            }
         }
     }
     run() {
@@ -607,7 +623,6 @@ class Parser {
     
     interupt()
     {
-        
         this.action_queue.interupt();
     }
 }
