@@ -188,8 +188,8 @@ class ActionQueue
         {
             this.queue.push(content);
         }
-        //console.log("Queue was pushed :(");
-        //console.log(this.queue);
+        console.log("Queue was pushed :(");
+        console.log(this.queue);
     }
 
     next()
@@ -588,7 +588,7 @@ class Parser {
         return conditionals;
     }
     query(action, name) {
-        //console.log("running queury");
+        console.log("running queury: "+action+" "+name);
         //get goal tag
         var tag_type = action.toUpperCase();
         var tag_type_index = TAGS.indexOf(tag_type);
@@ -612,12 +612,12 @@ class Parser {
             console.warn("No matching tag found for query");
         } else {
             //add content tokens of goal_tag to action_queue
-            i = 0;
             //console.log("ACTION="+action);
             if (action == "ROOM") {
                 this.current_room = goal_tag;
                 //console.log("CHANGED ROOM TO="+goal_tag.name);
             }
+            i = 0;
             while (i < goal_tag.content_sequence.length) {
                 //console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
                 this.action_queue.push(goal_tag.content_sequence[i]);
