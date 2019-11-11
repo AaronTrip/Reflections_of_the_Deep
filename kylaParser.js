@@ -31,8 +31,8 @@ class Token
 
 class Tag {
     constructor(type, name, conditionals, content,inventory_index=null) {
-        console.log("NEW_TAG="+name);
-        console.log(conditionals);
+        //console.log("NEW_TAG="+name);
+        //console.log(conditionals);
         this.type = type;
         this.name = name;
         this.conditionals = conditionals;
@@ -521,26 +521,34 @@ class Parser {
                 var index = tag_indexes[i][j];
                 var type = TAGS[i];
                 var tag_info_string = this.corpus.slice(index,this.corpus.indexOf("{",index));
-                //console.log("TAG_INFO_STRING="+tag_info_string);
                 var name = tag_info_string.match(/\[(.*?)\]/)[1]; //check this regular expression!
                 var conditionals = this.findConditionals(tag_info_string);
                 var content = this.corpus.slice(this.corpus.indexOf("{",index)+1, this.corpus.indexOf("}",index));
                 var tag;
-                if (TAGS[i] == "ROOM" && name == "init" && this.current_room == null) {
+                if (type == "ROOM" && name == "init" && this.current_room == null) { //trashy hard code to set init room as current room
                     this.rooms.add(name);
                     this.room_inventories.push(new Inventory());
                     this.current_room = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
-                }
-                if (TAGS[i] == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
+                    tag_objects.push(this.current_room);
+                } else if (type == "ROOM" && !this.rooms.has(name)) { //need to check if room already exists!-- use set
                     this.rooms.add(name);
                     this.room_inventories.push(new Inventory());
                     tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1);
-                } else if (TAGS[i] == "ROOM") {
-                    tag = new Tag(type,name,conditionals,content,this.room_inventories.length-1); //little bit dicey if room tags aren't grouped
+                } else if (type == "ROOM") { //second init issue 
+                    for (var k=0; k<tag_objects.length; ++k) {
+                        var current_tag = tag_objects[k];
+                        if (current_tag.name == name) {
+                            tag = new Tag(type,name,conditionals,content,current_tag.inventory_index); //should fix the room tag dependency issue
+                            break;
+                        }
+                    }
                 } else {
                     tag = new Tag(type,name,conditionals,content);
                 }
-                tag_objects.push(tag);
+                if (tag != undefined) {
+                    tag_objects.push(tag);
+                    //console.log("TAG_OBJECTS_PUSHED_TAG");
+                }
                 //console.log("NAME="+tag.name+"  CONTENT="+ content + "\n\n");
                 ++j;
             }
