@@ -7,7 +7,7 @@ class printClass{
        this.fullString = string;
        this.stringPointer = 0;
        this.counter = 0;
-       this.color = '';
+       this.color = '#ffffff';
        this.length = 0;
 
        //Cases for deciding if a letter is regular, bold, italics or coloured
@@ -51,13 +51,20 @@ class printClass{
                 this.stringPointer++;
             }
 
+            else if(this.fullString[this.stringPointer] === '@'){
+                this.stringPointer++;
+                this.colorSet();
+            }
+
             //Colour case goes here but not needed yet
             
             //Append letter to letters array
             //Increase stringPointer
             //Increase length
             //Length is used so that we know the actual array length since we dont add some characters ie #, ~
-            this.letters[i] = new letter(this.fullString[this.stringPointer],'#ffffff',this.case);
+            //print(this.case);
+            //print(this.fullString[this.stringPointer])
+            this.letters[i] = new letter(this.fullString[this.stringPointer],this.color,this.case);
             this.stringPointer++;
             this.length++;
 
@@ -134,14 +141,18 @@ class printClass{
         }
         
     }
-    colorSet(color){
+    colorSet(){
         if(this.colorTest == true){
-
+            this.color = '#ffffff';
             this.colorTest = false;
         }
         else{
-
-            this.colorSet = true;
+            this.colorTest = true;
+            this.color = '#';
+            for(var i = 0; i < 6; i++){
+                this.color += this.fullString[this.stringPointer];
+                this.stringPointer++;
+            }
         }
     }
     boldSet(){
@@ -185,9 +196,12 @@ class letter{
             textFont(fontBold);
         }
         else{
-            textStyle(ITALIC);
+            textFont(fontItal);
         }
-        //print(this.typing);
+        //print(this.color);
+        //let c = color(color);
+        fill(this.color);
+
         text(this.letter, x, y, 800);
     }
 }
