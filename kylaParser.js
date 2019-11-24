@@ -206,6 +206,23 @@ class ActionQueue
         switch(this.queue[0].type)
         {
             case tok_type.STRING:
+            // Check to see if the string is just whitespace
+            var flag = true;
+            for(var i = 0; i < this.queue[0].string.length; ++i)
+            {
+                if(this.queue[0].string[i] != ' ')
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag == true)
+            {
+                console.warn("Warning: ActionQueue.next encountered the blank string: '" + this.queue[0].string + "'");
+                this.next();
+                break;
+            }
+
             //console.log("Found a print string");
             //call print function on token.string
             this.full_string = this.queue[0].string;
@@ -260,45 +277,49 @@ class ActionQueue
             else if(this.queue[0].string[0] == "+")
                 inventory_num = 4;
             else
+            {
                 console.warn("Error in indexing");
                 console.log(this.queue[0]);
-                
-                
+            }   
+
+            console.log("Editing Inventory: " + this.queue[0].string);
+            var inventory = undefined;
+            var item = undefined;
             switch(inventory_num)
             {
                 case 1:  // -
-                    var inventory = this.parser.player_inventory;
-                    var item = this.queue[0].string.slice(1,this.queue[0].string.length);
+                    inventory = this.parser.player_inventory;
+                    item = this.queue[0].string.slice(1,this.queue[0].string.length);
                     inventory.remove(item);
                 break;
 
                 case 2:  // --
-                    var inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
-                    var item = this.queue[0].string.slice(2,this.queue[0].string.length);
+                    inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
+                    item = this.queue[0].string.slice(2,this.queue[0].string.length);
                     inventory.remove(item);
                 break;
 
                 case 3:  // ---
-                    var inventory = this.parser.global_inventory;
-                    var item = this.queue[0].string.slice(3,this.queue[0].string.length);
+                    inventory = this.parser.global_inventory;
+                    item = this.queue[0].string.slice(3,this.queue[0].string.length);
                     inventory.remove(item);
                 break;
 
                 case 4:  // +
-                    var inventory = this.parser.player_inventory;
-                    var item = this.queue[0].string.slice(1,this.queue[0].string.length);
+                    inventory = this.parser.player_inventory;
+                    item = this.queue[0].string.slice(1,this.queue[0].string.length);
                     inventory.add(item);
                 break;
 
                 case 5:  // ++
-                    var inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
-                    var item = this.queue[0].string.slice(2,this.queue[0].string.length);
+                    inventory = this.parser.room_inventories[this.parser.current_room.inventory_index];
+                    item = this.queue[0].string.slice(2,this.queue[0].string.length);
                     inventory.add(item);
                 break;
 
                 case 6:  // +++
-                    var inventory = this.parser.global_inventory;
-                    var item = this.queue[0].string.slice(3,this.queue[0].string.length);
+                    inventory = this.parser.global_inventory;
+                    item = this.queue[0].string.slice(3,this.queue[0].string.length);
                     inventory.add(item);
                 break;
 
@@ -337,8 +358,9 @@ class ActionQueue
             this.display_string.oprint();
             }
         else
+        {
             //console.log("NO STRING");
-        
+        }
         if(this.queue == [] || this.queue.length == 0)
             return;
 
