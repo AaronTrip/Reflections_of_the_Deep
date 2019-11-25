@@ -394,7 +394,7 @@ class ActionQueue
             console.log("Running call delay");
 
             // Check to see if the appropriot amount of time has passed
-            if(Math.floor.millis() >= this.timer)
+            if(Math.floor(millis()) >= this.timer)
                 this.next();
             break;
 
