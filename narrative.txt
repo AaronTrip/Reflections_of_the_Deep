@@ -1,6 +1,6 @@
 ROOM [init] {
 ^+++good^
-<sounds/BGM/introAmb.mp3>
+<sounds/BGM/diningAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
 ^++can_respond^
@@ -69,7 +69,7 @@ You cannot go into the kitchen, only the staff are permitted there.
 }
 
 ROOM [your_room] %good% {
-<sounds/BGM/basicAmb.mp3>
+<sounds/BGM/trainAmb.mp3>
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 ^++your_room^
 }
@@ -89,7 +89,7 @@ The bed is neatly made with the sheets and blanket tucked in at each corner. Alt
 USE [bed] &your_room& %good% {
 You take the waiter’s advice and decide to lay down for a bit now that your stomach is feeling more settled. Taking your shoes off, you lay down on your bed, planning to only close your eyes for a minute. Soon though, you feel the pull of sleep and drift off.
 |BREAK|
-<sounds/BGM/basicAmb.mp3>
+<sounds/BGM/nothing.mp3>
 ^---good^
 ^+++bad^
 ^--your_room^
