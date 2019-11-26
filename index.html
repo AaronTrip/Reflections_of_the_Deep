@@ -29,6 +29,8 @@
        var parser;
        var shell = undefined;
        //var sound;
+       var bgm;
+
        function preload()
        {
            inconsolata = loadFont('./Courier_Prime/Courier-Prime.ttf');
@@ -182,6 +184,13 @@
 
           function backgroundMusic(sound)
           {
+		console.log("trying to play bgm");
+                if (bgm != undefined && bgm.isPlaying()) {
+	            console.log("ambience is playing, trying to replace it");
+		    bgm.stop();
+	        }
+		bgm = sound;
+		console.log("BGM is now: ", bgm);
                 sound.setLoop(true);
                 sound.play();
           }
