@@ -93,7 +93,7 @@ You take the waiter’s advice and decide to lay down for a bit now that your st
 ^---good^
 ^+++bad^
 ^--your_room^
-[[your_room]
+[[your_room]]
 }
 EXAMINE [mirror] &your_room& %good% {
 The mirror is simply adorned, but it’s height and level surface allow you to examine your outfit from head to toe when you desire. 
