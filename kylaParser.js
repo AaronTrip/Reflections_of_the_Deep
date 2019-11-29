@@ -642,7 +642,8 @@ class Parser {
             }
             i = 0;
             while (i < goal_tag.content_sequence.length) {
-                //console.log("CONTENT_SEQUENCE[i]="+goal_tag.content_sequence[i].string);
+                console.log("CONTENT_SEQUENCE[i]=");
+                console.log(goal_tag.content_sequence[i]);
                 this.action_queue.push(goal_tag.content_sequence[i]);
                 ++i;
             }
@@ -656,15 +657,18 @@ class Parser {
     {
         this.action_queue.interupt();
     }
+
+    printInventory()
+    {
+        var token_string = "";
+        var token_type = 1;
+        //var items = this.player_inventory.items.values();
+        //for(var i = 0; i < this.items.length; ++i)
+        for(var item of this.player_inventory.items)
+        {
+            token_string += item;
+            token_string += "\n";
+        }
+        this.action_queue.push(new Token(token_string, token_type));
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
