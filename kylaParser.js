@@ -1,4 +1,4 @@
-const TAGS = ["EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "YES", "NO"];
+const TAGS = ["EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "YES", "NO", "MISC"];
 const TEXT_MODIFIERS = ["BREAK", "DELAY"];
 
 const tok_type = {
@@ -460,7 +460,8 @@ class ActionQueue
             //console.log("Interrupting call delay");
 
             // Skip the delay
-            this.next();
+            // NO!!
+            //this.next();
             break;
 
             case tok_type.SFX:
