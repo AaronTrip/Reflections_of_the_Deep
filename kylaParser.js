@@ -671,4 +671,13 @@ class Parser {
         }
         this.action_queue.push(new Token(token_string, token_type));
     }
+
+    menu()
+    {
+        var token_string = "               Reflections of the Deep\n\n                                        OceanTrain\n\n\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Push any button to continue";
+        var token_type = 1;
+        this.action_queue.push(new Token(token_string, token_type));
+        this.action_queue.push(new Token("|BREAK|", 2));
+        this.action_queue.interupt();
+    }
 }

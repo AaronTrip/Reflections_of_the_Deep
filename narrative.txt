@@ -4,6 +4,8 @@ ROOM [init] {
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
 ^++can_respond^
+^+test1^
+^+test2^
 } 
 
 YES [yes] &init& &can_respond& {
