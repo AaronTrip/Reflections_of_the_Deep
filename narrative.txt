@@ -48,9 +48,11 @@ The poster announces in large black letters, “Welcome Aboard the Transatlantic
 }
 EXAMINE [man] &init& {
 The older man sits hunched over his table, engrossed in his writing. Looking closer, you can see that his once respectable suit now shows signs of considerable wear with patches haphazardly sewn on and stains decorating the surface. As he writes, he mutters under his breath and, although he pauses to drink his coffee, his eyes never stray from the pages in front of him.
+*sounds/SFX/hmm.mp3*
 }
 TALK [man] &init& {
 Approaching the man, you begin to speak but he stops you waving his hands and saying, “No, no, no, I can’t be bothered right now, I’ve almost solved it.”
+*sounds/SFX/ugh.mp3*
 }
 EXAMINE [woman] &init& {
 The young woman sits alone at a table, an untouched cup of tea next to her. She’s wearing a pale blue dress of fine quality and you can see that she has soft hands, the kind that have never seen a hard day of labour. She stares vacantly at the room, her mind seemingly far away.
@@ -58,12 +60,14 @@ The young woman sits alone at a table, an untouched cup of tea next to her. She�
 TALK [woman] &init& {
 You approach the young woman and greet her. She turns to you but her expression remains distant. 
 
-“Can you feel it? Something is coming, something...dark.”
+“Can you feel it? Something is coming, something... dark.”
 
 Shifting her gaze back to the room, she goes silent once more, lost in her own thoughts. 
 }
 GO [east] &init& {
 You leave the dining room heading East into the hallway of the sleeper car and then into your own room. 
+*sounds/SFX/doorHeavy.mp3*
+<sounds/BGM/trainAmb.mp3>
 [[your_room]] 
 }
 GO [west] &init& {
@@ -71,7 +75,6 @@ You cannot go into the kitchen, only the staff are permitted there.
 }
 
 ROOM [your_room] %good% {
-<sounds/BGM/trainAmb.mp3>
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 ^++your_room^
 }
@@ -132,6 +135,7 @@ You've fallen to your knees and as the darkness recedes from your vision and you
 As it gets closer, you back away step by step not taking your eyes off it. The light begins to fade and, glancing behind, you see that the liquid has begun to cover the mirror. In a split second, you make your decision and lunge through mirror, barely avoiding the reaching tendrils of darkness. 
 |BREAK| 
 *sounds/cinematic/mirrorScareC1.mp3*
+<sounds/BGM/nothing.mp3>
 |DELAY 27000|
 [[sleeper_car_west]]
 }
@@ -152,14 +156,14 @@ You are on the far west end of the sleeper car. To the #west# is the door to the
 ROOM [sleeper_car_west] &sleeper_car_west& %good% {
 You are on the far west end of the sleeper car. To the #west# is the door to the dining room, and to the #north# are the sleeping quarters of another passenger, a young man. Your own room is through the door to your south, and to the #east# stretches the rest of the sleeper car.
 }
-GO [north] &sleeper_car_west& {
+GO [north] &sleeper_car_west& {  
 [[lover_boi]]
 }
 GO [south] &sleeper_car_west& %bad% {
 Staring at the door to your room you can't bring yourself to enter it, the fear of what could be waiting on the other side stops you. 
 }
 GO [south] &sleeper_car_west& %good% {
-	[[your_room]]
+[[your_room]]
 }
 GO [east] &sleeper_car_west& {
 [[sleeper_car_middle]]
