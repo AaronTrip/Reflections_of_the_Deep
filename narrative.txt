@@ -131,10 +131,8 @@ You've fallen to your knees and as the darkness recedes from your vision and you
 |BREAK|
 As it gets closer, you back away step by step not taking your eyes off it. The light begins to fade and, glancing behind, you see that the liquid has begun to cover the mirror. In a split second, you make your decision and lunge through mirror, barely avoiding the reaching tendrils of darkness. 
 |BREAK| 
-*sounds/cinematic/mirrorExit.mp3*
-|DELAY 6000|
-*sounds/cinematic/hallwayChase.mp3*
-|DELAY 14000|
+*sounds/cinematic/mirrorScareC1.mp3*
+|DELAY 27000|
 [[sleeper_car_west]]
 }
 EXAMINE [bed] &your_room& %bad% {
@@ -286,7 +284,8 @@ What looks to be lantern sits on the desk among the papers. It has a tag on it t
 TAKE [lantern] &old_man_reg& %bad% {
 You flick the power switch to ON, but nothing happens. Deciding there is no reason to carry around a broken lantern, you leave it where it is. 
 |BREAK|
-<sounds/BGM/tensionAmb.mp3>
+<sounds/BGM/scaryAmb1.mp3>
+*sounds/cinematic/realScareC1.mp3*
 As you turn away from the lantern, a sudden chill runs down your back and dread curls in your stomach. You can feel the dark presence from your mirror, it has returned and is getting closer. The feeling of unease is coming from the direction of the hallway. With no other doors to escape through, you need to find somewhere to hide…
 ^++lantern^
 }
