@@ -28,7 +28,7 @@ class printClass{
        this.currentX = x;
        this.currentY = y;
        this.boxWidth = bwidth;
-       this.slack = 0;
+       this.slack = 125;
 
        //lettes is an array of letter objects to be printed
        this.letters = [];
@@ -123,11 +123,11 @@ class printClass{
         {
 
             //If letters[j] is a space object and past the margin print space and jump to next line
-            if(this.letters[j].getLetter() === " " && this.currentX >= this.startX + this.boxWidth + this.slack)
+            if(this.letters[j].getLetter() === " " && this.currentX >= this.startX + this.boxWidth - this.slack)
             {
                 this.letters[j].lprint(this.currentX,this.currentY);
                 this.currentX = this.startX;
-                this.currentY += 20;
+                this.currentY += 30;
             }
 
             //Else just print character as is at current location
