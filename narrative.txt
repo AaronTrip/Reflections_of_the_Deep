@@ -301,7 +301,7 @@ The article attached to the paper reads, "Train Companies Deny any Wrongdoing". 
 EXAMINE [lantern] &old_man_mirror& {
 The strange lantern looks as it did before, except now it casts a warm glow across the room. Picking it up you look at the wires coming out of it, none of them are attached and you can't figure out how it is being powered.
 } 
-TAKE [paper] &old_man_mirror {
+TAKE [paper] &old_man_mirror& {
 The paper is clearly part of a larger project and, being unable to read much of it, you decide to leave it where it is. 
 }
 TAKE [lantern] &old_man_mirror& {
@@ -318,7 +318,7 @@ EXAMINE [desk] &old_man_mirror& &lantern_taken& {
 On the desk sits a number of piles of #paper#, almost all of which is written in poor handwriting.
 }
 EXAMINE [table] &old_man_mirror& {
-On the side table sits a picture in which an old married couple smile at the camera holding hands. The engraving in the frame reads, "Francine & Elijah". 
+On the side table sits a picture in which an old married couple smile at the camera holding hands. The engraving in the frame reads, "Francine and Elijah". 
 }
 EXAMINE [mirror] &old_man_mirror& {
 Tucked in the corner stands a tall #mirror# of fine quality, through it you can see the room you came from.
