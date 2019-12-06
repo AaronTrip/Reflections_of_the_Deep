@@ -22,13 +22,13 @@ Leaning back in your chair, you let your eyes wander across your surroundings. O
 ^--no_answer^
 }
 
-EXAMINE [glass] &init& &full_glass& {
-In the glass before you, the water's surface ripples with the movement of the train. The slow and steady swaying reminding you of how far you are from home.
-}
+
 EXAMINE [glass] &init& {
 Looking at the glass, your nausea takes over again. You wish it was full.
 	}
-
+EXAMINE [glass] &init& &full_glass& {
+In the glass before you, the water's surface ripples with the movement of the train. The slow and steady swaying reminding you of how far you are from home.
+}
 USE [glass] &init& {
 You twirl the empty glass on the table.
 }
