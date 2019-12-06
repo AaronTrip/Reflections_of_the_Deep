@@ -320,6 +320,12 @@ On the desk sits a number of piles of #paper#, almost all of which is written in
 EXAMINE [table] &old_man_mirror& {
 On the side table sits a picture in which an old married couple smile at the camera holding hands. The engraving in the frame reads, "Francine & Elijah". 
 }
+EXAMINE [mirror] &old_man_mirror& {
+Tucked in the corner stands a tall #mirror# of fine quality, through it you can see the room you came from.
+}
+USE [mirror] &old_man_mirror& {
+[[old_man_reg]]
+}
 USE [lantern] $lantern_off$ {
 ^-lantern_off^
 You turn the lantern ON with a click and a steady warm glow illuminates the space around you. 
@@ -344,6 +350,7 @@ The strange lantern is currently turned ON and casts a warm glow over your surro
 EXAMINE [lantern] $lantern_off$ {
 The strange lantern is currently turned OFF.
 }
+
 
 ROOM [sleeper_car_east] {
 Moving down the car, the rest of the doors you try are locked. At the end of the hallway, the door to the storage car lies #east# of you.
