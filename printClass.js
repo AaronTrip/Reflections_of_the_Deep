@@ -28,7 +28,7 @@ class printClass{
        this.currentX = x;
        this.currentY = y;
        this.boxWidth = bwidth;
-       this.slack = 125;
+       this.slack = 200;
 
        //lettes is an array of letter objects to be printed
        this.letters = [];
