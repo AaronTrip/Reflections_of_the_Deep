@@ -76,11 +76,14 @@ class Tag {
             for(var k = 0; k < this.conditionals[i].length; ++k) {
                 console.log("checked="+i);
                 if (!(inv.has(this.conditionals[i][k]))) {
+                    console.log("Does not have ITEM:");
+                    console.log(this.conditionals[i][k]);
                     return false;
                 }
             }
             ++i;
         }
+        console.log("YAY IT IS TRUE!");
         return true;
     }
 
@@ -679,7 +682,7 @@ class Parser {
 
     menu()
     {
-        var token_string = "           \t    Reflections of the Deep                                 OceanTrain            \t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Push any button to continue";
+        var token_string = "    \t    Reflections of the Deep                    OceanTrain            \t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Push any button to continue";
         var token_type = 1;
         this.action_queue.push(new Token(token_string, token_type));
         this.action_queue.push(new Token("|BREAK|", 2));
