@@ -1,5 +1,11 @@
+MISC [help] {
+    Type in an action and an object to perform the action. The actions available to you are TALK TO, EXAMINE, USE, and TAKE. To move, type GO and the DIRECTION, ie. GO WEST. Type EXAMINE ROOM for a description of the room you are currently in. Type HELP to see this again.
+}
+
 ROOM [init] {
 ^+++good^
+Type in an action and an object to perform the action. The actions available to you are TALK TO, EXAMINE, USE, and TAKE. To move, type GO and the DIRECTION, ie. GO WEST. Type EXAMINE ROOM for a description of the room you are currently in. Type HELP to see this again.
+|BREAK|
 <sounds/BGM/diningAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. 
 (#Yes#, #No#) 
