@@ -2,10 +2,11 @@
 
 ROOM [init] {
 ^+++good^
-Type in an action and an object to perform the action. The actions available to you are ~talk~ TO, ~examine~, ~use~, and ~take~. To move, type ~go~ and the ~direction~, ie. GO ~west~. Type ~examine~ ~room~ for a description of the room you are currently in. Type ~help~ to see this again.
+Type in an action and an object to perform the action. The actions available to you are ~talk~ to, ~examine~, ~use~, and ~take~. To move, type ~go~ and the ~direction~, ie. GO ~west~. Type ~examine~ ~room~ for a description of the room you are currently in. Type ~help~ to see this again.
 |BREAK|
 <sounds/BGM/diningAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. 
+
 (#Yes#, #No#) 
 ^++init^
 ^++no_answer^
@@ -83,18 +84,36 @@ ROOM [your_room] %good% {
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 ^++your_room^
 }
-ROOM [your_room] &your_room& %good% %nogo_your_room% {
-Your room looks as it did before this whole nightmare began. Pushed against the wall is your #bed#, across from it is a small desk, and on the wall hangs a tall #mirror#.
-^---nogo_your_room^
+ROOM [your_room] %bad% {
+You're drifting in the darkness. Fragments of your thoughts gently swirl around you, mixing and separating with no rhyme or reason. You feel a weight on your chest beginning to pull you down. Everything begins to swirl faster and faster until it is an indistinguishable blur. You are falling...
+|BREAK|
+*sounds/cinematic/nightmare.mp3*
+|DELAY 24000|
+With a start, you wake. You open your bleary eyes and blink up at the ceiling, your mind still groggy. As the fogginess of sleep fades, you notice the room is darker than it should be. The emergency lighting is on. 
+
+Unease knots your stomach and getting up quickly, you slip on your shoes. Standing there you look around trying to figure out what it was that awoke you, and then it hits you. It's silent, the train is not moving.  
+|BREAK|
+Something else seems out of place and you trust your instincts when they tell you that there is more going on here than just a mechanical failure.
+^++your_room^
 }
 ROOM [your_room] &your_room& %good% {
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
+}
+ROOM [your_room] &your_room& %good% %nogo_your_room% {
+Your room looks as it did before this whole nightmare began. Pushed against the wall is your #bed#, across from it is a small desk, and on the wall hangs a tall #mirror#.
+^---nogo_your_room^
 }
 EXAMINE [room] &your_room& %good% {
 Your room is furnished in a practical fashion. Pushed against the wall is your #bed#, across from it is a small desk and on the wall hangs a tall #mirror#.
 }
 EXAMINE [bed] &your_room& %good% {
 The bed is neatly made with the sheets and blanket tucked in at each corner. Although simple, it has a comfortable quality that can’t be found in a new bed.  
+}
+EXAMINE [bed] &your_room& %bad% {
+The bed is rumpled from your sleep. The blanket bunched and twisted from your movements and the pillow indented from where your head rested. 
+}
+USE [bed] &your_room& %bad% {
+The unease you feel makes the prospect of sleep impossible. 
 }
 USE [bed] &your_room& %good% {
 You take the waiter’s advice and decide to lay down for a bit now that your stomach is feeling more settled. Taking your shoes off, you lay down on your bed, planning to only close your eyes for a minute. Soon though, you feel the pull of sleep and drift off.
@@ -110,20 +129,6 @@ The mirror is simply adorned, but it’s height and level surface allow you to e
 }
 USE [mirror] &your_room& %good% {
 Looking in the mirror, your reflection stares back at you with tired eyes.
-}
-
-
-ROOM [your_room] %bad% {
-You're drifting in the darkness. Fragments of your thoughts gently swirl around you, mixing and separating with no rhyme or reason. You feel a weight on your chest beginning to pull you down. Everything begins to swirl faster and faster until it is an indistinguishable blur. You are falling...
-|BREAK|
-*sounds/cinematic/nightmare.mp3*
-|DELAY 24000|
-With a start, you wake. You open your bleary eyes and blink up at the ceiling, your mind still groggy. As the fogginess of sleep fades, you notice the room is darker than it should be. The emergency lighting is on. 
-
-Unease knots your stomach and getting up quickly, you slip on your shoes. Standing there you look around trying to figure out what it was that awoke you, and then it hits you. It's silent, the train is not moving.  
-|BREAK|
-Something else seems out of place and you trust your instincts when they tell you that there is more going on here than just a mechanical failure.
-^++your_room^
 }
 EXAMINE [room] &your_room& %bad% {
 In the dim lighting you can see your desk to one side and your #bed# across from it. Hanging on the wall is your full length #mirror#.  
@@ -144,12 +149,7 @@ As it gets closer, you back away step by step not taking your eyes off it. The l
 |DELAY 27000|
 [[sleeper_car_west]]
 }
-EXAMINE [bed] &your_room& %bad% {
-The bed is rumpled from your sleep. The blanket bunched and twisted from your movements and the pillow indented from where your head rested. 
-}
-USE [bed] &your_room& %bad% {
-The unease you feel makes the prospect of sleep impossible. 
-}
+
 
 ROOM [sleeper_car_west] %bad% {
 As you catch your breath, you look around. You're in the hallway of the sleeper car and, like your room, it is bathed in emergency lighting. Maybe one of the staff or another passenger knows what is going on, but there is no sign of anyone else. To the #west# is the door leading to the dining room. #North#, across the hall from your room, is the sleeping quarters of a young man you've seen in passing. And to the #east# stretches the rest of the sleeper car. 
@@ -367,7 +367,7 @@ Moving down the car, the rest of the doors you try are locked. At the end of the
 ROOM [sleeper_car_east] &sleeper_car_east& {
 At the end of the hallway, the door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 }
-ROOM [sleeper_car_east] %nogo_east% {
+ROOM [sleeper_car_east] &sleeper_car_east& %nogo_east% {
 Stepping into the hallway of the sleeper car, you can see that all the power has turned on here as well. The door to the storage car lies #east# of you, and the rest of the hallway stretches out in the opposite direction.
 ^---nogo_east^
 }
@@ -379,12 +379,13 @@ GO [west] &sleeper_car_east& {
 GO [east] &sleeper_car_east& %bad% {
 The door to the storage car has a sign that reads, "Staff Only" and below it, "Note: Do not block door, breaker box must be accessible in case of emergency." You open the door and gaze into the storage room. Darkness stares back at you. With no light to see by, you decide against wandering around in the dark. 
 }
-GO [east] &sleeper_car_east& %bad% $lantern_on$ {
-[[storage_car]]
-}
 GO [east] &sleeper_car_east& %good% {
 [[storage_car]]
 }
+GO [east] &sleeper_car_east& %bad% $lantern_on$ {
+[[storage_car]]
+}
+
 
 ROOM [storage_car] %bad% {
 Taking a deep breath, you gather your courage and step through the doorway. Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
@@ -565,6 +566,12 @@ With a bit of trepidation, you open the bottle and take a whiff. Your eyes begin
 	*sounds/cinematic/juddDrink.mp3*
 [[gameover]]
 }
+USE [bottle] $bottle$ %bottle% {
+With a bit of trepidation, you open the bottle and take a whiff. Your eyes begin to water, but you will not be deterred. You tip the bottle back and let it race down your throat like liquid fire. Your heart begins to pound, racing faster and faster before it explodes in your chest, this was not a good idea... 
+	*sounds/cinematic/juddDrink.mp3*
+[[gameover]]
+}
+}
 EXAMINE [menu] &dining_car_mir& {
 	*sounds/SFX/paper.mp3*
 You take a look at the menu, it looks like it has seen better days.  The prices have been crossed out and much more expensive ones written in. The price of the meatloaf special has been almost tripled. 
@@ -635,13 +642,13 @@ EXAMINE [room] &kitchen& {
 The kitchen is even darker than the dining car and has a damp feeling. The entire west side of the room is shrouded in darkness. A dark substance has spread across the walls and ceiling obscuring the emergency lighting, but doesn't seem to be spreading any further. There is a #jar# in the corner, a #mirror# on the south wall, and a corkboard with a handwritten #note# on it.
 }
 
+ROOM [kitchen] &kitchen& %breaker1% {
+You have entered the #kitchen#.
+}
 ROOM [kitchen] &kitchen& %breaker1% %nogo_b1_kitchen% { 
 <sounds/BGM/emergencyLights.mp3>
 The dark substance covering the lights has been burned away letting the emergency lights illuminate the rest of the kitchen. To the #west# you can now see a door, likely connecting to the train car further ahead. There is a large #jar# sitting in the corner, a #mirror# on the wall, and a corkboard with a handwritten #note# on it. Next to the west door you can also see what looks like another #breaker#. 
 ^---nogo_b1_kitchen^
-}
-ROOM [kitchen] &kitchen& %breaker1% {
-You have entered the #kitchen#.
 }
 EXAMINE [kitchen] &kitchen& %breaker1% {
 In the dim emergency lighting, you can see to the #west# is a door, likely connecting to the train car further ahead. There is a large #jar# sitting in the corner, a #mirror# on the wall, and a corkboard with a handwritten #note# on it. Next to the west door you can also see what looks like another #breaker#. 
@@ -881,29 +888,30 @@ GO [west] &vip_party_car& $candlestick$ %candlestick% {
 [[vip_women]]
 } 
 
-EXAMINE [painting] &vip_party_car& $necklace$ &is_night& {
-The painting on the wall depicts a #girl# sleeping in her bed with moonlight from the window illuminating her room. On the wall above her is an unadorned #clock#.
+EXAMINE [painting] &vip_party_car& {
+The painting has been rendered with astonishing care and detail. In it a #girl# wearing a #necklace# sits in her room with sunlight beaming in through her window. On the wall above her hangs an unadorned #clock#.
 } 
+
+EXAMINE [painting] &vip_party_car& &is_night& {
+The painting has been rendered with astonishing care and detail. In it a #girl# sleeps with the moonlight beaming through her window, and on her bedside table sits a #necklace#. On the wall above her hangs an unadorned #clock#.
+}
 
 EXAMINE [painting] &vip_party_car& $necklace$ {
 The painting on the wall depicts a #girl# wearing a #necklace# seated in her room with sunlight beaming in through the window. On the wall above her hangs an unadorned #clock#.
+} 
+
+EXAMINE [painting] &vip_party_car& $magnet$ {
+The painting on the wall depicts a #girl# wearing a #necklace# seated in her room with sunlight beaming in through the window. On the wall above her hangs an unadorned #clock#.
+} 
+EXAMINE [painting] &vip_party_car& $necklace$ &is_night& {
+The painting on the wall depicts a #girl# sleeping in her bed with moonlight from the window illuminating her room. On the wall above her is an unadorned #clock#.
 } 
 
 EXAMINE [painting] &vip_party_car& $magnet$ &is_night& {
 The painting on the wall depicts a #girl# sleeping in her bed with moonlight from the window illuminating her room. On the wall above her is an unadorned #clock#.
 } 
 
-EXAMINE [painting] &vip_party_car& $magnet$ {
-The painting on the wall depicts a #girl# wearing a #necklace# seated in her room with sunlight beaming in through the window. On the wall above her hangs an unadorned #clock#.
-} 
-
-EXAMINE [painting] &vip_party_car& &is_night& {
-The painting has been rendered with astonishing care and detail. In it a #girl# sleeps with the moonlight beaming through her window, and on her bedside table sits a #necklace#. On the wall above her hangs an unadorned #clock#.
-} 
-EXAMINE [painting] &vip_party_car& {
-The painting has been rendered with astonishing care and detail. In it a #girl# wearing a #necklace# sits in her room with sunlight beaming in through her window. On the wall above her hangs an unadorned #clock#.
-} 
-
+ 
 EXAMINE [necklace] &vip_party_car& {
 The necklace sits on the bedside table, and it is comprised of a delicate blue pendant strung on a thin wire chain. 
 }
@@ -958,15 +966,16 @@ USE [clock] &vip_party_car& $mirror$ $necklace$ {
 You reach through the hand mirror into the painting and turn the hands of the clock. The daylight in the painting is replaced by moonlight and the girl lays down in her bed, going to sleep.
 ^++is_night^
 } 
-USE [clock] &vip_party_car& &is_night& $mirror$ $necklace$ {
-	*sounds/cinematic/mirrorEnter.mp3*
-You reach through your mirror into the painting and move the hands of the clock. The moonlight from the window fades before being replaced by sunlight, and the girl awakens.
-^--is_night^
-} 
+
 USE [clock] &vip_party_car& $mirror$ $magnet$ {
 	*sounds/cinematic/mirrorEnter.mp3*
 You reach through the hand mirror into the painting and turn the hands of the clock. The daylight in the painting is replaced by moonlight and the girl lays down in her bed, going to sleep.
 ^++is_night^
+} 
+USE [clock] &vip_party_car& &is_night& $mirror$ $necklace$ {
+	*sounds/cinematic/mirrorEnter.mp3*
+You reach through your mirror into the painting and move the hands of the clock. The moonlight from the window fades before being replaced by sunlight, and the girl awakens.
+^--is_night^
 } 
 USE [clock] &vip_party_car& &is_night& $mirror$ $magnet$ {
 	*sounds/cinematic/mirrorEnter.mp3*
@@ -1064,13 +1073,14 @@ TAKE [candlestick] &vip_party_car& $candlestick$ %candlestick% {
 You already have the candlestick.
 } 
 
-USE [candlestick] $candlestick$ %candlestick% {
+
+USE [candlestick] &vip_party_car& {
 Without hesitation you blow out the candle, letting the darkness overtake you.
 |BREAK|
 *sounds/cinematic/darkEatsYou.mp3*
 [[gameover]]
 } 
-USE [candlestick] &vip_party_car& {
+USE [candlestick] $candlestick$ %candlestick% {
 Without hesitation you blow out the candle, letting the darkness overtake you.
 |BREAK|
 *sounds/cinematic/darkEatsYou.mp3*
@@ -1083,15 +1093,15 @@ The table is a rich brown and looks to have been painstakingly crafted. On it ar
 EXAMINE [table] &vip_party_car& $candlestick$ %candlestick% {
 The table is a rich brown and looks to have been painstakingly crafted. On it are the burned down remains of dozens of candles.
 }
+
+USE [table] &vip_party_car& {
+You don't have what you need to use this right now. 
+}
 USE [table] &vip_party_car& $necklace$ $metal$ $flashlight$ {
 Taking the wire from the necklace, the flashlight, and the piece of metal, you begin to work. After a few long minutes, you somehow manage to create a functioning magnet. 
 ^-necklace^ ^---necklace^ ^-metal^ ^---metal^ ^-flashlight^ ^---flashlight^ ^+magnet^ ^+++magnet^
 *sounds/SFX/magnetTinker.mp3*
 }
-USE [table] &vip_party_car& {
-You don't have what you need to use this right now. 
-}
-
 ROOM [vip_women] {
 	*sounds/SFX/doorHeavy.mp3*
 You step into the car which turns out to be another sumptuous sleeping car. With no electricity, your candlestick is the only source of light. To the #north# and #south# of you are the sleeping quarters of some passengers, and to the #west# is yet another door. 
@@ -1330,7 +1340,7 @@ The reflection lunges toward you, the sudden vicious movement startling you into
 [[gameover]]
 }
 
-\\q4
+
 MISC [yes] &q1& &q2& &q3& {
 	<sounds/BGM/floodcarAmb5.mp3>
 @8a0303 Wonderful... @
@@ -1350,7 +1360,7 @@ The darkness rises up behind you, poised to strike.
 ^++q4^
 ^++no3^
 }
-\\fight-flee endings
+
 MISC [fight] &q1& &q2& &q3& &q4& {
 You lunge at the shadowy form swiping at it with your candlestick. It shies away from the light and you press your advantage quickly trapping it in the corner. As you raise you candlestick for the final blow, it's misty face twists into a grin and suddenly the darkness spears you from behind. 
 
