@@ -76,11 +76,14 @@ class Tag {
             for(var k = 0; k < this.conditionals[i].length; ++k) {
                 console.log("checked="+i);
                 if (!(inv.has(this.conditionals[i][k]))) {
+                    console.log("Does not have ITEM:");
+                    console.log(this.conditionals[i][k]);
                     return false;
                 }
             }
             ++i;
         }
+        console.log("YAY IT IS TRUE!");
         return true;
     }
 
@@ -621,16 +624,22 @@ class Parser {
         console.log(this.tags[tag_type_index]);
         var i = 0;
         var goal_tag = null;
+        var goal_index = 0;
+        var found_one = false;
         while (i < this.tags[tag_type_index].length) {
-            //console.log("BEGIN FIRST WHILE="+i);
+            goal_tag = this.tags[tag_type_index][goal_index];
+            console.log("GOOOOOAAAAAAALLLL");
+            console.log(goal_tag);
             var current_tag = this.tags[tag_type_index][i];
             //console.log(current_tag.content_sequence);
             //console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
             //console.log("CURRENT_ROOM="+this.current_room.inventory_index);
-            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null) {
+            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && found_one == false) {
                 console.log("IN THE FIRST IFFFFFFFF");
-                goal_tag = current_tag;
-            } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count) {
+                goal_index = i;
+                //console.log(current_tag);
+                found_one = true;
+            } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count && found_one == true) {
                 console.log("IN THE 2NDDDDD IFE");
                 goal_tag = current_tag;
             }
@@ -679,7 +688,7 @@ class Parser {
 
     menu()
     {
-        var token_string = "           \t    Reflections of the Deep                                 OceanTrain            \t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Push any button to continue";
+        var token_string = "    \t           Reflections of the Deep                            OceanTrain      \t                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Push any button to continue";
         var token_type = 1;
         this.action_queue.push(new Token(token_string, token_type));
         this.action_queue.push(new Token("|BREAK|", 2));

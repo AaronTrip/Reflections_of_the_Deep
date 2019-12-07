@@ -28,6 +28,7 @@ Leaning back in your chair, you let your eyes wander across your surroundings. O
 ^--no_answer^
 }
 
+
 EXAMINE [glass] &init& {
 Looking at the glass, your nausea takes over again. You wish it was full.
 	}

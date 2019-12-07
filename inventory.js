@@ -25,13 +25,20 @@ class Inventory
             return true;
         if(Array.isArray(item))
         {
-            for(var i = 0; i < item.length; ++i)
+            console.log("GOOD, NICE ITEM!!");
+            console.log(item);
+            for(var i = 0; i < item.length; ++i) {
+                console.log("ITEM HAS SEARCH");
+                console.log(this.items);
                 if(!(this.items.has(item[i])))
                     return false;
+            }
             return true;
         } else
         {
-            //console.log(item);
+            console.log("NO ITEM WHY?");
+            console.log(item);
+            console.log(this.items.has(item));
             return this.items.has(item);
         }
     }
