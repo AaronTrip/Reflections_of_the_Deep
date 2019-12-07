@@ -121,6 +121,8 @@
        function executeCommand()
        {
            var command = shell.getCommand();
+           if(command[0] == "")
+               return;
            //shell.shell_line = "> ";
            var command_list = ["examine", "use", "talk", "go", "take", "help", "inventory"];
            var short_command_list = ["e", "u", "l", "g", "t", "h", "y", "n"];

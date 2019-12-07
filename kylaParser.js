@@ -1,4 +1,4 @@
-const TAGS = ["EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "YES", "NO", "MISC"];
+const TAGS = ["EXAMINE", "USE", "TALK", "GO", "TAKE", "ROOM", "HELP", "MISC"];
 const TEXT_MODIFIERS = ["BREAK", "DELAY"];
 
 const tok_type = {
@@ -628,8 +628,8 @@ class Parser {
         var found_one = false;
         while (i < this.tags[tag_type_index].length) {
             goal_tag = this.tags[tag_type_index][goal_index];
-            console.log("GOOOOOAAAAAAALLLL");
-            console.log(goal_tag);
+            //console.log("GOOOOOAAAAAAALLLL");
+            //console.log(goal_tag);
             var current_tag = this.tags[tag_type_index][i];
             //console.log(current_tag.content_sequence);
             //console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
@@ -641,11 +641,12 @@ class Parser {
                 found_one = true;
             } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count && found_one == true) {
                 console.log("IN THE 2NDDDDD IFE");
-                goal_tag = current_tag;
+                goal_index = i;
             }
             ++i;
         }
-        if (goal_tag == null) {
+        goal_tag = this.tags[tag_type_index][goal_index];
+        if (found_one == false) {
             console.warn("No matching tag found for query");
         } else {
             //add content tokens of goal_tag to action_queue
