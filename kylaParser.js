@@ -634,14 +634,19 @@ class Parser {
             //console.log(current_tag.content_sequence);
             //console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
             //console.log("CURRENT_ROOM="+this.current_room.inventory_index);
-            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && found_one == false) {
-                console.log("IN THE FIRST IFFFFFFFF");
-                goal_index = i;
-                //console.log(current_tag);
-                found_one = true;
-            } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count && found_one == true) {
-                console.log("IN THE 2NDDDDD IFE");
-                goal_index = i;
+            if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory)) {
+                if(found_one == false) {
+                    console.log("IN THE FIRST IFFFFFFFF");
+                    goal_index = i;
+                    //console.log(current_tag);
+                    found_one = true;
+                } else if (current_tag.conditional_count >= goal_tag.conditional_count) {
+                    console.log("IN THE 2NDDDDD IFE");
+                    goal_index = i;
+                } else
+                {
+                    console.log("IN THE Third if");
+                }
             }
             ++i;
         }
