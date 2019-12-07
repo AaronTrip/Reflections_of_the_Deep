@@ -53,7 +53,10 @@ class Shell
     getCommand()
     {
         this.command_ready = false;
-        var ret_val = this.shell_line.slice(2, this.shell_line.length).toLowerCase().split(' ');
+        var ret_val = this.shell_line.slice(2, this.shell_line.length).toLowerCase()
+        while(ret_val[0] == ' ')
+            ret_val = ret_val.slice(1, ret_val.length);
+        ret_val = ret_val.split(' ');
         this.shell_line = "> ";
         return ret_val;
     }

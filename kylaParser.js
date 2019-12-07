@@ -52,27 +52,29 @@ class Tag {
         console.log("tag_conditionals:");
         console.log(this.conditionals);
         */
+        console.log("NAME="+this.name);
+        console.log(this.conditionals);
         var i=0;
         while (i < 3) {
             var inv;
             switch(i) {
                 case 0:
                     inv = playerInv;
-                    //console.log("set PlaYEr InVEntOrY");
+                    console.log("set PlaYEr InVEntOrY");
                     break;
                 case 1:
                     inv = roomInv;
-                    //console.log("sEt rOoM iNVenToRy");
+                    console.log("sEt rOoM iNVenToRy");
                     break;
                 case 2:
                     inv = globalInv;
-                    //console.log("SeT GLobAl inVEnToRY");
+                    console.log("SeT GLobAl inVEnToRY");
                     break;
                 default:
                     break;
             }
             for(var k = 0; k < this.conditionals[i].length; ++k) {
-                //console.log("checked="+i);
+                console.log("checked="+i);
                 if (!(inv.has(this.conditionals[i][k]))) {
                     return false;
                 }
@@ -615,7 +617,8 @@ class Parser {
         //get goal tag
         var tag_type = action.toUpperCase();
         var tag_type_index = TAGS.indexOf(tag_type);
-        //console.log("TAG_TYPE="+tag_type+" TAG_TYPE_INDEX="+tag_type_index);
+        console.log("TAG_TYPE="+tag_type+" TAG_TYPE_INDEX="+tag_type_index);
+        console.log(this.tags[tag_type_index]);
         var i = 0;
         var goal_tag = null;
         while (i < this.tags[tag_type_index].length) {
@@ -625,8 +628,10 @@ class Parser {
             //console.log("isVAlid="+current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory));
             //console.log("CURRENT_ROOM="+this.current_room.inventory_index);
             if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && goal_tag == null) {
+                console.log("IN THE FIRST IFFFFFFFF");
                 goal_tag = current_tag;
             } else if (current_tag.name == name && current_tag.isValid(this.player_inventory,this.room_inventories[this.current_room.inventory_index], this.global_inventory) && current_tag.conditional_count > goal_tag.conditional_count) {
+                console.log("IN THE 2NDDDDD IFE");
                 goal_tag = current_tag;
             }
             ++i;
