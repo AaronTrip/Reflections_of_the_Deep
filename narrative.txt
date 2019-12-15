@@ -17,7 +17,7 @@ You nod your head and give him a weak smile. He reaches over and, plucking your 
 *sounds/SFX/glassFilled.mp3*
 ^++full_glass^
 |BREAK|
-Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleeping quarters. 
+Leaning back in your chair, you let your eyes wander across your surroundings. On the well worn table in front of you sits your #glass#, and on the wall beside you is a small #poster#. A few tables away sits an old #man# engrossed in his writing, and at the other end of the car is a young #woman#. There is a door to the #East# side of the car that leads to the passenger sleping quarters. 
 ^--no_answer^
 } 
 MISC [no] &init& &no_answer& {
@@ -221,6 +221,7 @@ The shoes aren't your style or size. You decide against taking them with you.
 
 ROOM [old_man_reg] {
 Opening the door, you step into the room. Although it is twice the size of yours, it is much more cramped. Boxes large and small cover the floor, and there is no sign of the room's occupant. Papers yellowed with age and wires long bent out of shape peek out from under their lids. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality.
+^++old_man_reg^
 }
 ROOM [old_man_reg] &old_man_reg& {
 The large room is cramped with boxes. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Tucked in another corner stands a tall #mirror# of fine quality. The door to the hallway sits closed, #north# of you. 
@@ -237,7 +238,7 @@ On the side table sits the picture of a young woman smiling at the camera. The f
 GO [north] &old_man_reg& {
 [[sleeper_car_middle]]
 }
-GO [north] &old_man_reg& %bad% &lantern& {
+GO [north] &old_man_reg& %bad% $lantern_off$ {
 Deciding to risk the hallway, you open the door. Staring back at you is the darkness you fear and when it lunges at you, you are helpless to avoid it.
 *sounds/cinematic/death.mp3*
 [[gameover]]
@@ -296,6 +297,7 @@ It feels like an eternity, you stand there not even daring to breathe. But soon 
 |DELAY 2000|
 <sounds/BGM/mirrorAmb.mp3>
 Taking a deep breath, you examine your surroundings. The room is a mirror image of the other, but what catches your attention is the light emanating from the #desk#. It's the #lantern#, it's glowing...
+^++old_man_mirror^
 }
 ROOM [old_man_mirror] &old_man_mirror& {
 The room is a mirror image of the other. A lone #desk# sits in the corner and against the wall is a bed with a side #table# next to it. Behind you stands the #mirror# you passed through.
@@ -360,6 +362,7 @@ The strange lantern is currently turned OFF.
 
 ROOM [sleeper_car_east] {
 Moving down the car, the rest of the doors you try are locked. At the end of the hallway, the door to the storage car lies #east# of you.
+^++sleeper_car_east^
 }
 
 ROOM [sleeper_car_east] &sleeper_car_east& {
@@ -387,12 +390,15 @@ GO [east] &sleeper_car_east& %bad% $lantern_on$ {
 
 ROOM [storage_car] %bad% {
 Taking a deep breath, you gather your courage and step through the doorway. Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
+^++storage_car^
 }
 ROOM [storage_car] &storage_car& %bad% {
 Your lantern casts a halo of light around you as you step into the storage room. You can just make out the vague outlines of various boxes and trunks, and at the back you can see the #breaker# box glinting in the lantern light.
 }
 GO [west] &storage_car& {
-[[sleeper_car_east]]
+^--storage_car^
+^++sleeper_car_west^
+[[sleeper_car_west]]
 }
 
 EXAMINE [breaker] &storage_car& %bad% {
@@ -413,6 +419,7 @@ The electricity flickers on and overhead lights bathe the world around you in a 
 
 When the power came on, you could hear the clunk of the dining car door unsealing. Looking around, you can now clearly see the various boxes and trunks in the storage car, and to the #west# lies the door to the sleeper car. 
 ^-lantern_on^
+^++storage_car^
 }
 ROOM [storage_car] %good% &storage_car& {
 Around you sit various trunks and boxes, to the #west# lies the door to the sleeper car.
@@ -423,6 +430,7 @@ You have died.
 ROOM [dining_car] {
 	<sounds/BGM/emergencyLights.mp3>
 Passing through the doorway, you enter the dining car. Emergency lighting bathes the room; it seems like a lifetime ago that you were here. A number of small dining #tables# fill the room, and at the far end sits a #bar# and small #lounge# area. The door from which you entered lies to the #east#, and on the far #west# end of the car is a door labeled "Staff Only". On the wall hangs a large #mirror# set in a simple brass frame. ^++dining_car^
+^++dining_car^
 }
 ROOM [dining_car] &dining_car& {
 You have entered the #dining car#. 
@@ -514,6 +522,7 @@ The blueprints detail the making of a small magnet. As far as you can tell, the 
 ROOM [dining_car_mir] {
 	<sounds/BGM/mirrorAmb2.mp3>
 Like the other dining room, a number of small dining #tables# fill the room, and at the far end sits a #bar# and small #lounge# area. The door to the sleeper car is to the #east# and the door labelled "Staff Only" is to the #west#. The #mirror# remains unchanged as it hangs from the wall. 
+^++dining_Car_mir^
 }
 ROOM [dining_car_mir] &dining_car_mir& {
 	<sounds/BGM/mirrorAmb2.mp3>	
@@ -631,6 +640,7 @@ The drawings on the papers depict a piece of metal wrapped in wire with what loo
 ROOM [kitchen] {
 	<sounds/BGM/emergencyLightsBubbling.mp3>
 The kitchen is even darker than the dining car and has a damp feeling. The entire west side of the room is shrouded in darkness. A dark substance has spread across the walls and ceiling obscuring the emergency lighting, but doesn't seem to be spreading any further. In the area that you can see, there is a huge #jar# in the corner of the room and a corkboard with a handwritten #note# on it to your right. On the south wall, there is another #mirror#.
+^++kitchen^
 }
 ROOM [kitchen] &kitchen& {
 You enter the #kitchen#.
@@ -752,6 +762,7 @@ The breaker is already unlocked.
 ROOM [kitchen_mir] {
 	<sounds/BGM/mirrorAmb2.mp3>
 As you pause to look at the room around you, immediately you see that there is gunk and rotten food all over the walls. It smells absolutely foul in this kitchen, and each step you take you can hear and feel the dirty grime below your feet. There a large #jar# in the corner, the mirror hangs on the wall behind you, and on a corkboard hangs a handwritten #note#. This kitchen is not shrouded in darkness on the west side like its counterpart, and you see a #breaker# box along that wall.
+^++kitchen_mir^
 }
 ROOM [kitchen_mir] &kitchen_mir& {
 	<sounds/BGM/mirrorAmb2.mp3>
