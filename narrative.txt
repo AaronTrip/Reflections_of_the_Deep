@@ -2,7 +2,7 @@
 
 ROOM [init] {
 ^+++good^
-Type in an action and an object to perform the action. The actions available to you are ~talk~ to, ~examine~, ~use~, and ~take~. To move, type ~go~ and the ~direction~, ie. GO ~west~. Type ~examine~ ~room~ for a description of the room you are currently in. Type ~help~ to see this again.
+Type in an action and an object to perform the action. The actions available to you are #go#, #talk#, #examine#, #use#, and #take#. To move, type #go# and the cardinal direction, ie. #go west#. Type #examine room# for a description of the room you are currently in, and type #inventory# to view your current inventory. Type #help# to see this again.
 |BREAK|
 <sounds/BGM/diningAmb.mp3>
 "Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. 
@@ -12,7 +12,7 @@ Type in an action and an object to perform the action. The actions available to 
 ^++no_answer^
 } 
 HELP [help] {
-    Type in an action and an object to perform the action. The actions available to you are ~talk~ TO, ~examine~, ~use~, and ~take~. To move, type ~go~ and the ~direction~, ie. GO ~west~. Type ~examine~ ~room~ for a description of the room you are currently in. Type ~help~ to see this again.
+    Type in an action and an object to perform the action. The actions available to you are #go#, #talk#, #examine#, #use#, and #take#. To move, type #go# and the cardinal direction, ie. #go west#. Type #examine room# for a description of the room you are currently in, and type #inventory# to view your current inventory. Type #help# to see this again.
 }
 MISC [yes] &init& &no_answer& {
 You nod your head and give him a weak smile. He reaches over and, plucking your glass from the table, says “You’re still looking a little green around the gills, it’s quite common for those who haven’t ridden on a subrail before. It might help to lay down for a bit while your body adjusts to the depth.” He sets down your now full glass in front of you and with a smile departs, exiting through the West door labeled "Staff Only".
