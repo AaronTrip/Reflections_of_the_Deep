@@ -5,9 +5,7 @@ ROOM [init] {
 Type in an action and an object to perform the action. The actions available to you are #go#, #talk#, #examine#, #use#, and #take#. To move, type #go# and the cardinal direction, ie. #go west#. Type #examine room# for a description of the room you are currently in, and type #inventory# to view your current inventory. Type #help# to see this again.
 |BREAK|
 <sounds/BGM/diningAmb.mp3>
-"Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. 
-
-(#Yes#, #No#) 
+"Would you like another glass of water?” You blink out of your thoughts and look over to the waiter standing next to the table. He looks at you expectantly, waiting for a reply. (#Yes#, #No#) 
 ^++init^
 ^++no_answer^
 } 
