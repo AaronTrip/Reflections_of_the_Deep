@@ -571,7 +571,6 @@ With a bit of trepidation, you open the bottle and take a whiff. Your eyes begin
 	*sounds/cinematic/juddDrink.mp3*
 [[gameover]]
 }
-}
 EXAMINE [menu] &dining_car_mir& {
 	*sounds/SFX/paper.mp3*
 You take a look at the menu, it looks like it has seen better days.  The prices have been crossed out and much more expensive ones written in. The price of the meatloaf special has been almost tripled. 
